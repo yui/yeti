@@ -1,0 +1,16 @@
+{ "name" : "ytest"
+, "description" : "A tiny YUI Test helper for node"
+, "version" : "0.0.1"
+, "author" : "Reid Burke <me@reidburke.com>"
+, "bugs" : { "mail" : "me@reidburke.com" }
+, "os" : [ "linux", "darwin" ]
+, "directories" : { "lib" : "./lib/" }
+, "main" : "./ytest"
+, "bin" : { "ytest" : "./cli.js" }
+, "engines" : { "node" : ">=0.1.100" }
+, "licenses" :
+  [ { "type" : "BSD"
+    , "url" : "http://developer.yahoo.com/yui/license.html"
+    }
+  ]
+}
