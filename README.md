@@ -37,8 +37,7 @@ You should only do this on Mac OS X. Yeti won't work on other platforms (yet).
 
 Clone this project and then run make.
 
-    $ git clone git://github.com/reid/yeti
-    $ make
+    $ git clone git://github.com/reid/yeti.git && cd yeti && make
 
 This will install [homebrew][], [node][] and [npm][] for you if you don't have them installed already.
 
