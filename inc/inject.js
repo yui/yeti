@@ -5,11 +5,11 @@
     var Runner = window.YUITest.TestRunner;
 
     Runner.on(Runner.COMPLETE_EVENT, function (data) {
-        if (!window.YUITest.CLI) return;
+        if (!window.YCLI) return;
 
         YUI().use("test", function (Y) {
-            var reporter = new Y.Test.Reporter(window.YUITest.CLI.url);
-            reporter.report(data);
+            var reporter = new Y.Test.Reporter(window.YCLI.url);
+            reporter.report(data.results);
         });
     });
 

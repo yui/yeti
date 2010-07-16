@@ -12,15 +12,17 @@ function exit (msg) {
 }
 
 function main (config) {
+    var path = [];
     for (
-        var part, path = config.cwd.split("/");
-        part != "src" && path.length;
-        part = path.pop()
+        var part, root = config.cwd.split("/");
+        part != "src" && root.length;
+        part = root.pop(), path.unshift(part)
     );
 
+    config.root = root.join("/");
     config.path = path.join("/");
 
-    if (!config.path) exit("Couldn't find a suitable root.");
+    if (!config.root) exit("Couldn't find a suitable root.");
 
     require("./server").boot(config);
 }
