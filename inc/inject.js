@@ -8,7 +8,10 @@
         if (!window.YCLI) return;
 
         YUI().use("test", function (Y) {
-            var reporter = new Y.Test.Reporter(window.YCLI.url);
+            var reporter = new Y.Test.Reporter(
+                window.YCLI.url,
+                Y.Test.Format.JSON
+            );
             reporter.report(data.results);
         });
     });
