@@ -26,6 +26,7 @@ function main (config) {
 }
 
 main({
+    port : parseInt(process.env.PORT) || 8000,
     files : process.argv.slice(1),
     cwd : process.cwd()
 });
