@@ -262,7 +262,6 @@ Server = new Class({
             .addListener('end', callback)
       })
     server.listen(this.port, this.host)
-    sys.puts('Express started at http://' + (this.host || '*') + ':' + this.port + '/ in ' + Express.environment + ' mode')
     return server
   },
   
