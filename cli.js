@@ -3,7 +3,7 @@
 var sys = require("sys");
 
 function log (msg) {
-    console.log("ytest: " + msg);
+    console.log("yeti: " + msg);
 }
 
 function exit (msg) {
@@ -12,6 +12,10 @@ function exit (msg) {
 }
 
 function main (config) {
+    if (
+        !config.files.length
+    ) exit("At least one testfile is required. Hint: you can specify many!");
+
     var path = [];
     for (
         var part, root = config.cwd.split("/");
@@ -22,7 +26,9 @@ function main (config) {
     config.root = root.join("/");
     config.path = path.join("/");
 
-    if (!config.root) exit("Couldn't find a suitable root.");
+    if (
+        !config.root
+    ) exit("You must be inside the YUI src directory.");
 
     require("./server").boot(config);
 }
