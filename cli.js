@@ -2,15 +2,17 @@
 
 var ui = require("./lib/ui");
 
-function exit (msg) {
+function mandatory (ok, msg) {
+    if (ok) return;
     ui.log(ui.color.red("Error") + ": " + msg);
     process.exit(1);
 }
 
 function main (config) {
-    if (
-        !config.files.length
-    ) exit("At least one testfile is required. Hint: you can specify many!");
+    mandatory(
+        config.files.length,
+        "At least one testfile is required. Hint: you can specify many!"
+    );
 
     var path = [];
     for (
@@ -22,9 +24,10 @@ function main (config) {
     config.root = root.join("/");
     config.path = path.join("/");
 
-    if (
-        !config.root
-    ) exit("You must be inside the YUI src directory.");
+    mandatory(
+        config.root,
+        "You must be inside the YUI src directory."
+    );
 
     require("./server").boot(config);
 }
