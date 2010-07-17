@@ -14,26 +14,13 @@ function main (config) {
         "At least one testfile is required. Hint: you can specify many!"
     );
 
-    var path = [];
-    for (
-        var part, root = config.cwd.split("/");
-        part != "src" && root.length;
-        part = root.pop(), path.unshift(part)
-    );
-
-    config.root = root.join("/");
-    config.path = path.join("/");
-
-    mandatory(
-        config.root,
-        "You must be inside the YUI src directory."
-    );
+    config.root = "/";
+    config.path = process.cwd().substr(1);
 
     require("./server").boot(config);
 }
 
 main({
     port : parseInt(process.env.PORT) || 8000,
-    files : process.argv.slice(2),
-    cwd : process.cwd()
+    files : process.argv.slice(2)
 });
