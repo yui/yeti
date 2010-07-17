@@ -8,10 +8,20 @@ How easy?
 
 Here you go:
 
-    [reid@yui ~/Development/yui/yui3/src]
-    $ yeti attribute/tests/attribute.html
+    [reid@benson ~/working/yui/yui3/src]
+    $ yeti attribute/tests/attribute.html json/tests/json.html history/tests/functional/history-base.html
     Waiting for results...
-    Attribute Unit Tests: 106 passed, 0 failed.
+    ✔  history-base
+      15 passed
+      0 failed
+    ✔  Y.JSON (JavaScript implementation)
+      68 passed
+      0 failed
+    ✔  Attribute Unit Tests
+      106 passed
+      0 failed
+
+    189 tests passed! (4155ms)
 
 What just happened?
 -------------------
