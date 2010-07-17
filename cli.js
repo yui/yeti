@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-var sys = require("sys");
-
-function log (msg) {
-    console.log("yeti: " + msg);
-}
+var ui = require("./lib/ui");
 
 function exit (msg) {
-    log(msg);
+    ui.log(ui.color.red("Error") + ": " + msg);
     process.exit(1);
 }
 
