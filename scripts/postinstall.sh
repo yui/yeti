@@ -22,9 +22,9 @@ if [ -e /usr/local/bin/brew ]; then
     echo
     echo "The easy way to do this is:"
     echo
-    echo "    export PATH=\"\$PATH:\$(brew --prefix node)\""
+    echo "    export PATH=\"\$PATH:\$(brew --prefix node)/bin\""
     echo
-    __prompt && export PATH="$PATH:$(brew --prefix node)"
+    __prompt && export PATH="$PATH:$(brew --prefix node)/bin"
     echo
     echo "All done. Try something like:"
     echo "    yeti test.html"
