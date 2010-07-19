@@ -45,7 +45,11 @@ This is experimental software. Use at your own risk.
 
 You should only do this on Mac OS X. Yeti won't work on other platforms (yet).
 
-Clone this project and then run make.
+If you have [npm][] installed, this will be easy.
+
+    $ npm install yeti
+
+If you want to run off the latest code, clone this project and then run make.
 
     $ git clone git://github.com/reid/yeti.git && cd yeti && make
 
