@@ -9,19 +9,27 @@ How easy?
 Here you go:
 
     [reid@benson ~/working/yui/yui3/src]
-    $ yeti attribute/tests/attribute.html json/tests/json.html history/tests/functional/history-base.html
-    Waiting for results...
-    ✔  history-base
+    $ yeti --browsers firefox,safari attribute/tests/attribute.html json/tests/json.html history/tests/functional/history-base.html
+    ✔  history-base on Firefox
       15 passed
       0 failed
-    ✔  Y.JSON (JavaScript implementation)
+    ✔  history-base on Safari
+      15 passed
+      0 failed
+    ✔  Y.JSON (JavaScript implementation) on Firefox
       68 passed
       0 failed
-    ✔  Attribute Unit Tests
+    ✔  Y.JSON (JavaScript implementation) on Safari
+      68 passed
+      0 failed
+    ✔  Attribute Unit Tests on Firefox
+      106 passed
+      0 failed
+    ✔  Attribute Unit Tests on Safari
       106 passed
       0 failed
 
-    189 tests passed! (4155ms)
+    378 tests passed! (4847ms)
 
 What just happened?
 -------------------
@@ -33,7 +41,7 @@ You probably shouldn't use this. Yet.
 
 Yeti is very limited:
 
-  - Requires and only works with Safari on Mac OS X.
+  - Requires Mac OS X.
   - Assumes you're testing the local copy of the [yui3][] project.
 
 In the future, Yeti will probably meet your needs better. Right now, it's pretty handy for YUI developers. :)
