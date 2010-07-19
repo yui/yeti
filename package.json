@@ -1,10 +1,9 @@
 { "name" : "yeti"
 , "description" : "The YUI Easy Testing Interface"
-, "version" : "0.0.1"
+, "version" : "0.0.2"
 , "author" : "Reid Burke <me@reidburke.com>"
 , "bugs" : { "mail" : "me@reidburke.com" }
-, "os" : [ "linux", "darwin" ]
-, "directories" : { "lib" : "./lib/" }
+, "os" : [ "darwin" ]
 , "main" : "./yeti"
 , "bin" : { "yeti" : "./cli.js" }
 , "engines" : { "node" : ">=0.1.100" }
