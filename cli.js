@@ -9,6 +9,25 @@ function mandatory (ok, msg) {
 }
 
 function main (config) {
+
+    if (!config.files) config.files = [];
+
+    // parse argv
+    var arg, key;
+    while (
+        arg = config.argv.shift()
+    ) if (
+        "--" === arg.substr(0, 2)
+    ) {
+        if (key) config[key] = true;
+        key = arg.substr(2);
+    } else if (key) {
+        config[key] = arg;
+        key = null;
+    } else config.files.push(arg);
+    if (key) config[key] = true;
+    delete config.argv;
+
     mandatory(
         config.files.length,
         "At least one testfile is required. Hint: you can specify many!"
@@ -22,5 +41,5 @@ function main (config) {
 
 main({
     port : parseInt(process.env.PORT) || 8000,
-    files : process.argv.slice(2)
+    argv : process.argv.slice(2)
 });
