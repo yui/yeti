@@ -7,9 +7,9 @@
 , "bin" : { "yeti" : "./cli.js" }
 , "engines" : { "node" : ">=0.1.100" }
 , "dependencies" :
-    { "express" : "1.0.0beta"
-    , "connect" : "0.2.1"
-    , "class" : "0.3.0"
+    { "express" : ">=1.0.0beta"
+    , "connect" : ">=0.2.1"
+    , "class" : ">=0.3.0"
     }
 , "licenses" :
   [ { "type" : "BSD"
