@@ -1,0 +1,9 @@
+.DS_Store
+pids
+logs
+results
+*.pid
+*.log
+lib-cov
+test/fixtures/foo.bar.baz.css
+test/fixtures/style.css

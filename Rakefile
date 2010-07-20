@@ -1,7 +1,8 @@
 # install all the shit you need to host this
 require 'fileutils'
 
-express_version  = ENV['EXPRESS_VERSION'] || '0.14.1'
+express_version  = ENV['EXPRESS_VERSION'] || '1.0.0beta'
+class_js_version  = ENV['CLASS_JS_VERSION'] || '0.3.0'
 vendor_directory = File.join(File.dirname(__FILE__), 'vendor')
 
 desc "Package express to vendor/ for deployment"
@@ -20,13 +21,26 @@ task :setup do |t|
         system("rm -rf .gitmodules")
       end
       Dir['express/*'].each do |file|
-        FileUtils.rm_rf(file) unless file =~ %r!express/lib!
+        FileUtils.rm_rf(file) unless file =~ %r!express/(lib|support)!
       end
-      Dir['express/lib/support/*/*'].each do |file|
-        FileUtils.rm_rf(file) unless file =~ %r!express/lib/support/\w+/lib!
+      Dir['express/support/*/*'].each do |file|
+        FileUtils.rm_rf(file) unless file =~ %r!express/support/\w+/lib!
       end
-      Dir['express/lib/support/*/.git'].each do |file|
+      Dir['express/support/*/.git'].each do |file|
         FileUtils.rm_rf(file)
+      end
+    end
+    if File.directory?('class')
+      puts "You already have a copy of class"
+    else
+      system("git clone git://github.com/visionmedia/class.js.git class")
+      Dir.chdir("class") do
+        system("git checkout #{class_js_version}")
+        system("rm -rf .git")
+        system("rm -rf .gitmodules")
+      end
+      Dir['class/*'].each do |file|
+        FileUtils.rm_rf(file) unless file =~ %r!class/lib!
       end
     end
   end
