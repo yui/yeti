@@ -1,13 +1,17 @@
-all: bootstrap install-local
+all: install-stable
 
 bootstrap:
 	./scripts/bootstrap.sh
 
-install-local:
+install-stable: bootstrap
+	npm install yeti@stable
+	./scripts/postinstall.sh
+
+install: bootstrap
 	npm install .
 	./scripts/postinstall.sh
 
-link-local:
+link: install
 	npm link .
 
-.PHONY: all bootstrap install-local link-local
+.PHONY: all bootstrap install-stable install link
