@@ -1,6 +1,12 @@
 A Brief History of Yeti
 =======================
 
+0.0.4 / 2010-07-19
+------------------
+
+  * Safari opens tests much more reliably. (AppleScript is no longer used.)
+  * Updated to Express 1.0.0beta.
+
 0.0.3 / 2010-07-19
 ------------------
 
