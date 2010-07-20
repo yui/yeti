@@ -1,12 +1,16 @@
 { "name" : "yeti"
 , "description" : "The YUI Easy Testing Interface"
-, "version" : "0.0.4"
+, "version" : "0.0.5"
 , "author" : "Reid Burke <me@reidburke.com>"
 , "bugs" : { "mail" : "me@reidburke.com" }
 , "os" : [ "darwin" ]
-, "main" : "./yeti"
 , "bin" : { "yeti" : "./cli.js" }
 , "engines" : { "node" : ">=0.1.100" }
+, "dependencies" :
+    { "express" : "1.0.0beta"
+    , "connect" : "0.2.1"
+    , "class" : "0.3.0"
+    }
 , "licenses" :
   [ { "type" : "BSD"
     , "url" : "http://developer.yahoo.com/yui/license.html"

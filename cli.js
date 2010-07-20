@@ -36,10 +36,10 @@ function main (config) {
     config.root = "/";
     config.path = process.cwd().substr(1);
 
-    require("./server").boot(config);
+    require("./lib/app").boot(config);
 }
 
 main({
-    port : parseInt(process.env.PORT) || 8000,
+    port : 8000,
     argv : process.argv.slice(2)
 });
