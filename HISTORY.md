@@ -1,0 +1,19 @@
+A Brief History of Yeti
+=======================
+
+0.0.3 / 2010-07-19
+------------------
+
+  * Added Firefox and Chrome browsers.
+
+0.0.2 / 2010-07-19
+------------------
+
+  * First release to npm.
+  * Test reporting looks better.
+  * Multiple file support.
+
+0.0.1 / 2010-07-17
+------------------
+
+  * Published to GitHub.
