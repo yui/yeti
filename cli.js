@@ -9,7 +9,6 @@ function mandatory (ok, msg) {
 }
 
 function main (config) {
-
     if (!config.files) config.files = [];
 
     // parse argv
@@ -33,6 +32,7 @@ function main (config) {
         "At least one testfile is required. Hint: you can specify many!"
     );
 
+    config.port = parseInt(config.port);
     config.root = "/";
     config.path = process.cwd().substr(1);
 

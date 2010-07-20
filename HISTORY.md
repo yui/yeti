@@ -4,6 +4,7 @@ A Brief History of Yeti
 0.0.5 / 2010-07-20
 ------------------
 
+  * Added --port option to override the default port 8000.
   * Removed frozen dependencies from vendor directory.
 
 0.0.4 / 2010-07-19
