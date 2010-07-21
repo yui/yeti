@@ -13,6 +13,16 @@
                 Y.Test.Format.JSON
             );
             reporter.report(data.results);
+
+            if (parent.YETI) {
+                var onload = parent.YETI.next;
+                var ifr = reporter._iframe;
+                if (ifr.attachEvent) {
+                    ifr.attachEvent("onload", onload);
+                } else {
+                    ifr.onload = onload;
+                }
+            }
         });
     });
 

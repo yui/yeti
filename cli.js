@@ -27,11 +27,6 @@ function main (config) {
     if (key) config[key] = true;
     delete config.argv;
 
-    mandatory(
-        config.files.length,
-        "At least one testfile is required. Hint: you can specify many!"
-    );
-
     config.port = parseInt(config.port);
     config.root = "/";
     config.path = process.cwd().substr(1);
