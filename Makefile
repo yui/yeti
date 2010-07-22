@@ -1,17 +1,19 @@
 all: install-stable
 
+export NPM=$(shell brew --prefix node)/bin/npm
+
 bootstrap:
 	./scripts/bootstrap.sh
 
 install-stable: bootstrap
-	npm install yeti@stable
-	./scripts/postinstall.sh
+	${NPM} install yeti@stable
+	@echo To setup your PATH, source ./scripts/postinstall.sh
 
 install: bootstrap
-	npm install .
-	./scripts/postinstall.sh
+	${NPM} install .
+	@echo To setup your PATH, source ./scripts/postinstall.sh
 
 link: install
-	npm link .
+	${NPM} link .
 
 .PHONY: all bootstrap install-stable install link
