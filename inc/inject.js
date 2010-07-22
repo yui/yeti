@@ -1,5 +1,9 @@
 (function attachEventsToYUITest () {
 
+    if (!window.YCLIid && window.location.hash) {
+        window.YCLIid = window.location.hash.substr(1);
+    }
+
     if (!window.YUITest) return window.setTimeout(attachEventsToYUITest, 15);
 
     var Runner = window.YUITest.TestRunner;
@@ -12,6 +16,7 @@
                 window.YCLI.url,
                 Y.Test.Format.JSON
             );
+            reporter.addField("id", window.YCLIid);
             reporter.report(data.results);
 
             if (parent.YETI) {
