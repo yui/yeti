@@ -28,7 +28,7 @@ var YETI = (function yeti () {
     }
 
     function incoming (data) {
-        var response = eval(data);
+        var response = eval("(" + data + ")");
         if (response.tests.length) {
             var t = response.tests;
             for (var i in t) my.tests.push(t[i]);
