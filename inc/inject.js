@@ -1,7 +1,8 @@
 (function attachEventsToYUITest () {
 
-    if (!window.YCLIid && window.location.hash) {
-        window.YCLIid = window.location.hash.substr(1);
+    if (!window.YCLIid && window.location.pathname) {
+        var matches = window.location.pathname.match(/^\/project\/([^\/]*)/);
+        if (matches) window.YCLIid = matches.pop();
     }
 
     if (!window.YUITest) return window.setTimeout(attachEventsToYUITest, 15);
