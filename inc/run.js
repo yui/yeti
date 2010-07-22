@@ -8,9 +8,6 @@ var YETI = (function yeti () {
         return frame.contentWindow || frame.contentDocument.contentWindow;
     }
 
-    var log = function () {};
-    if (console && console.log) log = console.log;
-
     var my = {
         frame : null,
         tests : []
@@ -52,7 +49,6 @@ var YETI = (function yeti () {
                     window.setTimeout(function () {
                         wait();
                     }, 5000);
-                    console.log("Something went wrong.", req.status);
                 }
                 req = null;
             }
