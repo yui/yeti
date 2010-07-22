@@ -43,12 +43,15 @@ var YETI = (function yeti () {
         req.open("GET", "/tests/wait", true);
         req.onreadystatechange = function () {
             if (req.readyState === 0) {
-                wait();
+                // server is down
                 req = null;
             } else if (req.readyState === 4) {
-                if (req.status === 200) {
+                if (req.status === 200 && req.responseText) {
                     incoming(req.responseText);
                 } else {
+                    window.setTimeout(function () {
+                        wait();
+                    }, 5000);
                     console.log("Something went wrong.", req.status);
                 }
                 req = null;
