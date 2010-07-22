@@ -1,0 +1,33 @@
+html, body, #bd, iframe {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font: 90% Helvetica, Arial, sans-serif;
+    padding: 10px;
+}
+
+h1 {
+    font: 400% Helvetica, sans-serif;
+    letter-spacing: -4px;
+    text-transform: lowercase;
+}
+
+h1 b {
+    font-weight: bold;
+}
+
+iframe {
+    border: 10px double #000;
+    width: 44%;
+    height: 300px;
+}
+
+#ft {
+    margin-top: 10px;
+}
+
+#ft, #ft a {
+    color: #ccc;
+}
