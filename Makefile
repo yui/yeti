@@ -7,11 +7,13 @@ bootstrap:
 
 install-stable: bootstrap
 	${NPM} install yeti@stable
-	@echo To setup your PATH, source ./scripts/postinstall.sh
+	@echo To setup your PATH and fix yeti not found errors, run:
+	@echo   source ./scripts/postinstall.sh
 
 install: bootstrap
 	${NPM} install .
-	@echo To setup your PATH, source ./scripts/postinstall.sh
+	@echo To setup your PATH and fix yeti not found errors, run:
+	@echo   source ./scripts/postinstall.sh
 
 link: install
 	${NPM} link .

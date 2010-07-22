@@ -11,6 +11,10 @@ brew install node # && brew install npm
 
 # nuke old npm
 echo "Removing homebrew's npm."
+# brew's cleanup and uninstall won't work unless
+# the latest version is installed. fun!
+brew install npm 2>&1 > /dev/null
+# now, begone
 brew cleanup npm 2>&1 >/dev/null
 brew uninstall npm 2>&1 >/dev/null
 
@@ -23,3 +27,6 @@ hash -r
 
 # update location for makefile
 export NPM=$(brew --prefix node)/bin/npm
+
+echo "Removing existing yeti."
+$NPM uninstall yeti
