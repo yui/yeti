@@ -22,11 +22,15 @@ if [ -e /usr/local/bin/brew ]; then
     echo
     echo "The easy way to do this is:"
     echo
-    echo "    export PATH=\"\$PATH:\$(brew --prefix node)/bin\""
+    echo "    export PATH=\"\$(brew --prefix node)/bin:\$PATH\""
     echo
-    __prompt && export PATH="$PATH:$(brew --prefix node)/bin"
+    __prompt \
+        && hash -r \
+        && export PATH="$(brew --prefix node)/bin:$PATH"
     echo
     echo "All done. Try something like:"
     echo "    yeti test.html"
     echo "and get testing!"
+else
+    echo "You're not using homebrew, please check your PATH by hand."
 fi
