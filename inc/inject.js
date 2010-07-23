@@ -34,6 +34,7 @@
         window.onerror = function (e) {
             submit({
                 results : {
+                    name : window.location.href,
                     total : 1,
                     passed : 0,
                     failed : 1,
@@ -42,7 +43,8 @@
                         name : "window.onerror handler (yeti virtual test)",
                         data : {
                             name : "window.onerror should not fire",
-                            message : e
+                            message : e,
+                            result : "fail"
                         }
                     }
                 }
