@@ -1,6 +1,6 @@
 var YETI = (function yeti () {
 
-    var TIMEOUT = 20000;
+    var TIMEOUT = 300000;
 
     function createFrame () {
         var frame = document.createElement("iframe");
