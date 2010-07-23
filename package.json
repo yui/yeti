@@ -5,7 +5,7 @@
 , "bugs" : { "mail" : "me@reidburke.com" }
 , "os" : [ "darwin" ]
 , "bin" : { "yeti" : "./cli.js" }
-, "engines" : { "node" : ">=0.1.100" }
+, "engines" : { "node" : ">=0.1.101" }
 , "dependencies" :
     { "express" : ">=1.0.0beta"
     , "connect" : ">=0.2.1"
