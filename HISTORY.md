@@ -1,6 +1,13 @@
 A Brief History of Yeti
 =======================
 
+0.0.6 / 2010-07-23
+------------------
+
+  * Server mode.
+  * Display failed test details.
+  * Added window.onerror handler.
+
 0.0.5 / 2010-07-20
 ------------------
 
