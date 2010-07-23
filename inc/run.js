@@ -24,6 +24,11 @@ var YETI = (function yeti () {
         };
     }
 
+    var statusEl = document.getElementById("status");
+    function status (msg) {
+        statusEl.innerHTML = msg;
+    }
+
     function incoming (data) {
         var response = eval("(" + data + ")");
         if (response.tests.length) {
@@ -36,8 +41,8 @@ var YETI = (function yeti () {
 
     function wait () {
         var req = xhr();
-        if (!req) return;
-        req.open("GET", "/tests/wait", true);
+        if (!req) return status("Unable to create XMLHttpRequest.");
+        req.open("POST", "/tests/wait", true);
         req.onreadystatechange = function () {
             if (req.readyState === 0) {
                 // server is down
@@ -49,10 +54,12 @@ var YETI = (function yeti () {
                     window.setTimeout(function () {
                         wait();
                     }, 5000);
+                    status("Timeout or server error, retrying in 5 seconds.");
                 }
                 req = null;
             }
         };
+        status("Waiting for tests.");
         req.send(null);
     };
         
@@ -65,9 +72,14 @@ var YETI = (function yeti () {
         },
         next : function () {
             if (my.tests.length) {
-                my.frame.location.replace(my.tests.shift());
+                var url = my.tests.shift();
+                status("Waiting for results for: " + url);
+                my.frame.location.replace(url);
                 if (reaper) window.clearTimeout(reaper);
                 reaper = window.setTimeout(YETI.next, TIMEOUT);
+            } else {
+                my.frame.location.replace("about:blank");
+                status("Test run complete. Waiting for new tests.");
             }
         }
     };
