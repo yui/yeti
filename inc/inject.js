@@ -7,12 +7,11 @@
 
     if (!window.YUITest) return window.setTimeout(attachEventsToYUITest, 15);
 
-    var Runner = window.YUITest.TestRunner;
+    YUI().use("test", function (Y) {
 
-    Runner.on(Runner.COMPLETE_EVENT, function (data) {
-        if (!window.YCLI) return;
+        function submit (data) {
+            if (!window.YCLI) return;
 
-        YUI().use("test", function (Y) {
             var reporter = new Y.Test.Reporter(
                 window.YCLI.url,
                 Y.Test.Format.JSON
@@ -29,7 +28,34 @@
                     ifr.onload = onload;
                 }
             }
-        });
+
+        };
+
+        window.onerror = function (e) {
+            submit({
+                results : {
+                    total : 1,
+                    passed : 0,
+                    failed : 1,
+                    data : {
+                        failed : 1,
+                        name : "window.onerror handler (yeti virtual test)",
+                        data : {
+                            name : "window.onerror should not fire",
+                            message : e
+                        }
+                    }
+                }
+            });
+            return false;
+        };
+
+        var Runner = window.YUITest.TestRunner;
+        Runner.on(Runner.COMPLETE_EVENT, submit);
+
     });
 
+
 })();
+
+window.print = window.confirm = window.alert = window.open = function () {};
