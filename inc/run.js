@@ -13,17 +13,6 @@ var YETI = (function yeti () {
         tests : []
     };
 
-    var xhr;
-    if (window.XMLHttpRequest) {
-        xhr = function () { return new window.XMLHttpRequest(); }
-    } else {
-        xhr = function () {
-            try {
-                return new window.ActiveXObject("Microsoft.XMLHTTP");
-            } catch (e) {}
-        };
-    }
-
     var statusEl = document.getElementById("status");
     function status (msg) {
         statusEl.innerHTML = msg;
@@ -39,30 +28,52 @@ var YETI = (function yeti () {
         wait();
     }
 
-    function wait () {
-        var req = xhr();
-        if (!req) return status("Unable to create XMLHttpRequest.");
-        req.open("POST", "/tests/wait", true);
-        req.onreadystatechange = function () {
-            if (req.readyState === 0) {
-                // server is down
-                req = null;
-            } else if (req.readyState === 4) {
-                if (req.status === 200 && req.responseText) {
-                    incoming(req.responseText);
-                } else {
-                    window.setTimeout(function () {
-                        wait();
-                    }, 5000);
-                    status("Timeout or server error, retrying in 5 seconds.");
-                }
-                req = null;
+    if ("undefined" !== typeof EventSource) {
+        var source = false;
+        var wait = function () {
+            if (!source) {
+                source = new EventSource("/tests/wait");
+                source.onmessage = function (e) {
+                    incoming(e.data);
+                };
             }
+            status("Waiting for tests.");
+        }
+    } else {
+        var xhr;
+        if (window.XMLHttpRequest) {
+            xhr = function () { return new window.XMLHttpRequest(); }
+        } else {
+            xhr = function () {
+                try {
+                    return new window.ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) {}
+            };
+        }
+        var wait = function () {
+            var req = xhr();
+            if (!req) return status("Unable to create XMLHttpRequest.");
+            req.open("POST", "/tests/wait", true);
+            req.onreadystatechange = function () {
+                if (req.readyState === 0) {
+                    // server is down
+                    req = null;
+                } else if (req.readyState === 4) {
+                    if (req.status === 200 && req.responseText) {
+                        incoming(req.responseText);
+                    } else {
+                        window.setTimeout(function () {
+                            wait();
+                        }, 5000);
+                        status("Timeout or server error, retrying in 5 seconds.");
+                    }
+                    req = null;
+                }
+            };
+            status("Waiting for tests.");
+            req.send(null);
         };
-        status("Waiting for tests.");
-        req.send(null);
-    };
-        
+    }
     var reaper = null;
 
     return {
