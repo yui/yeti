@@ -36,6 +36,14 @@ var YETI = (function yeti () {
                 source.onmessage = function (e) {
                     incoming(e.data);
                 };
+                source.onerror = function () {
+                    if (source.readyState === 2) {
+                        // connection was closed
+                        source = null;
+                        window.setTimeout(wait, 5000);
+                        status("Timeout or server error, retrying in 5 seconds.");
+                    }
+                };
             }
             status("Waiting for tests.");
         }
@@ -62,9 +70,7 @@ var YETI = (function yeti () {
                     if (req.status === 200 && req.responseText) {
                         incoming(req.responseText);
                     } else {
-                        window.setTimeout(function () {
-                            wait();
-                        }, 5000);
+                        window.setTimeout(wait, 5000);
                         status("Timeout or server error, retrying in 5 seconds.");
                     }
                     req = null;
