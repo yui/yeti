@@ -34,7 +34,11 @@ function main (config) {
     require("./lib/app").boot(config);
 }
 
-main({
-    port : 8000,
-    argv : process.argv.slice(2)
-});
+if (process.argv[1].match(/yeti|cli\.js/)) {
+    main({
+        port : 8000,
+        argv : process.argv.slice(2)
+    });
+} else {
+    exports.main = main;
+}
