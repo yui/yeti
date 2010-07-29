@@ -1,13 +1,5 @@
 #!/usr/bin/env node
 
-var ui = require("./lib/ui");
-
-function mandatory (ok, msg) {
-    if (ok) return;
-    ui.log(ui.color.red("Error") + ": " + msg);
-    process.exit(1);
-}
-
 function main (config) {
     if (!config.files) config.files = [];
 
