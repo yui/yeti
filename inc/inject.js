@@ -1,40 +1,61 @@
-(function attachEventsToYUITest () {
+function $yetify (config) {
 
-    if (!window.YCLIid && window.location.pathname) {
-        var matches = window.location.pathname.match(/^\/project\/([^\/]*)/);
-        if (matches) window.YCLIid = matches.pop();
+    var w = window,
+        self = $yetify.config,
+        path = w.location.pathname,
+        YTest = w.YUITest,
+        YETI = parent.YETI,
+        matches;
+
+    if (!path) return; // very required
+
+    if (!$yetify.config) { // first run
+
+        if (!config) return;
+        $yetify.config = config;
+
+        matches = path.match(/^\/project\/([^\/]*)/);
+        if (!matches) return;
+
+        $yetify.config.id = matches.pop();
+
+        // prevent careless errors
+        w.print = w.confirm = w.alert = w.open = function () {};
+
     }
 
-    if (!window.YUITest) return window.setTimeout(attachEventsToYUITest, 15);
+    // poll for Y.Test
+    if (!YTest) return w.setTimeout($yetify, 15);
 
     YUI().use("test", function (Y) {
 
         function submit (data) {
-            if (!window.YCLI) return;
+
+            if (!self.url) return;
 
             var reporter = new Y.Test.Reporter(
-                window.YCLI.url,
+                self.url,
                 Y.Test.Format.JSON
             );
-            reporter.addField("id", window.YCLIid);
+            reporter.addField("id", self.id);
             reporter.report(data.results);
 
-            if (parent.YETI) {
-                var onload = parent.YETI.next;
-                var ifr = reporter._iframe;
+            if (YETI) {
+                var cb = YETI.next,
+                    ifr = reporter._iframe;
                 if (ifr.attachEvent) {
-                    ifr.attachEvent("onload", onload);
+                    ifr.attachEvent("onload", cb);
                 } else {
-                    ifr.onload = onload;
+                    ifr.onload = cb;
                 }
             }
 
         };
 
-        window.onerror = function (e) {
+        w.onerror = function (e) {
             submit({
                 results : {
-                    name : window.location.href,
+                    name : w.location.href,
                     total : 1,
                     passed : 0,
                     failed : 1,
@@ -52,12 +73,9 @@
             return false;
         };
 
-        var Runner = window.YUITest.TestRunner;
+        var Runner = YTest.TestRunner;
         Runner.on(Runner.COMPLETE_EVENT, submit);
 
     });
 
-
-})();
-
-window.print = window.confirm = window.alert = window.open = function () {};
+};
