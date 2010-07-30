@@ -21,7 +21,7 @@ vows.describe("HTTP Server").addBatch({
             topic : function () {
                 var vow = this;
                 server.tests.on("newListener", function (event, listener) {
-                    if ("add" === event) this.callback(listener);
+                    if ("add" === event) vow.callback(null, listener);
                 });
                 visitor.visit(
                     [ Browsers.canonical() ],
@@ -61,10 +61,11 @@ vows.describe("HTTP Server").addBatch({
             },
             "when we check on a test" : {
                 topic : function (id) {
-                    ui.log("topic id :", id)
+                    var vow = this;
                     this.requestOptions.method = "GET";
                     this.requestOptions.path = "/status/" + id;
                     delete this.requestOptions.body;
+                    delete this.requestOptions.headers;
                     http.request(
                         this.requestOptions
                     ).on("response", function (res, results) {
@@ -75,10 +76,10 @@ vows.describe("HTTP Server").addBatch({
                     });
                 },
                 "test data is returned" : function (results) {
-                    ui.results(results);
-                    assert.ok(results);
+                    // ui.results(results);
+                    assert.isObject(results);
                 }
             }
-        },
+        }
     }
 }).run();

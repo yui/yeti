@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<title>Fixture</title>
+
+<body class="yui3-skin-sam">
+<h1>Yeti Test Test</h1>
+
+<script src="yui3/build/yui/yui.js"></script>
+<script>
+(function () {
+    YUI({
+        base : "yui3/build/",
+        filter : "debug",
+        logExclude: {
+            attribute : true,
+            dom : true,
+            node : true,
+            event : true,
+            base : true,
+            widget : true,
+            selector : true,
+            io : true
+        },
+        useConsole : true
+    }).use("test", "console", function(Y) {
+
+        new Y.Console().render();
+
+        Y.Test.Runner.add(new Y.Test.Case({
+            name : "Yeti Test Test",
+            "$yetify should report test results" : function () {
+                Y.Assert.isString("horray");
+            }
+        }));
+        Y.Test.Runner.run();
+
+    });
+})();
+</script>
+
+</body>
