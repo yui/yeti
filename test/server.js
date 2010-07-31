@@ -17,9 +17,59 @@ vows.describe("HTTP Server").addBatch({
         "the server should start" : function (err) {
             assert.isUndefined(err);
         },
-        // when we request a document
-            // HTML should be injected
-            // everything else is passed through
+        "when we request an HTML document" : {
+            topic : function () {
+                var vow = this;
+                this.requestOptions = {
+                    host : "localhost",
+                    port : PORT,
+                    method : "GET",
+                    path : "/project/" + __dirname + "/fixture.html"
+                };
+                http.request(
+                    this.requestOptions
+                ).on("response", function (res, body) {
+                    vow.callback(
+                        res.statusCode === 200 ? null : "Non-200 repsonse code",
+                        body
+                    );
+                });
+            },
+            "$yetify should be injected" : function (body) {
+                assert.ok(body);
+                var injection = "<script src=\"/inc/inject.js\"></script><script>$yetify({url:\"/results\"});</script>";
+                var idx = body.indexOf(injection);
+                // body should contain injection:
+                assert.ok(-1 !== idx);
+                // injection appears at the end:
+                assert.ok(
+                    idx + injection.length
+                    === body.length
+                );
+            }
+        },
+        "when we request a CSS document" : {
+            topic : function () {
+                var vow = this;
+                this.requestOptions = {
+                    host : "localhost",
+                    port : PORT,
+                    method : "GET",
+                    path : "/project/" + __dirname + "/fixture.css"
+                };
+                http.request(
+                    this.requestOptions
+                ).on("response", function (res, body) {
+                    vow.callback(
+                        res.statusCode === 200 ? null : "Non-200 repsonse code",
+                        body
+                    );
+                });
+            },
+            "document should be served unmodified" : function (body) {
+                assert.equal(body, "a{}\n");
+            }
+        },
         "when we visit the test runner" : {
             topic : function () {
                 var vow = this;
