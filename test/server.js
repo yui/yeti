@@ -10,14 +10,14 @@ var Browsers = require("../lib/browsers").Browsers;
 var PORT = 8088;
 
 vows.describe("HTTP Server").addBatch({
-    "The Yeti server" : {
+    "A Yeti server" : {
         topic : function() {
             server.serve(PORT, this.callback);
         },
         "should start" : function (err) {
             assert.isUndefined(err);
         },
-        "when we request an HTML document" : {
+        "when an HTML document is requested" : {
             topic : function () {
                 var vow = this;
                 this.requestOptions = {
@@ -35,7 +35,7 @@ vows.describe("HTTP Server").addBatch({
                     );
                 });
             },
-            "$yetify should be injected" : function (body) {
+            "the document should have $yetify" : function (body) {
                 assert.ok(body);
                 var injection = "<script src=\"/inc/inject.js\"></script><script>$yetify({url:\"/results\"});</script>";
                 var idx = body.indexOf(injection);
@@ -48,7 +48,7 @@ vows.describe("HTTP Server").addBatch({
                 );
             }
         },
-        "when we request a CSS document" : {
+        "when a CSS document is requested" : {
             topic : function () {
                 var vow = this;
                 this.requestOptions = {
@@ -66,11 +66,11 @@ vows.describe("HTTP Server").addBatch({
                     );
                 });
             },
-            "document should be served unmodified" : function (body) {
+            "the document should be served unmodified" : function (body) {
                 assert.equal(body, "a{}\n");
             }
         },
-        "when we visit the test runner" : {
+        "when the test runner was requested" : {
             topic : function () {
                 var vow = this;
                 var cb = function (event, listener) {
@@ -87,7 +87,7 @@ vows.describe("HTTP Server").addBatch({
             "the server listens to the test add event" : function (listener) {
                 assert.isFunction(listener);
             },
-            "when we add a test" : {
+            "and a test is added" : {
                 topic : function () {
                     var vow = this;
                     this.requestOptions = {
@@ -111,7 +111,7 @@ vows.describe("HTTP Server").addBatch({
                 "the test id is returned" : function (id) {
                     assert.isString(id);
                 },
-                "when we check on a test" : {
+                "and the status is requested" : {
                     topic : function (id) {
                         var vow = this;
                         this.requestOptions.method = "GET";
@@ -127,7 +127,7 @@ vows.describe("HTTP Server").addBatch({
                             );
                         });
                     },
-                    "test data is returned" : function (results) {
+                    "the test data is returned" : function (results) {
                         // ui.results(results);
                         assert.isObject(results);
                     },
