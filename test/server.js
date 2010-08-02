@@ -10,11 +10,11 @@ var Browsers = require("../lib/browsers").Browsers;
 var PORT = 8088;
 
 vows.describe("HTTP Server").addBatch({
-    "when starting a server by itself" : {
+    "The Yeti server" : {
         topic : function() {
             server.serve(PORT, this.callback);
         },
-        "the server should start" : function (err) {
+        "should start" : function (err) {
             assert.isUndefined(err);
         },
         "when we request an HTML document" : {
@@ -139,4 +139,4 @@ vows.describe("HTTP Server").addBatch({
             }
         }
     }
-}).run();
+}).export(module);
