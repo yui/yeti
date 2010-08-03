@@ -5,7 +5,9 @@ var server = require("../lib/server");
 var http = require("../lib/http");
 var ui = require("../lib/ui");
 var visitor = require("../lib/visitor");
+
 var Browsers = require("../lib/browsers").Browsers;
+var Script = process.binding("evals").Script;
 
 var PORT = 8088;
 
@@ -19,18 +21,51 @@ function request (path, body, method) {
     if (body) options.body = body;
     if (method) options.method = method;
     return function (lastTopic) {
+        var vow = this;
         if ("function" === typeof path)
             options.path = path(lastTopic);
-        var vow = this;
+        else if (!path)
+            options.path = vow.context.name.split(/ +/)[1];
         http.request(
             options
-        ).on("response", function (res, results) {
+        ).on("response", function X (res, results) {
             var err = null;
             if (res.statusCode !== 200)
-                err = res.statusCode + " " + http.STATUS_CODES[res.statusCode];
+                err = res.statusCode + " " + require("http").STATUS_CODES[res.statusCode];
+            if (res.statusCode === 302) { // handle redirects
+                options.path = res.headers.location;
+                return http.request(options).on("response", X);
+            }
             vow.callback(err, results);
         });
     }
+}
+
+function script () {
+    return function (body) {
+        var sandbox = { // super fake dom!
+            window : {},
+            document : {
+                getElementById : function () {}
+            }
+        };
+        Script.runInNewContext(body, sandbox);
+        return sandbox;
+    };
+}
+
+function exposeOnly (token) {
+    return function (sandbox) {
+        for (var i in sandbox) switch (i) {
+            case "document":
+            case "window":
+            case token:
+                break;
+            default:
+                return assert.fail(i + " should not be exposed");
+        }
+        assert.ok(1);
+    };
 }
 
 vows.describe("HTTP Server").addBatch({
@@ -40,6 +75,41 @@ vows.describe("HTTP Server").addBatch({
         },
         "should start" : function (err) {
             assert.isUndefined(err);
+        },
+        "when /inc/inject.js is requested" : {
+            topic : request(),
+            "the document should be valid JavaScript" : {
+                    topic : script(),
+                    "and have the function $yetify" : function (sandbox) {
+                        assert.isFunction(sandbox.$yetify);
+                    },
+                    "and expose only $yetify" : exposeOnly("$yetify")
+            },
+            "the document should contain $yetify" : function (body) {
+                assert.include(body, "$yetify");
+            }
+        },
+        "when /inc/run.js is requested" : {
+            topic : request(),
+            "the document should be valid JavaScript" : {
+                    topic : script(),
+                    "and have the object YETI" : function (sandbox) {
+                        assert.isObject(sandbox.YETI);
+                    },
+                    "and have the function YETI.start" : function (sandbox) {
+                        assert.isFunction(sandbox.YETI.start);
+                    },
+                    "and expose only YETI" : exposeOnly("YETI")
+            },
+            "the document should contain YETI" : function (body) {
+                assert.include(body, "YETI");
+            }
+        },
+        "when /favicon.ico is requested" : {
+            topic : request(),
+            "there should be a response" : function () {
+                assert.ok(1);
+            }
         },
         "when an HTML document is requested" : {
             topic : request("/project/" + __dirname + "/fixture.html"),

@@ -102,4 +102,3 @@ var YETI = (function yeti () {
     };
 
 })();
-YETI.start();
