@@ -44,15 +44,14 @@ vows.describe("HTTP Server").addBatch({
         "when an HTML document is requested" : {
             topic : request("/project/" + __dirname + "/fixture.html"),
             "the document should have $yetify" : function (body) {
-                assert.ok(body);
+                assert.isString(body);
                 var injection = "<script src=\"/inc/inject.js\"></script><script>$yetify({url:\"/results\"});</script>";
-                var idx = body.indexOf(injection);
-                // body should contain injection:
-                assert.ok(-1 !== idx);
+                assert.include(body, injection);
                 // injection appears at the end:
-                assert.ok(
-                    idx + injection.length
-                    === body.length
+                var idx = body.indexOf(injection);
+                assert.equal(
+                    idx + injection.length,
+                    body.length
                 );
             }
         },
@@ -93,8 +92,11 @@ vows.describe("HTTP Server").addBatch({
                         return "/status/" + id;
                     }),
                     "the test data is returned" : function (results) {
-                        // ui.results(results);
                         assert.isObject(results);
+                        assert.include(results, "passed");
+                        assert.include(results, "failed");
+                        assert.include(results, "name");
+                        assert.include(results, "total");
                     },
                     "the suite passed" : function (result) {
                         assert.ok(result.passed);
