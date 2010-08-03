@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-function main (config) {
+function configure (config) {
+
     if (!config.files) config.files = [];
 
     // parse argv
@@ -23,7 +24,12 @@ function main (config) {
     config.root = "/";
     config.path = process.cwd().substr(1);
 
-    require("./lib/app").boot(config);
+    return config;
+
+}
+
+function main (config) {
+    require("./lib/app").boot(configure(config));
 }
 
 if (process.argv[1].match(/yeti|cli\.js/)) {
@@ -32,5 +38,5 @@ if (process.argv[1].match(/yeti|cli\.js/)) {
         argv : process.argv.slice(2)
     });
 } else {
-    exports.main = main;
+    exports.configure = configure;
 }
