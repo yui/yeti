@@ -7,8 +7,10 @@ vows.describe("CLI").addBatch({
     "Configuring the app" : {
         topic : function () {
             return cli.configure({
-                port : 8089,
-                argv : ["hallo", "--bar","baz", "reid", "--foo"]
+                port : 8087,
+                override : "no",
+                inherit : "yes",
+                argv : ["hallo", "--override", "yes", "--bar", "baz", "--port", "8089", "reid", "--foo"]
             });
         },
         "should set an argv option without a value to true" : function (config) {
@@ -18,12 +20,23 @@ vows.describe("CLI").addBatch({
             assert.equal(config.bar, "baz");
         },
         "should inherit properties from the passed object" : function (config) {
-            assert.equal(config.port, 8089);
+            assert.equal(config.inherit, "yes");
+        },
+        "should override default option with argv option" : function (config) {
+            assert.equal(config.override, "yes");
         },
         "should treat everything that isn't an option as a file" : function (config) {
             assert.length(config.files, 2);
             assert.include(config.files, "hallo");
             assert.include(config.files, "reid");
+        },
+        "should provide port as an integer" : function (config) {
+            assert.strictEqual(config.port, 8089);
+        },
+        "should include the root and path" : function (config) {
+            // TODO eliminate root
+            assert.equal(config.root, "/");
+            assert.equal(config.path, process.cwd().substr(1));
         },
         "should omit argv" : function (config) {
             assert.isUndefined(config.argv);
