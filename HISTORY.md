@@ -1,6 +1,22 @@
 A Brief History of Yeti
 =======================
 
+0.1.0rc / 2010-08-05
+--------------------
+Public release candidate.
+
+  * Added YUI favicon.
+  * Added additional cli tests.
+
+0.1.0demo / 2010-08-03
+---------------------
+Public demo.
+
+  * Works with any standalone HTML document.
+  * Added Vows test scripts.
+  * Broke up app.js into modules to make testing easier.
+  * Cleaned up inject.js, app.js and cli.js.
+
 0.0.6 / 2010-07-23
 ------------------
 
