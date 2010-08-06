@@ -42,12 +42,10 @@ iframe {
     float: right;
 }
 
-
 #ft {
-    margin-top: 10px;
+    padding: 10px;
 }
 
 #ft, #ft a {
-    padding: 10px;
     color: #ccc;
 }
