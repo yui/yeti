@@ -37,6 +37,12 @@ iframe {
     padding: 10px;
 }
 
+#bd button {
+    margin: 10px;
+    float: right;
+}
+
+
 #ft {
     margin-top: 10px;
 }
