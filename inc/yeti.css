@@ -1,27 +1,40 @@
-html, body, #bd, iframe {
+html, body, h1, #bd, iframe {
     padding: 0;
     margin: 0;
 }
 
 body {
     font: 90% Helvetica, Arial, sans-serif;
+    width: 100%;
+}
+
+#hd {
     padding: 10px;
+    color: #ccc;
+    background: #333;
+    text-shadow: 1px 1px 1px #000;
 }
 
 h1 {
-    font: 400% Helvetica, sans-serif;
-    letter-spacing: -4px;
+    font: 300% "Helvetica Neue", Helvetica, sans-serif;
     text-transform: lowercase;
+    font-weight: 100;
 }
 
 h1 b {
-    font-weight: bold;
+    letter-spacing: -4px;
+    font-weight: 900;
+    color: #fff;
 }
 
 iframe {
-    border: 10px double #000;
-    width: 44%;
-    height: 300px;
+    border: 10px solid #dfdfdf;
+    border-width: 10px 0;
+    width: 100%;
+}
+
+#bd p {
+    padding: 10px;
 }
 
 #ft {
@@ -29,5 +42,6 @@ iframe {
 }
 
 #ft, #ft a {
+    padding: 10px;
     color: #ccc;
 }

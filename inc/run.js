@@ -4,7 +4,7 @@ var YETI = (function yeti () {
 
     function createFrame () {
         var frame = document.createElement("iframe");
-        document.body.appendChild(frame);
+        document.getElementById("bd").appendChild(frame);
         return frame.contentWindow || frame.contentDocument.contentWindow;
     }
 
