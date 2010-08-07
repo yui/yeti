@@ -6,7 +6,7 @@ var http = require("../lib/http");
 var ui = require("../lib/ui");
 var visitor = require("../lib/visitor");
 
-var Browsers = require("../lib/browsers").Browsers;
+var Browser = require("../lib/browsers").Browser;
 var Script = process.binding("evals").Script;
 
 var PORT = 8088;
@@ -141,7 +141,7 @@ vows.describe("HTTP Server").addBatch({
                 };
                 server.tests.on("newListener", cb);
                 visitor.visit(
-                    [ Browsers.canonical() ],
+                    [ Browser.canonical() ],
                     ["http://localhost:" + PORT]
                 );
             },

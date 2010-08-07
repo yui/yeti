@@ -9,7 +9,6 @@
 , "dependencies" :
     { "express" : ">=1.0.0beta"
     , "connect" : ">=0.2.1"
-    , "class" : ">=0.3.0"
     , "jade" : ">=0.2.2"
     }
 }
