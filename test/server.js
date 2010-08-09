@@ -11,7 +11,8 @@ var Script = process.binding("evals").Script;
 
 var PORT = 8088;
 
-function request (path, body, method) {
+function request (code, path, body, method) {
+    if (!code) code = 200;
     var options = {
         host : "localhost",
         port : PORT,
@@ -30,7 +31,7 @@ function request (path, body, method) {
             options
         ).on("response", function X (res, results) {
             var err = null;
-            if (res.statusCode !== 200)
+            if (res.statusCode !== code)
                 err = res.statusCode + " " + require("http").STATUS_CODES[res.statusCode];
             if (res.statusCode === 302) { // handle redirects
                 options.path = res.headers.location;
@@ -71,10 +72,36 @@ function exposeOnly (token) {
 vows.describe("HTTP Server").addBatch({
     "A Yeti server" : {
         topic : function() {
-            server.serve(PORT, this.callback);
+            var cwd = process.cwd().split("/");
+            if (
+                "test" != cwd[cwd.length - 1]
+            ) cwd.push("test");
+            // the config.path is set to the test dir
+            // everything outside shouldn't be served
+            // (cli.js sets config.path to your cwd)
+            server.serve(PORT, cwd.join("/").substr(1), this.callback);
         },
         "should start" : function (err) {
             assert.isUndefined(err);
+        },
+        "when something outside of the config.path is requested" : {
+            topic : function () {
+                var part, path = process.cwd().split("/");
+                while (
+                    part = path.pop()
+                ) if (part == "yeti") break;
+                path = path.concat(part, "LICENSE");
+                // we are requesting ../LICENSE
+                // which is outside of our config.path
+                // for security reasons, this must fail
+                request(
+                    403,
+                    "/project/" + path.join("/")
+                ).apply(this, arguments);
+            },
+            "the request should be denied" : function (body) {
+                assert.ok(1);
+            }
         },
         "when /inc/inject.js is requested" : {
             topic : request(),
@@ -112,7 +139,7 @@ vows.describe("HTTP Server").addBatch({
             }
         },
         "when an HTML document is requested" : {
-            topic : request("/project/" + __dirname + "/fixture.html"),
+            topic : request(200, "/project/" + __dirname + "/fixture.html"),
             "the document should have $yetify" : function (body) {
                 assert.isString(body);
                 var injection = "<script src=\"/inc/inject.js\"></script><script>$yetify({url:\"/results\"});</script>";
@@ -126,7 +153,7 @@ vows.describe("HTTP Server").addBatch({
             }
         },
         "when a CSS document is requested" : {
-            topic : request("/project/" + __dirname + "/fixture.css"),
+            topic : request(200, "/project/" + __dirname + "/fixture.css"),
             "the document should be served unmodified" : function (body) {
                 assert.equal(body, "a{}\n");
             }
@@ -150,6 +177,7 @@ vows.describe("HTTP Server").addBatch({
             },
             "and a test is added" : {
                 topic : request(
+                    200,
                     "/tests/add",
                     { tests : [ __dirname + "/fixture.html" ] },
                     "PUT"
@@ -158,7 +186,7 @@ vows.describe("HTTP Server").addBatch({
                     assert.isString(id);
                 },
                 "and the status is requested" : {
-                    topic : request(function (id) {
+                    topic : request(200, function (id) {
                         return "/status/" + id;
                     }),
                     "the test data is returned" : function (results) {
