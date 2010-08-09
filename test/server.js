@@ -11,6 +11,8 @@ var Script = process.binding("evals").Script;
 
 var PORT = 8088;
 
+ui.quiet(1);
+
 function request (code, path, body, method) {
     if (!code) code = 200;
     var options = {
@@ -69,7 +71,11 @@ function exposeOnly (token) {
     };
 }
 
-ui.quiet(1);
+function pass () {
+    return function () {
+        assert.ok(1); // yay, the topic didn't assert.fail()
+    }
+}
 
 vows.describe("HTTP Server").addBatch({
     "A Yeti server" : {
@@ -101,9 +107,7 @@ vows.describe("HTTP Server").addBatch({
                     "/project/" + path.join("/")
                 ).apply(this, arguments);
             },
-            "the request should be denied" : function (body) {
-                assert.ok(1);
-            }
+            "the request should be denied" : pass()
         },
         "when /inc/inject.js is requested" : {
             topic : request(),
@@ -136,9 +140,7 @@ vows.describe("HTTP Server").addBatch({
         },
         "when /favicon.ico is requested" : {
             topic : request(),
-            "there should be a response" : function () {
-                assert.ok(1);
-            }
+            "there should be a response" : pass()
         },
         "when an HTML document is requested" : {
             topic : request(200, "/project/" + __dirname + "/fixture.html"),
