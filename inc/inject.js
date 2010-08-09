@@ -25,7 +25,7 @@ function $yetify (config) {
     }
 
     // poll for Y.Test
-    if (!YTest) return w.setTimeout($yetify, 15);
+    if (!YTest) return w.setTimeout($yetify, 50);
 
     YUI().use("test", function (Y) {
 
