@@ -33,9 +33,7 @@ vows.describe("CLI").addBatch({
         "should provide port as an integer" : function (config) {
             assert.strictEqual(config.port, 8089);
         },
-        "should include the root and path" : function (config) {
-            // TODO eliminate root
-            assert.equal(config.root, "/");
+        "should include the path" : function (config) {
             assert.equal(config.path, process.cwd().substr(1));
         },
         "should omit argv" : function (config) {
