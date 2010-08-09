@@ -34,7 +34,7 @@ vows.describe("CLI").addBatch({
             assert.strictEqual(config.port, 8089);
         },
         "should include the path" : function (config) {
-            assert.equal(config.path, process.cwd().substr(1));
+            assert.equal(config.path, process.cwd());
         },
         "should omit argv" : function (config) {
             assert.isUndefined(config.argv);
