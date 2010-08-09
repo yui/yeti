@@ -69,6 +69,8 @@ function exposeOnly (token) {
     };
 }
 
+ui.quiet(1);
+
 vows.describe("HTTP Server").addBatch({
     "A Yeti server" : {
         topic : function() {
