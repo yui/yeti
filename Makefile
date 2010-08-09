@@ -1,21 +1,19 @@
 all: install-stable
 
-export NPM=$(shell brew --prefix node)/bin/npm
-
 bootstrap:
 	./scripts/bootstrap.sh
+	ln -sf ../share/npm/bin/yeti /usr/local/bin/yeti
 
 install-stable: bootstrap
-	${NPM} install yeti@stable
-	@echo To setup your PATH and fix yeti not found errors, run:
-	@echo   source ./scripts/postinstall.sh
+	npm install yeti@stable
 
 install: bootstrap
-	${NPM} install .
-	@echo To setup your PATH and fix yeti not found errors, run:
-	@echo   source ./scripts/postinstall.sh
+	npm install .
 
-link: install
-	${NPM} link .
+link: bootstrap
+	npm link .
 
-.PHONY: all bootstrap install-stable install link
+remove:
+	npm uninstall yeti
+
+.PHONY: all bootstrap install-stable install link remove
