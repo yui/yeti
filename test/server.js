@@ -87,7 +87,7 @@ vows.describe("HTTP Server").addBatch({
             // the config.path is set to the test dir
             // everything outside shouldn't be served
             // (cli.js sets config.path to your cwd)
-            server.serve(PORT, cwd.join("/").substr(1), this.callback);
+            server.serve(PORT, cwd.join("/"), this.callback);
         },
         "should start" : function (err) {
             assert.isUndefined(err);
