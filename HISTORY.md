@@ -1,6 +1,14 @@
 A Brief History of Yeti
 =======================
 
+0.1.0rc2 / 2010-08-11
+---------------------
+
+  * Security: Yeti now only serves from the cwd you're in or the --path directory.
+  * Polished the test runner page.
+  * Removed dependency on class.js.
+  * Files served in the same test run are cached.
+
 0.1.0rc / 2010-08-05
 --------------------
 Public release candidate.
