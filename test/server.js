@@ -104,7 +104,7 @@ vows.describe("HTTP Server").addBatch({
                 // for security reasons, this must fail
                 request(
                     403,
-                    "/project/" + path.join("/")
+                    "/project" + path.join("/")
                 ).apply(this, arguments);
             },
             "the request should be denied" : pass()
@@ -143,7 +143,7 @@ vows.describe("HTTP Server").addBatch({
             "there should be a response" : pass()
         },
         "when an HTML document is requested" : {
-            topic : request(200, "/project/" + __dirname + "/fixture.html"),
+            topic : request(200, "/project" + __dirname + "/fixture.html"),
             "the document should have $yetify" : function (body) {
                 assert.isString(body);
                 var injection = "<script src=\"/inc/inject.js\"></script><script>$yetify({url:\"/results\"});</script>";
@@ -157,7 +157,7 @@ vows.describe("HTTP Server").addBatch({
             }
         },
         "when a CSS document is requested" : {
-            topic : request(200, "/project/" + __dirname + "/fixture.css"),
+            topic : request(200, "/project" + __dirname + "/fixture.css"),
             "the document should be served unmodified" : function (body) {
                 assert.equal(body, "a{}\n");
             }
