@@ -1,10 +1,7 @@
 function $yetify (config) {
 
     var w = window,
-        self = $yetify.config,
-        path = w.location.pathname,
         YTest = w.YUITest,
-        YETI = parent.YETI,
         matches;
 
     if (!path) return; // very required
@@ -27,9 +24,15 @@ function $yetify (config) {
     // poll for Y.Test
     if (!YTest) return w.setTimeout($yetify, 50);
 
+    var path = w.location.pathname,
+        href = w.location.href,
+        YETI = parent.YETI;
+
     YUI().use("test", function (Y) {
 
         function submit (data) {
+
+            var self = $yetify.config;
 
             if (!self.url) return;
 
@@ -55,7 +58,7 @@ function $yetify (config) {
         w.onerror = function (e) {
             submit({
                 results : {
-                    name : w.location.href,
+                    name : href,
                     total : 1,
                     passed : 0,
                     failed : 1,

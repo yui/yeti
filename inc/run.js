@@ -69,10 +69,12 @@ var YETI = (function yeti () {
             var req = xhr();
             if (!req) return status("Unable to create XMLHttpRequest.");
             req.open("POST", "/tests/wait", true);
-            req.onreadystatechange = function () {
+
+            // prevent memory leaks by polling
+            // instead of using onreadystatechange
+            var poll = window.setInterval(function () {
                 if (req.readyState === 0) {
                     // server is down
-                    req = null;
                 } else if (req.readyState === 4) {
                     if (req.status === 200 && req.responseText) {
                         incoming(req.responseText);
@@ -80,9 +82,14 @@ var YETI = (function yeti () {
                         window.setTimeout(wait, 5000);
                         status("Timeout or server error, retrying in 5 seconds.");
                     }
-                    req = null;
+                } else {
+                    return;
                 }
-            };
+                // readystate is either 0 or 4, we're done.
+                req = null;
+                window.clearInterval(poll);
+            }, 50);
+
             status("Waiting for tests.");
             req.send(null);
         };
