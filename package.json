@@ -11,4 +11,9 @@
     , "connect" : ">=0.2.1"
     , "jade" : ">=0.2.2"
     }
+, "licenses" :
+  [ { "type" : "BSD"
+    , "url" : "http://developer.yahoo.com/yui/license.html"
+    }
+  ]
 }
