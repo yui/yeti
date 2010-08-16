@@ -1,6 +1,14 @@
 A Brief History of Yeti
 =======================
 
+0.1.0rc3 / 2010-08-16
+---------------------
+
+  * Open source under BSD!
+  * Better caching of test resources.
+  * Prevent some IE memory leaks.
+  * --solo option to exit on arrival of 1 result per file, with summary.
+
 0.1.0rc2 / 2010-08-11
 ---------------------
 
