@@ -14,15 +14,9 @@ var YETI = (function yeti () {
     };
 
     var statusEl = document.getElementById("status");
-    var skip = document.getElementById("skip");
 
     function status (msg) {
-        showControls(msg.indexOf("Waiting for tests") !== -1);
         statusEl.innerHTML = msg;
-    }
-
-    function showControls (bit) {
-        skip.disabled = bit;
     }
 
     function incoming (data) {
@@ -99,10 +93,6 @@ var YETI = (function yeti () {
     return {
         start : function () {
             my.frame = createFrame();
-            skip.onclick = function (e) {
-                e.preventDefault();
-                YETI.next();
-            };
             wait();
         },
         next : function () {
