@@ -4,9 +4,11 @@ function $yetify (config) {
         YTest = w.YUITest,
         matches;
 
-    if (!path) return; // very required
-
     if (!$yetify.config) { // first run
+
+        var path = w.location.pathname;
+
+        if (!path) return; // very required
 
         if (!config) return;
         $yetify.config = config;
@@ -24,8 +26,7 @@ function $yetify (config) {
     // poll for Y.Test
     if (!YTest) return w.setTimeout($yetify, 50);
 
-    var path = w.location.pathname,
-        href = w.location.href,
+    var href = w.location.href,
         YETI = parent.YETI;
 
     YUI().use("test", function (Y) {
