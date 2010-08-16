@@ -146,7 +146,8 @@ vows.describe("HTTP Server").addBatch({
             topic : request(200, "/project" + __dirname + "/fixture.html"),
             "the document should have $yetify" : function (body) {
                 assert.isString(body);
-                var injection = "<script src=\"/inc/inject.js\"></script><script>$yetify({url:\"/results\"});</script>";
+                var cachebuster = server.getCachebuster();
+                var injection = "<script src=\"/dyn/" + cachebuster + "/inject.js\"></script><script>$yetify({url:\"/results\"});</script>";
                 assert.include(body, injection);
                 // injection appears at the end:
                 var idx = body.indexOf(injection);
