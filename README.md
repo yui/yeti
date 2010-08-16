@@ -40,12 +40,12 @@ Server mode!
 You can also run Yeti as a server:
 
     $ yeti
-    Visit http://benson.local:8000 to run tests.
+    Visit http://localhost:8000 to run tests.
 
 Then subsequent Yeti commands will dispatch tests to all browsers pointed at the test page at that moment:
 
     $ yeti datasource/tests/datasource.html
-    ✖  http://localhost:8000/project/FC391F72-0705-46D6-B683-B6899C7BA3A6/Users/rburke/working/yui/yui3/src/datasource/tests/datasource.html
+    ✖  http://localhost:8000/project/1278285667/Users/rburke/working/yui/yui3/src/datasource/tests/datasource.html
     From: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.0.6  0 passed
       1 failed
       in window.onerror handler (yeti virtual test)
@@ -66,14 +66,14 @@ As you can see, this is very handy to quickly run tests on mobile devices. You c
 
 Server mode is great for working offline: you can test your commits across A-grade browsers in different local VMs without requiring a network connection to a centralized test system.
 
-You can pass the --port option to override port 8000 with your preferred server port. If you do this, be sure to also pass --port when running Yeti as a client.
+You can pass the `--port` option to override port 8000 with your preferred server port. If you do this, be sure to also pass `--port` when running Yeti as a client.
 
 Yeti doesn't exit automatically when used with server mode. If you're using only 1 browser with server mode (i.e. just running tests on 1 browser on another computer or VM), you may use the `--solo 1` option to have Yeti exit with a summary after all tests run once. This is also handy for scripting Yeti: if a failure occurs, Yeti will exit with a non-zero status code.
 
 Mobile testing made easy
 ------------------------
 
-When combined with localtunnel, things get interesting. Startup your yeti server and then run:
+When combined with [localtunnel][], things get interesting. Startup your yeti server and then run:
 
     $ localtunnel 8000
        Port 8000 is now publicly accessible from http://3z48.localtunnel.com ...
@@ -83,7 +83,7 @@ You can then visit that URL on your mobile (or any other) device and have it run
 Caveats
 -------
 
-Yeti requires Mac OS X.
+Yeti is currently only tested on Mac OS X. However, you can run tests on any platform: just run Yeti in server mode and point the browser on another OS to your Yeti server. Yeti should work on other platforms as well, especially in server mode. Feel free to submit patches: see the Contribute section below.
 
 You must start Yeti in server mode in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
 
@@ -119,6 +119,11 @@ Testing
 -------
 
 Yeti uses [Vows][] for testing its built-in server. After installing Vows, you may run the `vows` command to run all suites. See the [Vows website][Vows] for information on installing and running Vows.
+
+The server test suite requires [YUI 3][yui3] to be installed into tests/vendor to test its integration with YUI Test. You may easily do this by running:
+
+    $ git submodule init
+    $ git submodule update
 
 License
 -------
