@@ -12,12 +12,20 @@ NODE=$BIN/node
 mkdir -p $BIN
 cp /usr/local/bin/node $NODE
 
-mkdir -p $ROOT/usr/local/lib/node
+_NPM_ROOT=$ROOT/usr/local/lib/node
+_NPM_FAKE_ROOT=$PWD/npm
+
+mkdir -p $_NPM_ROOT
+mkdir -p $_NPM_FAKE_ROOT
 
 $NODE ~/.node_libraries/.npm/npm/active/package/cli.js \
-    --root $ROOT/usr/local/lib/node \
+    --root $_NPM_FAKE_ROOT \
     --binroot $BIN \
     install $YETI
+
+# flatten symlinks
+# PackageManager chokes on npm's symlinks
+rsync -Lavz --exclude "*.npm*" $_NPM_FAKE_ROOT/ $_NPM_ROOT
 
 # fixup path:
 ROOTBIN=$ROOT/usr/local/bin
@@ -31,8 +39,8 @@ sudo chmod -R g+w $ROOT
 --title "Yeti" \
 --version 0.1.0 \
 --filter "\.DS_Store" \
+--resources ../resources/ \
 --root-volume-only \
---domain system \
 --verbose \
 --no-relocate \
 -l "/" \
