@@ -466,7 +466,92 @@
 					</dict>
 				</dict>
 				<key>Requirements</key>
-				<array/>
+				<array>
+					<dict>
+						<key>AlertDialog</key>
+						<dict>
+							<key>International</key>
+							<dict>
+								<key>MessageKey</key>
+								<string>Yeti depends on the V8 JavaScript engine, which doesn't support this processor.</string>
+								<key>TitleKey</key>
+								<string></string>
+							</dict>
+						</dict>
+						<key>LabelKey</key>
+						<string>Not PowerPC</string>
+						<key>Level</key>
+						<integer>0</integer>
+						<key>SpecArgument</key>
+						<string>sysa</string>
+						<key>SpecTag</key>
+						<integer>2</integer>
+						<key>SpecType</key>
+						<string>gestalt</string>
+						<key>Status</key>
+						<true/>
+						<key>TestObject</key>
+						<string>10</string>
+						<key>TestOperator</key>
+						<string>&gt;=</string>
+					</dict>
+					<dict>
+						<key>AlertDialog</key>
+						<dict>
+							<key>International</key>
+							<dict>
+								<key>MessageKey</key>
+								<string>This installer requires a 64-bit processor, but you can still install Yeti. Consult the Yeti documentation for details.</string>
+								<key>TitleKey</key>
+								<string></string>
+							</dict>
+						</dict>
+						<key>LabelKey</key>
+						<string>64-bit</string>
+						<key>Level</key>
+						<integer>0</integer>
+						<key>SpecArgument</key>
+						<string>hw.cpu64bit_capable</string>
+						<key>SpecTag</key>
+						<integer>6</integer>
+						<key>SpecType</key>
+						<string>sysctl</string>
+						<key>Status</key>
+						<true/>
+						<key>TestObject</key>
+						<string>1</string>
+						<key>TestOperator</key>
+						<string>=</string>
+					</dict>
+					<dict>
+						<key>AlertDialog</key>
+						<dict>
+							<key>International</key>
+							<dict>
+								<key>MessageKey</key>
+								<string>This installer requires Mac OS X 10.6 or later, but you can still install Yeti. Consult the Yeti documentation for details.</string>
+								<key>TitleKey</key>
+								<string></string>
+							</dict>
+						</dict>
+						<key>LabelKey</key>
+						<string>OS greater than 10.6.0</string>
+						<key>Level</key>
+						<integer>0</integer>
+						<key>SpecArgument</key>
+						<string>sysv</string>
+						<key>SpecTag</key>
+						<integer>2</integer>
+						<key>SpecType</key>
+						<string>gestalt</string>
+						<key>Status</key>
+						<true/>
+						<key>TestObject</key>
+						<string>4192</string>
+						<key>TestOperator</key>
+						<string>&gt;=</string>
+					</dict>
+				</array>
 			</dict>
 			<key>Settings</key>
 			<dict>
