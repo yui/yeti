@@ -45,6 +45,7 @@ You can also run Yeti as a server:
 Then subsequent Yeti commands will dispatch tests to all browsers pointed at the test page at that moment:
 
     $ yeti datasource/tests/datasource.html
+    Waiting for results. When you're done, hit Ctrl-C to exit.
     ✖  http://localhost:8000/project/1278285667/Users/rburke/working/yui/yui3/src/datasource/tests/datasource.html
     From: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.0.6  0 passed
       1 failed
@@ -70,6 +71,8 @@ You can pass the `--port` option to override port 8000 with your preferred serve
 
 Yeti doesn't exit automatically when used with server mode. If you're using only 1 browser with server mode (i.e. just running tests on 1 browser on another computer or VM), you may use the `--solo 1` option to have Yeti exit with a summary after all tests run once. This is also handy for scripting Yeti: if a failure occurs, Yeti will exit with a non-zero status code.
 
+Please note that Yeti keeps running until you exit with Ctrl-C, even after all tests results have arrived. (This will be fixed in a future release.)
+
 Mobile testing made easy
 ------------------------
 
@@ -90,13 +93,13 @@ You must start Yeti in server mode in the directory you'll be serving tests from
 Installation
 ------------
 
-This is experimental software. Use at your own risk.
+This is experimental software. Use at your own risk. For now, we've only tested the installation process on Mac OS X.
 
-You should only do this on Mac OS X. Yeti is untested on other platforms.
+### Recommended Install
 
 If you have [npm][] installed, this will be easy.
 
-    $ npm install yeti
+    $ npm install yeti@stable
 
 If you want to run off the latest code, clone this project and then run make.
 
@@ -108,12 +111,23 @@ Installing [localtunnel][] helps proxy Yeti outside of your firewall. It's avail
 
     $ gem install localtunnel
 
+### Native Mac Install
+
+A fancy native installer is available if you're using a modern Mac. You will need:
+
+* Mac OS X 10.6 or later
+* An Intel Core 2 processor or better
+
+Check out [GitHub Downloads on reid/yeti][dl] for the installer.
+
+The native installer is limited to modern configurations because it ships with all dependencies pre-built. If you have a different configuration, please install with the recommended install method.
+
 Bugs & Feedback
 ---------------
 
-Open a ticket using [GitHub Issues][issues] to report bugs or feature requests.
+Open a ticket on [YUILibrary.com's Yeti Issue Tracker][issues] to report bugs or feature requests.
 
-Yeti is an experimental project brought to you by a [YUI][] team member. As such, it doesn't receive any official level of support from YUI.
+Yeti is an experimental project of [YUI Labs][]. As such, it doesn't receive the same level of support as other mature YUI projects.
 
 Testing
 -------
@@ -133,7 +147,7 @@ Yeti is offered under the terms of the BSD license. See the LICENSE file or the 
 Contribute
 ----------
 
-Your contributions are welcome! Please review the [YUI contributor guide][CLA] before contributing. If you haven't contributed to a [YUI project][YUI] before, you'll need to review and sign the [YUI CLA][CLA] before I can accept your pull request.
+Your contributions are welcome! Please review the [YUI contributor guide][CLA] before contributing. If you haven't contributed to a [YUI project][YUI] before, you'll need to review and sign the [YUI CLA][CLA] before we can accept your pull request.
 
   [jspec]: http://github.com/visionmedia/jspec
   [yui3]: http://github.com/yui/yui3
@@ -141,8 +155,10 @@ Your contributions are welcome! Please review the [YUI contributor guide][CLA] b
   [homebrew]: http://github.com/mxcl/homebrew
   [node]: http://nodejs.org/
   [npm]: http://npmjs.org/
-  [issues]: http://github.com/reid/yeti/issues
-  [YUI]: http://yuilibrary.com/
+  [dl]: http://github.com/reid/yeti/downloads
+  [issues]: http://yuilibrary.com/projects/yeti/newticket
+  [YUI Labs]: http://yuilibrary.com/labs/
   [Vows]: http://vowsjs.org/
   [license]: http://developer.yahoo.com/yui/license.html
   [CLA]: http://developer.yahoo.com/yui/community/#cla
+  [YUI]: http://yuilibrary.com/
