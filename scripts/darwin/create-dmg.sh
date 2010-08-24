@@ -24,7 +24,7 @@ _NPM_FAKE_ROOT=$PWD/npm
 mkdir -p $_NPM_ROOT/.npm/.cache
 rsync -av ../npm-cache/ $_NPM_ROOT/.npm/
 
-$NODE ~/.node_libraries/.npm/npm/active/package/cli.js \
+$NODE `brew --prefix npm`/libexec/cli.js \
     --root $_NPM_ROOT \
     --binroot $BIN \
     install $YETI
