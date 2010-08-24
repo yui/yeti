@@ -50,11 +50,11 @@
 					<key>International</key>
 					<dict>
 						<key>Mode</key>
-						<integer>0</integer>
-						<key>Path</key>
-						<string></string>
-						<key>Path Type</key>
 						<integer>1</integer>
+						<key>Path</key>
+						<string>Welcome.rtf</string>
+						<key>Path Type</key>
+						<integer>2</integer>
 					</dict>
 				</dict>
 			</dict>
