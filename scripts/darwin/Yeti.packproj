@@ -15,11 +15,11 @@
 					<key>IFPkgFlagBackgroundScaling</key>
 					<integer>1</integer>
 					<key>Mode</key>
-					<integer>0</integer>
-					<key>Path</key>
-					<string></string>
-					<key>Path Type</key>
 					<integer>1</integer>
+					<key>Path</key>
+					<string>yeti.jpg</string>
+					<key>Path Type</key>
+					<integer>2</integer>
 				</dict>
 				<key>License</key>
 				<dict>
