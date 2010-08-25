@@ -1,8 +1,16 @@
 { "name" : "yeti"
 , "description" : "The YUI Easy Testing Interface"
-, "version" : "0.1.0rc3"
+, "version" : "0.1.0"
 , "author" : "Reid Burke <me@reidburke.com>"
-, "bugs" : { "mail" : "me@reidburke.com" }
+, "homepage" : "http://yuilibrary.com/projects/yeti/"
+, "bugs" :
+    { "mail" : "yeti@reidburke.com"
+    , "web" : "http://yuilibrary.com/projects/yeti/report"
+    }
+, "repositories" :
+    { "type" : "git"
+    , "url" : "http://github.com/yui/yeti.git"
+    }
 , "os" : [ "darwin" ]
 , "bin" : { "yeti" : "./cli.js" }
 , "engines" : { "node" : ">=0.1.101" }

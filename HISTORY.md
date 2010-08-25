@@ -1,6 +1,13 @@
 A Brief History of Yeti
 =======================
 
+0.1.0 / 2010-08-25
+------------------
+
+  * Report full User-agent string.
+  * Corrected dependency versions in package.json.
+  * Minor enhancements for future releases.
+
 0.1.0rc3 / 2010-08-16
 ---------------------
 
