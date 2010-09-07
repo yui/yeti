@@ -44,6 +44,36 @@ function request (code, path, body, method) {
     }
 }
 
+function requestTest (fixture) {
+    return {
+        topic : request(
+            200,
+            "/tests/add",
+            { tests : [ __dirname + "/" + fixture + ".html" ] },
+            "PUT"
+        ),
+        "the test id is returned" : function (id) {
+            assert.isString(id);
+        },
+        "and the status is requested" : {
+            topic : request(200, function (id) {
+                return "/status/" + id;
+            }),
+            "the test data is returned" : function (results) {
+                assert.isObject(results);
+                assert.include(results, "passed");
+                assert.include(results, "failed");
+                assert.include(results, "name");
+                assert.include(results, "total");
+            },
+            "the suite passed" : function (result) {
+                assert.ok(result.passed);
+                assert.equal(result.failed, 0);
+            }
+        }
+    };
+}
+
 function script () {
     return function (body) {
         var sandbox = { // super fake dom!
@@ -180,33 +210,8 @@ vows.describe("HTTP Server").addBatch({
             "the server listens to the test add event" : function (listener) {
                 assert.isFunction(listener);
             },
-            "and a test is added" : {
-                topic : request(
-                    200,
-                    "/tests/add",
-                    { tests : [ __dirname + "/fixture.html" ] },
-                    "PUT"
-                ), 
-                "the test id is returned" : function (id) {
-                    assert.isString(id);
-                },
-                "and the status is requested" : {
-                    topic : request(200, function (id) {
-                        return "/status/" + id;
-                    }),
-                    "the test data is returned" : function (results) {
-                        assert.isObject(results);
-                        assert.include(results, "passed");
-                        assert.include(results, "failed");
-                        assert.include(results, "name");
-                        assert.include(results, "total");
-                    },
-                    "the suite passed" : function (result) {
-                        assert.ok(result.passed);
-                        assert.equal(result.failed, 0);
-                    }
-                }
-            }
+            "and a test is added" : requestTest("fixture"),
+            "and a test with spaces is added" : requestTest("fixture with spaces/fixture again")
         }
     }
 }).export(module);
