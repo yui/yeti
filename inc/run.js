@@ -13,6 +13,8 @@ var YETI = (function yeti () {
         tests : []
     };
 
+    var IDLE = true; // prevent race conditions
+
     var statusEl = document.getElementById("status");
 
     function status (msg) {
@@ -24,7 +26,7 @@ var YETI = (function yeti () {
         if (response.tests.length) {
             var t = response.tests;
             for (var i in t) my.tests.push(t[i]);
-            YETI.next();
+            if (IDLE) YETI.next(); // only kick off tests if we're idle
         }
         wait();
     }
@@ -97,12 +99,14 @@ var YETI = (function yeti () {
         },
         next : function () {
             if (my.tests.length) {
+                IDLE = false;
                 var url = my.tests.shift();
                 status("Waiting for results for: " + url);
                 my.frame.location.replace(url);
                 if (reaper) window.clearTimeout(reaper);
                 reaper = window.setTimeout(YETI.next, TIMEOUT);
             } else {
+                IDLE = true;
                 my.frame.location.replace("about:blank");
                 status("Test run complete. Waiting for new tests.");
             }
