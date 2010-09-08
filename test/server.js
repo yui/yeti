@@ -34,10 +34,23 @@ function request (code, path, body, method) {
         ).on("response", function X (res, results) {
             var err = null;
             if (res.statusCode !== code)
-                err = res.statusCode + " " + require("http").STATUS_CODES[res.statusCode];
+                err = options.method + " " + options.path
+                      + ": " + res.statusCode
+                      + " " + require("http").STATUS_CODES[res.statusCode];
             if (res.statusCode === 302) { // handle redirects
                 options.path = res.headers.location;
                 return http.request(options).on("response", X);
+            }
+            if (res.statusCode === 404 && !options._404) {
+                // when Yeti gives a 404, the resource may be available
+                // in the future. wait a moment then try again.
+                // this typically happens when requesting /status
+                // and a browser, using XHR transport, hasn't
+                // reconnected before the test demands its status
+                options._404 = true;
+                return setTimeout(function () {
+                    http.request(options).on("response", X);
+                }, 500);
             }
             vow.callback(err, results);
         });
