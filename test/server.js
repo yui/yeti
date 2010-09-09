@@ -9,7 +9,7 @@ var visitor = require("../lib/visitor");
 var Browser = require("../lib/browsers").Browser;
 var Script = process.binding("evals").Script;
 
-var PORT = 8088;
+var serverPort = 8088;
 
 ui.quiet(1);
 
@@ -17,7 +17,7 @@ function request (code, path, body, method) {
     if (!code) code = 200;
     var options = {
         host : "localhost",
-        port : PORT,
+        port : serverPort,
         method : "GET",
         path : path
     };
@@ -87,6 +87,29 @@ function requestTest (fixture) {
     };
 }
 
+function requestRunner (transport, browser) {
+    return {
+        topic : function () {
+            var vow = this;
+            var cb = function (event, listener) {
+                if ("add" !== event) return;
+                vow.callback(null, listener);
+                server.tests.removeListener("newListener", cb);
+            };
+            server.tests.on("newListener", cb);
+            visitor.visit(
+                [ browser || Browser.canonical() ],
+                ["http://localhost:" + serverPort + "/?transport=" + transport]
+            );
+        },
+        "the server listens to the test add event" : function (listener) {
+            assert.isFunction(listener);
+        },
+        "and a test is added" : requestTest("fixture"),
+        "and a test with spaces is added" : requestTest("fixture with spaces/fixture again")
+    };
+}
+
 function script () {
     return function (body) {
         var sandbox = { // super fake dom!
@@ -120,18 +143,22 @@ function pass () {
     }
 }
 
+function httpify (port) {
+    return function() {
+        var cwd = process.cwd().split("/");
+        if (
+            "test" != cwd[cwd.length - 1]
+        ) cwd.push("test");
+        // the config.path is set to the test dir
+        // everything outside shouldn't be served
+        // (cli.js sets config.path to your cwd)
+        server.serve(port, cwd.join("/"), this.callback);
+    };
+}
+
 vows.describe("HTTP Server").addBatch({
     "A Yeti server" : {
-        topic : function() {
-            var cwd = process.cwd().split("/");
-            if (
-                "test" != cwd[cwd.length - 1]
-            ) cwd.push("test");
-            // the config.path is set to the test dir
-            // everything outside shouldn't be served
-            // (cli.js sets config.path to your cwd)
-            server.serve(PORT, cwd.join("/"), this.callback);
-        },
+        topic : httpify(serverPort),
         "should start" : function (err) {
             assert.isUndefined(err);
         },
@@ -206,25 +233,8 @@ vows.describe("HTTP Server").addBatch({
                 assert.equal(body, "a{}\n");
             }
         },
-        "when the test runner was requested" : {
-            topic : function () {
-                var vow = this;
-                var cb = function (event, listener) {
-                    if ("add" !== event) return;
-                    vow.callback(null, listener);
-                    server.tests.removeListener("newListener", cb);
-                };
-                server.tests.on("newListener", cb);
-                visitor.visit(
-                    [ Browser.canonical() ],
-                    ["http://localhost:" + PORT]
-                );
-            },
-            "the server listens to the test add event" : function (listener) {
-                assert.isFunction(listener);
-            },
-            "and a test is added" : requestTest("fixture"),
-            "and a test with spaces is added" : requestTest("fixture with spaces/fixture again")
-        }
+        "when the test runner was requested" : requestRunner(),
+        "when the XHR test runner was requested" : requestRunner("xhr"),
+        "when the EventSource test runner was requested" : requestRunner("eventsource")
     }
 }).export(module);

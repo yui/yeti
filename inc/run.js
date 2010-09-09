@@ -12,6 +12,7 @@ YETI = (function yeti (window, document, evaluator) {
         tests = [],
         st = document.getElementById("status"),
         idle = true,
+        wait,
         reaperTimeout;
 
     function createFrame () {
@@ -113,10 +114,6 @@ YETI = (function yeti (window, document, evaluator) {
         };
     }
 
-    var wait = (
-        "undefined" !== typeof EventSource
-    ) ? patientEventSource() : patientXHR();
-
     function dequeue () {
         idle = false;
         var url = tests.shift();
@@ -133,8 +130,16 @@ YETI = (function yeti (window, document, evaluator) {
     }
 
     return {
-        start : function START () {
+        start : function START (config) {
+            var transport = config.transport,
+                supportEV = "undefined" !== typeof EventSource,
+                forceXHR = transport == "xhr",
+                forceEV = transport == "eventsource";
             frame = createFrame();
+            wait = (
+                supportEV
+                && (!forceXHR || forceEV)
+            ) ? patientEventSource() : patientXHR();
             wait();
         },
         next : function NEXT () {
