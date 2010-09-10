@@ -64,18 +64,30 @@ function requestRunner (transport, browser) {
     };
 }
 
-function testBrowser (browser) {
-    return {
-        "for the EventSource test runner": {
-            topic : httpify(),
-            "was requested" : requestRunner("eventsource", browser)
-        }
-    };
-}
-
 var ui = require("../lib/ui");
 ui.verbose(1)
 
 vows.describe("Visitors").addBatch({
-    "A Yeti server visited by the canonical browser" : testBrowser("")
+    "A Yeti server visited by the canonical browser" : {
+        "for the default test runner": {
+            topic : httpify(),
+            "was requested" : requestRunner("")
+        }
+    },
+    "A Yeti server visited by Safari" : {
+        "for the XHR test runner": {
+            topic : httpify(),
+            "was requested" : requestRunner("xhr", "Safari")
+        },
+        "for the EventSource test runner": {
+            topic : httpify(),
+            "was requested" : requestRunner("eventsource", "Safari")
+        }
+    },
+    "A Yeti server visited by Chrome" : {
+        "for the default test runner": {
+            topic : httpify(),
+            "was requested" : requestRunner("", "chrome")
+        }
+    }
 }).export(module);
