@@ -9,6 +9,8 @@ var visitor = require("../lib/visitor");
 var Browser = require("../lib/browsers").Browser;
 var Script = process.binding("evals").Script;
 
+var port = 8089;
+
 ui.quiet(1);
 
 function request (code, path, body, method) {
@@ -163,9 +165,26 @@ function httpify (port) {
     };
 }
 
+function testBrowser (browser) {
+    return {
+        "for the default test runner": {
+            topic : httpify(port++),
+            "was requested" : requestRunner("", browser)
+        },
+        "for the XHR test runner": {
+            topic : httpify(port++),
+            "was requested" : requestRunner("xhr", browser)
+        },
+        "for the EventSource test runner": {
+            topic : httpify(port++),
+            "was requested" : requestRunner("eventsource", browser)
+        }
+    };
+}
+
 vows.describe("HTTP Server").addBatch({
     "A Yeti server" : {
-        topic : httpify(8089),
+        topic : httpify(port++),
         "should start" : function (port) {
             assert.ok(port);
         },
@@ -239,15 +258,8 @@ vows.describe("HTTP Server").addBatch({
             "the document should be served unmodified" : function (body) {
                 assert.equal(body, "a{}\n");
             }
-        },
-        "when the test runner was requested" : requestRunner(),
-        "when the XHR test runner was requested" : requestRunner("xhr"),
-        "when the EventSource test runner was requested" : requestRunner("eventsource")
+        }
     },
-    "A Yeti Server for Chrome" : {
-        topic : httpify(8090),
-        "when the test runner was requested" : requestRunner("", "chrome"),
-        "when the XHR test runner was requested" : requestRunner("xhr", "chrome"),
-        "when the EventSource test runner was requested" : requestRunner("eventsource", "chrome")
-    }
+    "A Yeti server visited by the canonical browser" : testBrowser(),
+    "A Yeti server visited by Chrome" : testBrowser("chrome")
 }).export(module);
