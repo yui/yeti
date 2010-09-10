@@ -9,15 +9,12 @@ var visitor = require("../lib/visitor");
 var Browser = require("../lib/browsers").Browser;
 var Script = process.binding("evals").Script;
 
-var serverPort = 8088;
-
 ui.quiet(1);
 
 function request (code, path, body, method) {
     if (!code) code = 200;
     var options = {
         host : "localhost",
-        port : serverPort,
         method : "GET",
         path : path
     };
@@ -25,6 +22,11 @@ function request (code, path, body, method) {
     if (method) options.method = method;
     return function (lastTopic) {
         var vow = this;
+        // try to find port number
+        var port = Array.prototype.slice.call(arguments, -1)[0];
+        if (!isNaN(port))
+            options.port = port;
+        else throw new Error("Unable to determine port from topic.");
         if ("function" === typeof path)
             options.path = path(lastTopic);
         else if (!path)
@@ -36,7 +38,8 @@ function request (code, path, body, method) {
             if (res.statusCode !== code)
                 err = options.method + " " + options.path
                       + ": " + res.statusCode
-                      + " " + require("http").STATUS_CODES[res.statusCode];
+                      + " " + require("http").STATUS_CODES[res.statusCode]
+                      + ": " + results;
             if (res.statusCode === 302) { // handle redirects
                 options.path = res.headers.location;
                 return http.request(options).on("response", X);
@@ -50,7 +53,7 @@ function request (code, path, body, method) {
                 options._404 = true;
                 return setTimeout(function () {
                     http.request(options).on("response", X);
-                }, 500);
+                }, 2000);
             }
             vow.callback(err, results);
         });
@@ -89,17 +92,18 @@ function requestTest (fixture) {
 
 function requestRunner (transport, browser) {
     return {
-        topic : function () {
+        topic : function (port) {
             var vow = this;
+            var tests = server.getEmitterForPort(port);
             var cb = function (event, listener) {
                 if ("add" !== event) return;
                 vow.callback(null, listener);
-                server.tests.removeListener("newListener", cb);
+                tests.removeListener("newListener", cb);
             };
-            server.tests.on("newListener", cb);
+            tests.on("newListener", cb);
             visitor.visit(
                 [ browser || Browser.canonical() ],
-                ["http://localhost:" + serverPort + "/?transport=" + transport]
+                ["http://localhost:" + port + "/?transport=" + transport]
             );
         },
         "the server listens to the test add event" : function (listener) {
@@ -145,6 +149,7 @@ function pass () {
 
 function httpify (port) {
     return function() {
+        var vows = this;
         var cwd = process.cwd().split("/");
         if (
             "test" != cwd[cwd.length - 1]
@@ -152,15 +157,17 @@ function httpify (port) {
         // the config.path is set to the test dir
         // everything outside shouldn't be served
         // (cli.js sets config.path to your cwd)
-        server.serve(port, cwd.join("/"), this.callback);
+        server.serve(port, cwd.join("/"), function (err) {
+            vows.callback(err, port);
+        });
     };
 }
 
 vows.describe("HTTP Server").addBatch({
     "A Yeti server" : {
-        topic : httpify(serverPort),
-        "should start" : function (err) {
-            assert.isUndefined(err);
+        topic : httpify(8089),
+        "should start" : function (port) {
+            assert.ok(port);
         },
         "when something outside of the config.path is requested" : {
             topic : function () {
@@ -236,5 +243,11 @@ vows.describe("HTTP Server").addBatch({
         "when the test runner was requested" : requestRunner(),
         "when the XHR test runner was requested" : requestRunner("xhr"),
         "when the EventSource test runner was requested" : requestRunner("eventsource")
+    },
+    "A Yeti Server for Chrome" : {
+        topic : httpify(8090),
+        "when the test runner was requested" : requestRunner("", "chrome"),
+        "when the XHR test runner was requested" : requestRunner("xhr", "chrome"),
+        "when the EventSource test runner was requested" : requestRunner("eventsource", "chrome")
     }
 }).export(module);
