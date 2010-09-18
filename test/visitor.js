@@ -10,6 +10,12 @@ var macros = require("../lib/macros"),
     request = macros.request,
     httpify = macros.httpify;
 
+// debugging
+var ui = require("../lib/ui");
+var signal = require("../lib/signal");
+ui.verbose(1); // show debug-level logs
+signal.listen(); // graceful shutdown on SIGINT
+
 function requestTest (fixture) {
     return {
         topic : request(
@@ -64,9 +70,6 @@ function requestRunner (transport, browser) {
         "and a test with spaces is added" : requestTest("fixture with spaces/fixture again")
     };
 }
-
-var ui = require("../lib/ui");
-ui.verbose(1)
 
 vows.describe("Visitors").addBatch({
     "A Yeti server visited by the canonical browser" : {

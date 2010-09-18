@@ -12,6 +12,7 @@ YETI = (function yeti (window, document, evaluator) {
         tests = [],
         st = document.getElementById("status"),
         idle = true,
+        source,
         wait,
         reaperTimeout;
 
@@ -41,6 +42,12 @@ YETI = (function yeti (window, document, evaluator) {
 
     function incoming (data) {
         var response = evaluator(data);
+        if (response.shutdown) {
+            // the server was shutdown. no point in reconnecting.
+            if (source) source.close();
+            status("The server was shutdown. Refresh to reconnect.");
+            return;
+        }
         if (response.tests.length) {
             var t = response.tests;
             for (var i in t) tests.push(t[i]);
@@ -50,7 +57,6 @@ YETI = (function yeti (window, document, evaluator) {
     }
 
     function patientEventSource () {
-        var source = false;
         function setupEventSource () {
             source = new EventSource(ENDPOINT);
             source.onmessage = function (e) {
