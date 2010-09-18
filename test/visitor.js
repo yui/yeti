@@ -15,7 +15,7 @@ function requestTest (fixture) {
         topic : request(
             200,
             "/tests/add",
-            { tests : [ __dirname + "/../test/" + fixture + ".html" ] },
+            { tests : [ __dirname + "/" + fixture + ".html" ] },
             "PUT"
         ),
         "the test id is returned" : function (id) {
@@ -60,6 +60,7 @@ function requestRunner (transport, browser) {
             assert.isFunction(listener);
         },
         "and a test is added" : requestTest("fixture"),
+        "and a YUI 2.x test is added" : requestTest("fixture-yui2"),
         "and a test with spaces is added" : requestTest("fixture with spaces/fixture again")
     };
 }

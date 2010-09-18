@@ -1,3 +1,6 @@
 [submodule "test/vendor/yui3"]
 	path = test/vendor/yui3
 	url = git://github.com/yui/yui3.git
+[submodule "test/vendor/yui2"]
+	path = test/vendor/yui2
+	url = git://github.com/yui/yui2

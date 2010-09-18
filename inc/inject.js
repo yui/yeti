@@ -1,7 +1,8 @@
 function $yetify (config) {
 
     var w = window,
-        YTest = w.YUITest,
+        Y2 = ("YAHOO" in w) ? w.YAHOO.tool : false,
+        YTest = w.YUITest || Y2.TestRunner,
         matches;
 
     if (!$yetify.config) { // first run
@@ -29,18 +30,18 @@ function $yetify (config) {
     var href = w.location.href,
         YETI = parent.YETI;
 
-    YUI().use("test", function (Y) {
+    function attachReporter (Y) {
 
         function submit (data) {
 
-            var self = $yetify.config;
+            var self = $yetify.config,
+                yui2 = Y === Y2,
+                TestReporter = (yui2) ? Y.TestReporter : Y.Test.Reporter,
+                FormatJSON = (yui2) ? Y.TestFormat.JSON : Y.Test.Format.JSON;
 
             if (!self.url) return;
 
-            var reporter = new Y.Test.Reporter(
-                self.url,
-                Y.Test.Format.JSON
-            );
+            var reporter = new TestReporter(self.url, FormatJSON);
             reporter.addField("id", self.id);
             reporter.report(data.results);
 
@@ -77,9 +78,12 @@ function $yetify (config) {
             return false;
         };
 
-        var Runner = YTest.TestRunner;
-        Runner.on(Runner.COMPLETE_EVENT, submit);
+        var Runner = YTest.TestRunner || YTest;
+        Runner.subscribe(Runner.COMPLETE_EVENT, submit);
 
-    });
+    }
+
+    if (Y2) attachReporter(Y2)
+    else w.YUI().use("test", attachReporter);
 
 };

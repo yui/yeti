@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<title>Fixture &mdash; YUI 2.x</title>
+<link rel="stylesheet" href="vendor/yui2/build/logger/assets/logger.css">
+<link rel="stylesheet" href="vendor/yui2/build/yuitest/assets/testlogger.css">
+<body class="yui3-skin-sam">
+<h1>Yeti YUI 2.x Test Test</h1>
+
+<div id="log"></div>
+<script src="vendor/yui2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="vendor/yui2/build/logger/logger.js"></script>
+<script src="vendor/yui2/build/yuitest/yuitest.js"></script>
+<script>
+(function () {
+    var Y = YAHOO,
+        tool = Y.tool,
+        Runner = tool.TestRunner;
+
+    new tool.TestLogger("log");
+
+    var suite = new tool.TestSuite("Yeti YUI 2.x Test Test");
+    suite.add(new tool.TestCase({
+        name : "Reporter",
+        testYetify : function () {
+            Y.util.Assert.isString("horray");
+        }
+    }));
+
+    Runner.add(suite);
+    Runner.run();
+})();
+</script>
+
+</body>
