@@ -1,0 +1,5 @@
+test/vendor
+scripts/darwin/build_tmp
+scripts/darwin/build_tmp.dmg
+scripts/darwin/Yeti.dmg
+scripts/darwin/npm-cache
