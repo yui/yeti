@@ -79,6 +79,11 @@ function $yetify (config) {
         };
 
         var Runner = YTest.TestRunner || YTest;
+
+        if (Runner._root && Runner._root.results && Runner._root.results.type == "report") {
+            return submit(Runner._root);
+        }
+
         Runner.subscribe(Runner.COMPLETE_EVENT, submit);
 
     }

@@ -66,7 +66,7 @@ function requestRunner (transport, browser) {
             assert.isFunction(listener);
         },
         "and a test is added" : requestTest("fixture"),
-        // FIXME "and a YUI 2.x test is added" : requestTest("fixture-yui2"),
+        "and a YUI 2.x test is added" : requestTest("fixture-yui2"),
         "and a test with spaces is added" : requestTest("fixture with spaces/fixture again")
     };
 }
