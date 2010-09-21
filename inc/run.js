@@ -92,7 +92,7 @@ YETI = (function yeti (window, document, evaluator) {
             var poll,
                 req = xhr();
             if (!req) return status("Unable to create " + XMLHTTPREQUEST);
-            req.open("GET", ENDPOINT + "/xhr", true);
+            req.open("POST", ENDPOINT, true);
 
             // prevent memory leaks by polling
             // instead of using onreadystatechange
