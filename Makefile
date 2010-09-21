@@ -2,7 +2,6 @@ all: install-stable
 
 bootstrap:
 	./scripts/bootstrap.sh
-	ln -sf ../share/npm/bin/yeti /usr/local/bin/yeti
 
 install-stable: bootstrap
 	npm install yeti@stable
