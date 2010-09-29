@@ -1,7 +1,7 @@
 function $yetify (config) {
 
     var w = window,
-        Y2 = ("YAHOO" in w) ? w.YAHOO.tool : false,
+        Y2 = ("YAHOO" in w) ? w.YAHOO : false,
         YTest = w.YUITest || Y2.TestRunner,
         matches;
 
@@ -24,7 +24,7 @@ function $yetify (config) {
 
     }
 
-    if (Y2 && !w.YAHOO.lang.JSON) { // YUI 2.x; missing Y.lang.JSON
+    if (Y2 && !Y2.lang.JSON) { // YUI 2.x; missing Y.lang.JSON
         var json = document.createElement("script");
         json.src = "/inc/yui2-json.js";
         document.body.appendChild(json);
@@ -37,17 +37,30 @@ function $yetify (config) {
     var href = w.location.href,
         YETI = parent.YETI;
 
+    function fixIE9 (v) {
+        // TestReporter does UA sniffing
+        // for IE 9, disable the IE hackery
+        // leave other versions of IE alone
+        return (v == 9) ? 0 : v;
+    }
+
     function attachReporter (Y) {
-        if (Y.UA.ie == 9) {
-            Y.UA.ie = 0;
+
+        var TestReporter, FormatJSON, self;
+
+        if (Y === Y2) { // yui 2.x
+            TestReporter = Y.tool.TestReporter;
+            FormatJSON = Y.tool.TestFormat.JSON;
+            Y.env.ua.ie = fixIE9(Y.env.ua.ie);
+        } else {
+            TestReporter = Y.Test.Reporter;
+            FormatJSON = Y.Test.Format.JSON;
+            Y.UA.ie = fixIE9(Y.UA.ie);
         }
 
         function submit (data) {
 
-            var self = $yetify.config,
-                yui2 = Y === Y2,
-                TestReporter = (yui2) ? Y.TestReporter : Y.Test.Reporter,
-                FormatJSON = (yui2) ? Y.TestFormat.JSON : Y.Test.Format.JSON;
+            self = $yetify.config;
 
             if (!self.url) return;
 
@@ -55,15 +68,6 @@ function $yetify (config) {
             reporter.addField("id", self.id);
             reporter.report(data.results);
 
-            if (YETI) {
-                var cb = YETI.next,
-                    ifr = reporter._iframe;
-                if (ifr.attachEvent) {
-                    ifr.attachEvent("onload", cb);
-                } else {
-                    ifr.onload = cb;
-                }
-            }
         };
 
         w.onerror = function (e) {
