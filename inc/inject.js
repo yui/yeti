@@ -38,6 +38,9 @@ function $yetify (config) {
         YETI = parent.YETI;
 
     function attachReporter (Y) {
+        if (Y.UA.ie == 9) {
+            Y.UA.ie = 0;
+        }
 
         function submit (data) {
 
@@ -61,7 +64,6 @@ function $yetify (config) {
                     ifr.onload = cb;
                 }
             }
-
         };
 
         w.onerror = function (e) {
