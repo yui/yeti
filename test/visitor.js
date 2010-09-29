@@ -93,5 +93,11 @@ vows.describe("Visitors").addBatch({
             topic : httpify(),
             "was requested" : requestRunner("", "chrome")
         }
+    },
+    "A Yeti server visited by Opera" : {
+        "for the default test runner": {
+            topic : httpify(),
+            "was requested" : requestRunner("", "opera")
+        }
     }
 }).export(module);
