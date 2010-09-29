@@ -40,7 +40,10 @@ Server mode!
 You can also run Yeti as a server:
 
     $ yeti
-    Visit http://localhost:8000 to run tests.
+    yeti Yeti will only serve files inside /Users/reid/dev/yui
+    yeti Visit http://localhost:8000, then run:
+    yeti     yeti <test document>
+    yeti to run and report the results.
 
 Then subsequent Yeti commands will dispatch tests to all browsers pointed at the test page at that moment:
 
