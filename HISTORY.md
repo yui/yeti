@@ -1,10 +1,12 @@
 A Brief History of Yeti
 =======================
 
-0.1.1 / 2010-09-21
+0.1.1 / 2010-09-29
 ------------------
 
   * YUI 2.x support.
+  * Internet Explorer 9 now reports test results.
+  * UI improvements. (Dav Glass)
   * CLI changes: exception handlers, bug report URL, graceful shutdown, etc.
   * Fixed an issue when spaces where in the path of the test. (#2)
   * Upgraded to Express 1.0.0rc3.
