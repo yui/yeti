@@ -2,6 +2,9 @@
 , "description" : "The YUI Easy Testing Interface"
 , "version" : "0.1.1"
 , "author" : "Reid Burke <me@reidburke.com>"
+, "contributors" :
+    [ "Dav Glass <davglass@gmail.com>"
+    ]
 , "homepage" : "http://yuilibrary.com/projects/yeti/"
 , "bugs" :
     { "mail" : "yeti@reidburke.com"
