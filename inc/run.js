@@ -7,13 +7,14 @@ YETI = (function yeti (window, document, evaluator) {
         READYSTATE = "readyState",
         CONTENTWINDOW = "contentWindow",
         ENDPOINT = "/tests/wait",
-        TIMEOUT = 300000,
+        TIMEOUT = 30000,
         frame = null,
         tests = [],
         st = document.getElementById("status"),
         idle = true,
         source,
         wait,
+        startTime,
         reaperTimeout;
 
     function createFrame () {
@@ -32,12 +33,41 @@ YETI = (function yeti (window, document, evaluator) {
 
     function phantom () {
         if (reaperTimeout) window.clearTimeout(reaperTimeout);
+        if (reaperTimerTimeout) window.clearTimeout(reaperTimerTimeout);
         reaperTimeout = null;
+        reaperTimerTimeout = null;
     }
 
+    var reaperTimerTimeout;
+    var heartbeats = 0;
+    var reaperSecondsRemaining = 0;
+
     function reaper (fn) {
+        var timeout = window.setTimeout,
+            second = 1000;
         phantom();
         reaperTimeout = window.setTimeout(fn, TIMEOUT);
+        reaperSecondsRemaining = Math.floor(TIMEOUT / second);
+        (function TIMER () {
+            var timer = document.getElementById("timer");
+            reaperSecondsRemaining--;
+            var s = "Test Health: ";
+            s += heartbeats + " heartbeats";
+
+            var time = (new Date).getTime();
+
+            // yay algebra
+            var duration = time - startTime;
+            var bpm = Math.round(
+                ( (heartbeats * 6000) / duration )
+            );
+            s += " (" + bpm + " BPM)";
+
+            s += "; " + reaperSecondsRemaining + " seconds left";
+            timer.innerHTML = s;
+            if (reaperSecondsRemaining > 0)
+                reaperTimerTimeout = window.setTimeout(TIMER, second);
+        })()
     }
 
     function incoming (data) {
@@ -48,7 +78,12 @@ YETI = (function yeti (window, document, evaluator) {
             status("The server was shutdown. Refresh to reconnect.");
             return;
         }
+
         if (response.tests.length) {
+
+            heartbeats = 0;
+            startTime = (new Date).getTime();
+
             var t = response.tests;
             for (var i in t) tests.push(t[i]);
             idle && dequeue(); // run if necessary
@@ -147,6 +182,10 @@ YETI = (function yeti (window, document, evaluator) {
                 && (!forceXHR || forceEV)
             ) ? patientEventSource() : patientXHR();
             wait();
+        },
+        heartbeat : function BEAT () {
+            heartbeats++;
+            reaper(YETI.next);
         },
         next : function NEXT () {
             tests.length ? dequeue() : complete();

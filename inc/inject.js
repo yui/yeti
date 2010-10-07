@@ -5,6 +5,11 @@ function $yetify (config) {
         YTest = w.YUITest || Y2.TestRunner,
         matches;
 
+    // No YUI? Drop and move on.
+    // This file probably 404ed.
+    // TODO: Stop eating this error.
+    if (!Y2 && !w.YUI) return parent.YETI.next();
+
     if (!$yetify.config) { // first run
 
         var path = w.location.pathname;
@@ -36,6 +41,8 @@ function $yetify (config) {
 
     var href = w.location.href,
         YETI = parent.YETI;
+
+    YETI.heartbeat();
 
     function fixIE9 (v) {
         // TestReporter does UA sniffing
@@ -98,6 +105,9 @@ function $yetify (config) {
         }
 
         Runner.subscribe(Runner.COMPLETE_EVENT, submit);
+        Runner.subscribe(Runner.TEST_PASS_EVENT, YETI.heartbeat);
+        Runner.subscribe(Runner.TEST_FAIL_EVENT, YETI.heartbeat);
+        Runner.subscribe(Runner.TEST_IGNORE_EVENT, YETI.heartbeat);
 
     }
 
