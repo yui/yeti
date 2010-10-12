@@ -109,6 +109,8 @@ function $yetify (config) {
         Runner.subscribe(Runner.TEST_FAIL_EVENT, YETI.heartbeat);
         Runner.subscribe(Runner.TEST_IGNORE_EVENT, YETI.heartbeat);
 
+        if (document.compatMode !== "CSS1Compat") w.onerror("Not in standards mode!");
+
     }
 
     if (Y2) attachReporter(Y2)
