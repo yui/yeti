@@ -98,6 +98,10 @@ function $yetify (config) {
             return false;
         };
 
+        if (document.compatMode !== "CSS1Compat") {
+            w.onerror("Not in Standards Mode!");
+        }
+
         var Runner = YTest.TestRunner || YTest;
 
         if (Runner._root && Runner._root.results && Runner._root.results.type == "report") {
@@ -108,8 +112,6 @@ function $yetify (config) {
         Runner.subscribe(Runner.TEST_PASS_EVENT, YETI.heartbeat);
         Runner.subscribe(Runner.TEST_FAIL_EVENT, YETI.heartbeat);
         Runner.subscribe(Runner.TEST_IGNORE_EVENT, YETI.heartbeat);
-
-        if (document.compatMode !== "CSS1Compat") w.onerror("Not in standards mode!");
 
     }
 
