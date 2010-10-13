@@ -82,7 +82,7 @@ YETI = (function yeti (window, document, evaluator) {
             setContent("heartbeats", heartbeats);
             reaperSecondsRemaining--;
             if (reaperSecondsRemaining > 0)
-                syncUITimeout = window.setTimeout(SYNCUI, second);
+                syncUITimeout = setTimeout(SYNCUI, second);
         })();
     }
 
@@ -216,7 +216,7 @@ YETI = (function yeti (window, document, evaluator) {
         heartbeat : function BEAT () {
             // update the heartbeat symbol
             _("beat").style.visibility = "visible";
-            window.setTimeout(function () {
+            setTimeout(function () {
                 // turn it off after a short time
                _("beat").style.visibility = "hidden";
             }, 50);
