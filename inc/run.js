@@ -7,19 +7,35 @@ YETI = (function yeti (window, document, evaluator) {
         READYSTATE = "readyState",
         CONTENTWINDOW = "contentWindow",
         ENDPOINT = "/tests/wait",
-        TIMEOUT = 30000,
-        frame = null,
-        tests = [],
-        st = document.getElementById("status"),
-        idle = true,
-        source,
-        wait,
-        startTime,
-        reaperTimeout;
+        TIMEOUT = 30000, // after this many ms of no activity, skip the test
+        setTimeout = window.setTimeout,
+        clearTimeout = window.clearTimeout,
+        heartbeats = 0, // counter for YETI.heartbeat() calls
+        reaperSecondsRemaining = 0, // counter for UI
+        frame = null, // test target frame's contentWindow
+        tests = [], // tests to run
+        elementCache = {}, // cache of getElementById calls
+        idle = true, // = !(tests_running)
+        source, // the EventSource
+        wait, // holder for the wait() function
+        startTime, // for elapsed time
+        reaperTimeout, // reaper(fn)'s timeout to call fn
+        syncUITimeout; // reaper(fn)'s timeout to sync UI
 
+    // caching getElementById
+    function _ (id) {
+        if (!(id in elementCache)) elementCache[id] = document.getElementById(id);
+        return elementCache[id];
+    }
+
+    function setContent (id, html) {
+        _(id).innerHTML = html;
+    }
+
+    // creates our test target
     function createFrame () {
         var frame = document.createElement("iframe");
-        document.getElementById("bd").appendChild(frame);
+        _("bd").appendChild(frame);
         return frame[CONTENTWINDOW] || frame.contentDocument[CONTENTWINDOW];
     }
 
@@ -27,60 +43,64 @@ YETI = (function yeti (window, document, evaluator) {
         frame.location.replace(url)
     }
 
-    function status (msg) {
-        st.innerHTML = msg;
+    // wrappers around setContent
+
+    function mode (str) {
+        setContent("mode", str);
     }
 
+    function smode (str) {
+        setContent("smode", str);
+    }
+
+    function status (str) {
+        setContent("status", str);
+    }
+
+    // clears all timers
     function phantom () {
-        if (reaperTimeout) window.clearTimeout(reaperTimeout);
-        if (reaperTimerTimeout) window.clearTimeout(reaperTimerTimeout);
-        reaperTimeout = null;
-        reaperTimerTimeout = null;
+        if (reaperTimeout) clearTimeout(reaperTimeout);
+        if (syncUITimeout) clearTimeout(syncUITimeout);
+        reaperTimeout = syncUITimeout = null;
     }
 
-    var reaperTimerTimeout;
-    var heartbeats = 0;
-    var reaperSecondsRemaining = 0;
-
+    // starts the reaper timers
+    // updates the vitals UI
+    // calls the provided function after TIMEOUT ms
+    // unless reset by phantom() or by calling reaper again
     function reaper (fn) {
-        var timeout = window.setTimeout,
-            second = 1000;
+        var second = 1000;
         phantom();
-        reaperTimeout = window.setTimeout(fn, TIMEOUT);
+        reaperTimeout = setTimeout(fn, TIMEOUT);
         reaperSecondsRemaining = Math.floor(TIMEOUT / second);
-        (function TIMER () {
-            var timer = document.getElementById("timer");
-            reaperSecondsRemaining--;
-            var s = "Test Health: ";
-            s += heartbeats + " heartbeats";
-
-            var time = (new Date).getTime();
-
-            // yay algebra
-            var duration = time - startTime;
+        (function SYNCUI () {
             var bpm = Math.round(
-                ( (heartbeats * 6000) / duration )
+                ( (heartbeats * 60000) / ( (new Date).getTime() - startTime ) )
             );
-            s += " (" + bpm + " BPM)";
-
-            s += "; " + reaperSecondsRemaining + " seconds left";
-            timer.innerHTML = s;
+            if (!isNaN(bpm) && bpm > 0) setContent("pulse", bpm);
+            setContent("timer", reaperSecondsRemaining);
+            setContent("heartbeats", heartbeats);
+            reaperSecondsRemaining--;
             if (reaperSecondsRemaining > 0)
-                reaperTimerTimeout = window.setTimeout(TIMER, second);
-        })()
+                syncUITimeout = window.setTimeout(SYNCUI, second);
+        })();
     }
 
+    // handling incoming data from the server
+    // this may be from EventSource or XHR
     function incoming (data) {
+        smode("Data");
         var response = evaluator(data);
         if (response.shutdown) {
             // the server was shutdown. no point in reconnecting.
             if (source) source.close();
             status("The server was shutdown. Refresh to reconnect.");
+            mode("Offline");
             return;
         }
 
         if (response.tests.length) {
-
+            mode("Run");
             heartbeats = 0;
             startTime = (new Date).getTime();
 
@@ -90,6 +110,8 @@ YETI = (function yeti (window, document, evaluator) {
         }
         wait();
     }
+
+    // factories for the wait() function
 
     function patientEventSource () {
         function setupEventSource () {
@@ -101,13 +123,14 @@ YETI = (function yeti (window, document, evaluator) {
                 if (source[READYSTATE] === 2) {
                     // connection was closed
                     source = null;
-                    window.setTimeout(wait, 5000);
+                    setTimeout(wait, 5000);
                     status(RETRY);
                 }
             };
         }
         return function waitEventSource () {
             source || setupEventSource();
+            smode("Listening EV");
             status(WAIT_TESTS);
         }
     }
@@ -139,7 +162,7 @@ YETI = (function yeti (window, document, evaluator) {
                     if (req.status === 200 && req.responseText) {
                         incoming(req.responseText);
                     } else {
-                        window.setTimeout(wait, 5000);
+                        setTimeout(wait, 5000);
                         status(RETRY);
                     }
                 } else {
@@ -151,10 +174,12 @@ YETI = (function yeti (window, document, evaluator) {
             }, 50);
 
             status(WAIT_TESTS);
+            smode("Listening XHR");
             req.send(null);
         };
     }
 
+    // run the next test
     function dequeue () {
         idle = false;
         var url = tests.shift();
@@ -163,14 +188,18 @@ YETI = (function yeti (window, document, evaluator) {
         reaper(YETI.next);
     }
 
+    // stop running all tests, restart with dequeue()
     function complete () {
         idle = true;
         phantom();
         navigate(frame, "about:blank");
         status("Done. " + WAIT_FOR + "new tests.");
+        mode("Idle");
     }
 
+    // public API
     return {
+        // called once by the Yeti runner
         start : function START (config) {
             var transport = config.transport,
                 supportEV = "undefined" !== typeof EventSource,
@@ -183,10 +212,18 @@ YETI = (function yeti (window, document, evaluator) {
             ) ? patientEventSource() : patientXHR();
             wait();
         },
+        // called by run.js when test activity occurs
         heartbeat : function BEAT () {
+            // update the heartbeat symbol
+            _("beat").style.visibility = "visible";
+            window.setTimeout(function () {
+                // turn it off after a short time
+               _("beat").style.visibility = "hidden";
+            }, 50);
             heartbeats++;
-            reaper(YETI.next);
+            reaper(YETI.next); // restart the reaper timer
         },
+        // called by run.js when it's ready to move on
         next : function NEXT () {
             tests.length ? dequeue() : complete();
         }
@@ -195,5 +232,7 @@ YETI = (function yeti (window, document, evaluator) {
 })(
     window,
     document,
+    // you can't minify any JS with eval() in its scope
+    // provide this toxic function in its own little box
     function (d) { return eval("(" + d + ")"); }
 );

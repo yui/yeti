@@ -1,4 +1,4 @@
-html, body, h1, #bd, iframe {
+html, body, h1, #bd, #health, iframe {
     padding: 0;
     margin: 0;
 }
@@ -43,4 +43,57 @@ iframe {
 
 #ft, #ft a {
     color: #ccc;
+}
+
+#health {
+    background: #525252;
+    padding: 10px;
+    font-size: 42px;
+    color: #fff;
+}
+
+#health h4 {
+    margin: 0 0 5px 0;
+    padding: 0 0 3px 0;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #eee;
+    border-bottom: 1px solid #909090;
+}
+
+#health span {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+#health .module {
+    float: left;
+    margin: 0 25px 10px 0;
+    font-weight: 50;
+}
+
+#pulse, #beat {
+    color: #00d600;
+}
+
+#beat {
+    visibility: hidden;
+    margin: -4px;
+    float: right;
+    font-size: 17px;
+}
+
+#timer {
+    color: #148aff;
+}
+
+#mode {
+    color: #ff3d3d;
+}
+
+#status {
+    clear: both;
+    color: #fff;
+    font: 16px monospace;
 }
