@@ -64,7 +64,7 @@ function requestRunner (transport, browser) {
             tests.on("newListener", cb);
             visitor.visit(
                 [ browser || Browser.canonical() ],
-                ["http://localhost:" + port + "/?transport=" + transport]
+                ["http://localhost:" + port + "/?timeout=3000&transport=" + transport]
             );
         },
         "the server listens to the test add event" : function (listener) {

@@ -7,7 +7,7 @@ YETI = (function yeti (window, document, evaluator) {
         READYSTATE = "readyState",
         CONTENTWINDOW = "contentWindow",
         ENDPOINT = "/tests/wait",
-        TIMEOUT = 30000, // after this many ms of no activity, skip the test
+        DEFAULT_TIMEOUT = 30000, // after this many ms of no activity, skip the test
         setTimeout = window.setTimeout,
         clearTimeout = window.clearTimeout,
         heartbeats = 0, // counter for YETI.heartbeat() calls
@@ -16,6 +16,7 @@ YETI = (function yeti (window, document, evaluator) {
         tests = [], // tests to run
         elementCache = {}, // cache of getElementById calls
         idle = true, // = !(tests_running)
+        TIMEOUT, // see START, config.timeout || DEFAULT_TIMEOUT
         source, // the EventSource
         wait, // holder for the wait() function
         startTime, // for elapsed time
@@ -205,6 +206,7 @@ YETI = (function yeti (window, document, evaluator) {
                 supportEV = "undefined" !== typeof EventSource,
                 forceXHR = transport == "xhr",
                 forceEV = transport == "eventsource";
+            TIMEOUT = config.timeout || DEFAULT_TIMEOUT;
             frame = createFrame();
             wait = (
                 supportEV
