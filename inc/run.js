@@ -78,7 +78,11 @@ YETI = (function yeti (window, document, evaluator) {
             var bpm = Math.round(
                 ( (heartbeats * 60000) / ( (new Date).getTime() - startTime ) )
             );
-            if (!isNaN(bpm) && bpm > 0) setContent("pulse", bpm);
+            if (!isNaN(bpm) && bpm > 0) {
+                // add a leading zero if needed, always 2 digits
+                if ((""+bpm).length < 2) bpm = "0" + bpm;
+                setContent("pulse", bpm);
+            }
             setContent("timer", reaperSecondsRemaining);
             setContent("heartbeats", heartbeats);
             reaperSecondsRemaining--;
