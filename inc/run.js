@@ -36,6 +36,7 @@ YETI = (function yeti (window, document, evaluator) {
     // creates our test target
     function createFrame () {
         var frame = document.createElement("iframe");
+        frame.frameBorder = 0; // IE 6
         _("bd").appendChild(frame);
         return frame[CONTENTWINDOW] || frame.contentDocument[CONTENTWINDOW];
     }
