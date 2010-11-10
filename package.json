@@ -20,11 +20,11 @@
     }
 , "os" : [ "darwin" ]
 , "bin" : { "yeti" : "./cli.js" }
-, "engines" : { "node" : ">=0.1.101" }
+, "engines" : { "node" : ">=0.2.0" }
 , "dependencies" :
-    { "express" : "=1.0.0rc3"
-    , "connect" : "=0.2.5"
-    , "jade" : "=0.5.0"
+    { "express" : "=1.0.0rc4"
+    , "connect" : "=0.2.7"
+    , "jade" : "=0.5.5"
     }
 , "licenses" :
   [ { "type" : "BSD"
