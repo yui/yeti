@@ -13,6 +13,10 @@ vows.describe("CLI").addBatch({
                 argv : ["hallo", "--override=yes", "--bar=baz", "--port=8089", "reid", "--foo", "-v"]
             });
         },
+        "should not yield an error" : function (config) {
+            assert.isUndefined(config.error);
+            assert.isUndefined(config.usage);
+        },
         "should set an argv option without a value to true" : function (config) {
             assert.isTrue(config.foo);
         },
@@ -43,4 +47,14 @@ vows.describe("CLI").addBatch({
             assert.isUndefined(config.argv);
         }
     } 
+}).addBatch({
+    "Configuring the app without arguments" : {
+        topic : function () {
+            return cli.configure({argv : {}});
+        },
+        "should yield an error" : function (config) {
+            assert.isString(config.error);
+            assert.isString(config.usage);
+        }
+    }
 }).export(module);

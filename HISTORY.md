@@ -4,6 +4,8 @@ A Brief History of Yeti
 0.1.3 / development master
 --------------------------
 
+  * Require `--server` to start the server.
+  * Add usage statement.
   * Fix fatal error under Cygwin. (#9)
   * Changed: Options must be "--port=8000" instead of "--port 8000".
 
