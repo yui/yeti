@@ -4,6 +4,7 @@ A Brief History of Yeti
 0.1.3 / development master
 --------------------------
 
+  * Fix fatal error under Cygwin. (#9)
   * Changed: Options must be "--port=8000" instead of "--port 8000".
 
 0.1.2 / 2010-11-10
