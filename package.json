@@ -1,6 +1,6 @@
 { "name" : "yeti"
 , "description" : "The YUI Easy Testing Interface"
-, "version" : "0.1.2pre4"
+, "version" : "0.1.2"
 , "author" : "Reid Burke <me@reidburke.com>"
 , "contributors" :
     [ "Dav Glass <davglass@gmail.com>"

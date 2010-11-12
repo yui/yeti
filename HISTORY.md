@@ -1,10 +1,13 @@
 A Brief History of Yeti
 =======================
 
-0.1.2 / 2010-09-30
+0.1.2 / 2010-11-10
 ------------------
 
+  * Better fault tolerance: 404s, syntax errors, etc.
+  * Added some fun stats to the test runner.
   * Fix missing module "jade" errors. (#5)
+  * Upgraded to Express 1.0.0rc4.
 
 0.1.1 / 2010-09-29
 ------------------
