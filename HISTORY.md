@@ -1,6 +1,11 @@
 A Brief History of Yeti
 =======================
 
+0.1.3 / development master
+--------------------------
+
+  * Changed: Options must be "--port=8000" instead of "--port 8000".
+
 0.1.2 / 2010-11-10
 ------------------
 

@@ -10,7 +10,7 @@ vows.describe("CLI").addBatch({
                 port : 8087,
                 override : "no",
                 inherit : "yes",
-                argv : ["hallo", "--override", "yes", "--bar", "baz", "--port", "8089", "reid", "--foo"]
+                argv : ["hallo", "--override=yes", "--bar=baz", "--port=8089", "reid", "--foo", "-v"]
             });
         },
         "should set an argv option without a value to true" : function (config) {
@@ -32,6 +32,9 @@ vows.describe("CLI").addBatch({
         },
         "should provide port as an integer" : function (config) {
             assert.strictEqual(config.port, 8089);
+        },
+        "should treat v as version" : function (config) {
+            assert.ok(config.version);
         },
         "should include the path" : function (config) {
             assert.equal(config.path, process.cwd());

@@ -1,6 +1,6 @@
 { "name" : "yeti"
 , "description" : "The YUI Easy Testing Interface"
-, "version" : "0.1.2"
+, "version" : "0.1.3pre"
 , "author" : "Reid Burke <me@reidburke.com>"
 , "contributors" :
     [ "Dav Glass <davglass@gmail.com>"
@@ -25,6 +25,7 @@
     { "express" : "=1.0.0rc4"
     , "connect" : "=0.2.7"
     , "jade" : "=0.5.5"
+    , "optimist" : "=0.0.6"
     }
 , "licenses" :
   [ { "type" : "BSD"
