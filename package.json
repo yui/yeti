@@ -22,10 +22,10 @@
 , "bin" : { "yeti" : "./cli.js" }
 , "engines" : { "node" : ">=0.2.0" }
 , "dependencies" :
-    { "express" : "=1.0.0rc4"
-    , "connect" : "=0.2.7"
-    , "jade" : "=0.5.5"
-    , "optimist" : "=0.0.6"
+    { "express" : "=1.0.0"
+    , "connect" : "=0.5.0"
+    , "jade" : "=0.5.7"
+    , "optimist" : "=0.1.1"
     }
 , "licenses" :
   [ { "type" : "BSD"
