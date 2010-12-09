@@ -1,8 +1,8 @@
 A Brief History of Yeti
 =======================
 
-0.1.3 / development master
---------------------------
+0.1.3 / 2010-12-08
+------------------
 
   * Require `--server` to start the server.
   * Add usage statement.
