@@ -1,18 +1,15 @@
-all: install-stable
+all: install
 
-bootstrap:
-	./scripts/bootstrap.sh
+install-stable:
+	npm install yeti
 
-install-stable: bootstrap
-	npm install yeti@stable
-
-install: bootstrap
+install:
 	npm install .
 
-link: bootstrap
+link:
 	npm link .
 
 remove:
 	npm uninstall yeti
 
-.PHONY: all bootstrap install-stable install link remove
+.PHONY: all install-stable install link remove
