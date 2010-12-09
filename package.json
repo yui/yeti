@@ -1,5 +1,14 @@
 { "name" : "yeti"
 , "description" : "The YUI Easy Testing Interface"
+, "keywords" :
+    [ "YUI"
+    , "web app"
+    , "YUITest"
+    , "TDD"
+    , "BDD"
+    , "yui3"
+    , "test"
+    ]
 , "version" : "0.1.3pre"
 , "author" : "Reid Burke <me@reidburke.com> (http://reidburke.com)"
 , "contributors" :
