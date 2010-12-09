@@ -18,7 +18,7 @@
     { "type" : "git"
     , "url" : "http://github.com/yui/yeti.git"
     }
-, "os" : [ "darwin" ]
+, "os" : [ "darwin", "linux", "cygwin" ]
 , "bin" : { "yeti" : "./cli.js" }
 , "engines" : { "node" : ">=0.2.0" }
 , "dependencies" :
