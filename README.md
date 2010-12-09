@@ -68,8 +68,6 @@ You can pass the `--port` option to override port 8000 with your preferred serve
 
 Yeti doesn't exit automatically when used with server mode. If you're using only 1 browser with server mode (i.e. just running tests on 1 browser on another computer or VM), you may use the `--solo 1` option to have Yeti exit with a summary after all tests run once. This is also handy for scripting Yeti: if a failure occurs, Yeti will exit with a non-zero status code.
 
-Please note that Yeti keeps running until you exit with Ctrl-C, even after all tests results have arrived. (This will be fixed in a future release.)
-
 Special tests
 -------------
 
@@ -112,6 +110,8 @@ Yeti should work on other platforms as well, especially in server mode. Feel fre
 
 You can run tests on any platform: just run Yeti in server mode and point the browser on another OS to your Yeti server.
 
+Yeti keeps running until you exit with Ctrl-C, even after all test results have arrived. (This will be fixed in a future release.)
+
 You must start Yeti in server mode in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
 
 Installation
@@ -145,7 +145,7 @@ Testing
 
 Yeti uses [Vows][] for testing its built-in server. After installing Vows, you may run the `vows` command to run all suites. See the [Vows website][Vows] for information on installing and running Vows.
 
-The server test suite requires [YUI 3][yui3] and [YUI 2][yui2] to be installed into tests/vendor to test its integration with YUI Test. Symlink yui2 and yui3 repo directories from elsewhere or place the library downloads here.
+The server test suite requires [YUI 3][yui3] and [YUI 2][yui2] to be installed into tests/vendor to test its integration with YUI Test. Symlink yui2 and yui3 repo directories from elsewhere or place the library downloads there.
 
 License
 -------
