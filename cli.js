@@ -2,6 +2,7 @@
 
 var config = require("./lib/cli").configure({
     port : 8000,
+    formatter : "console",
     argv : process.argv.splice(2)
 });
 
