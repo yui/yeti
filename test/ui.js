@@ -105,19 +105,22 @@ vows.describe("UI").addBatch({
                             "result":"pass",
                             "message":"Test passed.",
                             "type":"test",
-                            "name":"test_getEl"
+                            "name":"test_getEl",
+                            "duration": 25
                         },
                         "test_isAnimated":{
                             "result":"pass",
                             "message":"Test passed.",
                             "type":"test",
-                            "name":"test_isAnimat"
+                            "name":"test_isAnimat",
+                            "duration": 125
                         },
                         "test_stop":{
                             "result":"fail",
                             "message":"Yo, dawg. Test has failed.",
                             "type":"test",
-                            "name":"test_stop"
+                            "name":"test_stop",
+                            "duration": 12
                         }
                     },
                     "case2": {
@@ -131,30 +134,41 @@ vows.describe("UI").addBatch({
                             "result":"pass",
                             "message":"Test passed.",
                             "type":"test",
-                            "name":"test_onStart"
+                            "name":"test_onStart",
+                            "duration": 15
                         },
                         "test_endValue":{
                             "result":"pass",
                             "message":"Test passed.",
                             "type":"test",
-                            "name":"test_endValue"
-                        }
+                            "name":"test_endValue",
+                            "duration": 10
+                       }
                     }
             }, false, function(msg) {messages.push(msg);});
             return messages;
         },
+        "should test result timestamp in iso8601 format as the first line" : function (messages) {
+            assert.equal(messages[0], "time: 2010-12-22T19:27:40.000");
+        },
         "should print full test name including suite and mangled user agent" : function (messages) {
-            assert.equal(messages[0], "test: my.test.suite.case1.test_getEl.Chrome_9_0_597_19_Linux");
+            assert.equal(messages[1], "test: my.test.suite.case1.test_getEl.Chrome_9_0_597_19_Linux");
+        },
+        "should print a timestamp (initial + duration) for the first test" : function (messages) {
+            assert.equal(messages[2], "time: 2010-12-22T19:27:40.025");
         },
         "should print success plus test name for passing test" : function (messages) {
-            assert.equal(messages[1], "success: my.test.suite.case1.test_getEl.Chrome_9_0_597_19_Linux");
+            assert.equal(messages[3], "success: my.test.suite.case1.test_getEl.Chrome_9_0_597_19_Linux");
+        },
+        "should print a timestamp (initial + 1st duration + 2nd duration + test) for the failed test" : function (messages) {
+            assert.equal(messages[8], "time: 2010-12-22T19:27:40.162");
         },
         "should print failure plus test name for failed test" : function (messages) {
-            assert.equal(messages[5], "failure: my.test.suite.case1.test_stop.Chrome_9_0_597_19_Linux [");
+            assert.equal(messages[9], "failure: my.test.suite.case1.test_stop.Chrome_9_0_597_19_Linux [");
         },
         "should print failure message after failure note" : function (messages) {
-            assert.equal(messages[6], "Yo, dawg. Test has failed.");
-            assert.equal(messages[7], "]");
+            assert.equal(messages[10], "Yo, dawg. Test has failed.");
+            assert.equal(messages[11], "]");
         }
     }
 }).export(module);
