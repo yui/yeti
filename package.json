@@ -9,7 +9,7 @@
     , "yui3"
     , "test"
     ]
-, "version" : "0.1.3"
+, "version" : "0.1.4"
 , "author" : "Reid Burke <me@reidburke.com> (http://reidburke.com)"
 , "contributors" :
     [ "Dav Glass <davglass@gmail.com>"
