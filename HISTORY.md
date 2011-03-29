@@ -1,6 +1,12 @@
 A Brief History of Yeti
 =======================
 
+0.1.5 / 2011-03-29
+------------------
+
+  * Replaced optimist with optparse for CLI option parsing.
+    Optimist didn't work with recent npm versions.
+
 0.1.4 / 2011-02-05
 ------------------
 
