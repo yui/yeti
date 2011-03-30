@@ -1,6 +1,11 @@
 A Brief History of Yeti
 =======================
 
+0.1.6 / 2011-03-29
+------------------
+
+  * Replaced optparse with built-in copy of optparse, since it isn't available on npm.
+
 0.1.5 / 2011-03-29
 ------------------
 

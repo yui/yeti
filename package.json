@@ -9,7 +9,7 @@
     , "yui3"
     , "test"
     ]
-, "version" : "0.1.5"
+, "version" : "0.1.6"
 , "author" : "Reid Burke <me@reidburke.com> (http://reidburke.com)"
 , "contributors" :
     [ "Dav Glass <davglass@gmail.com>"
@@ -36,7 +36,6 @@
     { "express" : "=1.0.0"
     , "connect" : "=0.5.0"
     , "jade" : "=0.5.7"
-    , "optparse" : "=1.0.0"
     }
 , "licenses" :
   [ { "type" : "BSD"
