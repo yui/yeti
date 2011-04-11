@@ -9,7 +9,7 @@
     , "yui3"
     , "test"
     ]
-, "version" : "0.1.6"
+, "version" : "0.1.7pre"
 , "author" : "Reid Burke <me@reidburke.com> (http://reidburke.com)"
 , "contributors" :
     [ "Dav Glass <davglass@gmail.com>"
@@ -33,9 +33,10 @@
     { "postinstall" : "./scripts/postinstall.sh"
     }
 , "dependencies" :
-    { "express" : "=1.0.0"
-    , "connect" : "=0.5.0"
-    , "jade" : "=0.5.7"
+    { "express" : "~2.2.1"
+    , "connect" : "~1.2.3"
+    , "jade" : "~0.10.4"
+    , "nopt" : "~1.0"
     }
 , "licenses" :
   [ { "type" : "BSD"

@@ -1,6 +1,13 @@
 A Brief History of Yeti
 =======================
 
+0.1.7 / 2011-04-10
+------------------
+
+  * Updated to latest Express and Connect.
+  * Works with npm 0.3.
+  * Use nopt instead of optparse.
+
 0.1.6 / 2011-03-29
 ------------------
 
