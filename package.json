@@ -9,7 +9,7 @@
     , "yui3"
     , "test"
     ]
-, "version" : "0.1.7pre"
+, "version" : "0.1.7"
 , "author" : "Reid Burke <me@reidburke.com> (http://reidburke.com)"
 , "contributors" :
     [ "Dav Glass <davglass@gmail.com>"
@@ -28,7 +28,7 @@
     , "url" : "http://github.com/yui/yeti.git"
     }
 , "bin" : { "yeti" : "./cli.js" }
-, "engines" : { "node" : ">=0.2.0" }
+, "engines" : { "node" : ">=0.4.0" }
 , "scripts" :
     { "postinstall" : "./scripts/postinstall.sh"
     }
