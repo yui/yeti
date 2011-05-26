@@ -96,13 +96,6 @@ YETI = (function yeti (window, document) {
     // this may be from EventSource or XHR
     function incoming (response) {
         smode("Data");
-        if (response.shutdown) {
-            // the server was shutdown. no point in reconnecting.
-            if (source) source.close();
-            status("The server was shutdown. Refresh to reconnect.");
-            mode("Offline");
-            return;
-        }
 
         if (response.tests.length) {
             mode("Run");
