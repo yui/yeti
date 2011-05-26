@@ -37,6 +37,7 @@
     , "connect" : "~1.2.3"
     , "jade" : "~0.10.4"
     , "nopt" : "~1.0"
+    , "socket.io" : "~0.6"
     }
 , "licenses" :
   [ { "type" : "BSD"

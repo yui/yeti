@@ -1,4 +1,4 @@
-YETI = (function yeti (window, document, evaluator) {
+YETI = (function yeti (window, document) {
 
     var RETRY = "Server error, retrying in 5 seconds.",
         WAIT_FOR = "Waiting for ",
@@ -94,9 +94,8 @@ YETI = (function yeti (window, document, evaluator) {
 
     // handling incoming data from the server
     // this may be from EventSource or XHR
-    function incoming (data) {
+    function incoming (response) {
         smode("Data");
-        var response = evaluator(data);
         if (response.shutdown) {
             // the server was shutdown. no point in reconnecting.
             if (source) source.close();
@@ -117,74 +116,6 @@ YETI = (function yeti (window, document, evaluator) {
         wait();
     }
 
-    // factories for the wait() function
-
-    function patientEventSource () {
-        function setupEventSource () {
-            source = new EventSource(ENDPOINT);
-            source.onmessage = function (e) {
-                incoming(e.data);
-            };
-            source.onerror = function () {
-                if (source[READYSTATE] === 2) {
-                    // connection was closed
-                    source = null;
-                    setTimeout(wait, 5000);
-                    status(RETRY);
-                }
-            };
-        }
-        return function waitEventSource () {
-            source || setupEventSource();
-            smode("Listening EV");
-            status(WAIT_TESTS);
-        }
-    }
-
-    function patientXHR () {
-        var xhr, nativeXHR = window[XMLHTTPREQUEST];
-        if (nativeXHR) {
-            xhr = function () { return new nativeXHR(); }
-        } else {
-            xhr = function () {
-                try {
-                    return new window.ActiveXObject("Microsoft.XMLHTTP");
-                } catch (e) {}
-            };
-        }
-        return function waitXHR () {
-            var poll,
-                req = xhr();
-            if (!req) return status("Unable to create " + XMLHTTPREQUEST);
-            req.open("POST", ENDPOINT, true);
-
-            // prevent memory leaks by polling
-            // instead of using onreadystatechange
-            poll = window.setInterval(function () {
-                if (req[READYSTATE] === 0) {
-                    // server is down
-                } else if (req[READYSTATE] === 4) {
-                    var data = req.responseText;
-                    if (req.status === 200 && req.responseText) {
-                        incoming(req.responseText);
-                    } else {
-                        setTimeout(wait, 5000);
-                        status(RETRY);
-                    }
-                } else {
-                    return;
-                }
-                // readystate is either 0 or 4, we're done.
-                req = null;
-                window.clearInterval(poll);
-            }, 50);
-
-            status(WAIT_TESTS);
-            smode("Listening XHR");
-            req.send(null);
-        };
-    }
-
     // run the next test
     function dequeue () {
         idle = false;
@@ -203,20 +134,29 @@ YETI = (function yeti (window, document, evaluator) {
         mode("Idle");
     }
 
+    function wait () {
+        var socket = new io.Socket();
+        socket.connect();
+        socket.on("connect", function () {
+            smode("Listening SIO");
+            status(WAIT_TESTS);
+        });
+
+        socket.on("message", incoming);
+
+        socket.on("disconnect", function () {
+            setTimeout(wait, 5000);
+            status(RETRY);
+            socket = null;
+        });
+    }
+
     // public API
     return {
         // called once by the Yeti runner
         start : function START (config) {
-            var transport = config.transport,
-                supportEV = "undefined" !== typeof EventSource,
-                forceXHR = transport == "xhr",
-                forceEV = transport == "eventsource";
-            TIMEOUT = config.timeout || DEFAULT_TIMEOUT;
             frame = createFrame();
-            wait = (
-                supportEV
-                && (!forceXHR || forceEV)
-            ) ? patientEventSource() : patientXHR();
+            TIMEOUT = config.timeout || DEFAULT_TIMEOUT;
             wait();
         },
         // called by run.js when test activity occurs
@@ -238,8 +178,5 @@ YETI = (function yeti (window, document, evaluator) {
 
 })(
     window,
-    document,
-    // you can't minify any JS with eval() in its scope
-    // provide this toxic function in its own little box
-    function (d) { return eval("(" + d + ")"); }
+    document
 );
