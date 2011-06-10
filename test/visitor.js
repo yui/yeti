@@ -12,9 +12,7 @@ var macros = require("../lib/macros"),
 
 // debugging
 var ui = require("../lib/ui");
-var signal = require("../lib/signal");
 ui.verbose(1); // show debug-level logs
-signal.listen(); // graceful shutdown on SIGINT
 
 function requestTest (fixture, requestOnly) {
     var suite = {
