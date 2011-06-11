@@ -49,7 +49,7 @@ function requestTest (fixture, requestOnly) {
     return suite;
 }
 
-function requestRunner (transport, browser) {
+function requestRunner (browser) {
     return {
         topic : function (port) {
             var vow = this;
@@ -62,7 +62,7 @@ function requestRunner (transport, browser) {
             tests.on("newListener", cb);
             visitor.visit(
                 [ browser || Browser.canonical() ],
-                ["http://localhost:" + port + "/?timeout=25000&transport=" + transport]
+                ["http://localhost:" + port + "/?timeout=25000"]
             );
         },
         "the server listens to the test add event" : function (listener) {
@@ -82,31 +82,21 @@ function requestRunner (transport, browser) {
 
 vows.describe("Visitors").addBatch({
     "A Yeti server visited by the canonical browser" : {
-        "for the default test runner": {
-            topic : httpify(),
-            "was requested" : requestRunner("")
-        }
+        topic : httpify(),
+        "was requested" : requestRunner("")
     },
+    /*
     "A Yeti server visited by Safari" : {
-       /* "for the XHR test runner": {
-            topic : httpify(),
-            "was requested" : requestRunner("xhr", "Safari")
-        }, FIXME */
-        "for the EventSource test runner": {
-            topic : httpify(),
-            "was requested" : requestRunner("eventsource", "Safari")
-        }
-    },
-    "A Yeti server visited by Chrome" : {
-        "for the default test runner": {
-            topic : httpify(),
-            "was requested" : requestRunner("", "chrome")
-        }
+        topic : httpify(),
+        "was requested" : requestRunner("eventsource", "Safari")
     },
     "A Yeti server visited by Opera" : {
-        "for the default test runner": {
-            topic : httpify(),
-            "was requested" : requestRunner("", "opera")
-        }
+        topic : httpify(),
+        "was requested" : requestRunner("", "opera")
+    },
+    */
+    "A Yeti server visited by Chrome" : {
+        topic : httpify(),
+        "was requested" : requestRunner("", "chrome")
     }
 }).export(module);
