@@ -1,5 +1,8 @@
 all: install
 
+test:
+	vows test/*.js
+
 install-stable:
 	npm install yeti
 
@@ -12,4 +15,4 @@ link:
 remove:
 	npm uninstall yeti
 
-.PHONY: all install-stable install link remove
+.PHONY: all install-stable install link remove test
