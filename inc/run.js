@@ -15,8 +15,9 @@ YETI = (function yeti (window, document) {
         reaperSecondsRemaining = 0, // counter for UI
         frame = null, // test target frame's contentWindow
         tests = [], // tests to run
+        currentBatch = null, // current batch id, falsy if idle
+        batches = [], // batches
         elementCache = {}, // cache of getElementById calls
-        idle = true, // = !(tests_running)
         TIMEOUT, // see START, config.timeout || DEFAULT_TIMEOUT
         startTime, // for elapsed time
         reaperTimeout, // reaper(fn)'s timeout to call fn
@@ -94,20 +95,18 @@ YETI = (function yeti (window, document) {
     // handling incoming data from the server
     // this may be from EventSource or XHR
     function incoming (response) {
-        if (response.tests.length) {
+        if (response.tests.length && response.batch) {
             mode("Run");
             heartbeats = 0;
             startTime = (new Date).getTime();
 
-            var t = response.tests,
-                len = t.length,
-                i = 0;
-
-            for (; i < len; i++) {
-                tests.push(t[i]);
+            if (currentBatch) {
+                batches[response.batch] = response.tests;
+            } else {
+                currentBatch = response.batch;
+                tests = response.tests;
+                dequeue();
             }
-
-            idle && dequeue(); // run if necessary
         } else {
             smode("Malformed Data");
         }
@@ -115,7 +114,6 @@ YETI = (function yeti (window, document) {
 
     // run the next test
     function dequeue () {
-        idle = false;
         var url = tests.shift();
         status(WAIT_FOR + "results: " + url);
         navigate(frame, url);
@@ -124,12 +122,24 @@ YETI = (function yeti (window, document) {
 
     // stop running all tests, restart with dequeue()
     function complete () {
-        idle = true;
         phantom();
         navigate(frame, "about:blank");
         status("Done. " + WAIT_FOR + "new tests.");
         mode("Idle");
-        socket.send("done");
+        socket.send({
+            status: "done",
+            batch: currentBatch
+        });
+
+        currentBatch = null;
+        if (batches.length) {
+            for (var id in batches) {
+                // only need one!
+                currentBatch = id;
+                tests = batches[id];
+                return dequeue();
+            }
+        }
     }
 
     function wait () {
