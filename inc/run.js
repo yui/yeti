@@ -10,6 +10,7 @@ YETI = (function yeti (window, document) {
         DEFAULT_TIMEOUT = 30000, // after this many ms of no activity, skip the test
         setTimeout = window.setTimeout,
         clearTimeout = window.clearTimeout,
+        socket = new io.Socket(), // socket.io
         heartbeats = 0, // counter for YETI.heartbeat() calls
         reaperSecondsRemaining = 0, // counter for UI
         frame = null, // test target frame's contentWindow
@@ -17,8 +18,6 @@ YETI = (function yeti (window, document) {
         elementCache = {}, // cache of getElementById calls
         idle = true, // = !(tests_running)
         TIMEOUT, // see START, config.timeout || DEFAULT_TIMEOUT
-        source, // the EventSource
-        wait, // holder for the wait() function
         startTime, // for elapsed time
         reaperTimeout, // reaper(fn)'s timeout to call fn
         syncUITimeout; // reaper(fn)'s timeout to sync UI
@@ -95,18 +94,23 @@ YETI = (function yeti (window, document) {
     // handling incoming data from the server
     // this may be from EventSource or XHR
     function incoming (response) {
-        smode("Data");
-
         if (response.tests.length) {
             mode("Run");
             heartbeats = 0;
             startTime = (new Date).getTime();
 
-            var t = response.tests;
-            for (var i in t) tests.push(t[i]);
+            var t = response.tests,
+                len = t.length,
+                i = 0;
+
+            for (; i < len; i++) {
+                tests.push(t[i]);
+            }
+
             idle && dequeue(); // run if necessary
+        } else {
+            smode("Malformed Data");
         }
-        wait();
     }
 
     // run the next test
@@ -125,13 +129,13 @@ YETI = (function yeti (window, document) {
         navigate(frame, "about:blank");
         status("Done. " + WAIT_FOR + "new tests.");
         mode("Idle");
+        socket.send("done");
     }
 
     function wait () {
-        var socket = new io.Socket();
         socket.connect();
         socket.on("connect", function () {
-            smode("Listening SIO");
+            smode("Waiting");
             status(WAIT_TESTS);
         });
 
@@ -140,7 +144,6 @@ YETI = (function yeti (window, document) {
         socket.on("disconnect", function () {
             setTimeout(wait, 5000);
             status(RETRY);
-            socket = null;
         });
     }
 
