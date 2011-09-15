@@ -1,4 +1,23 @@
-p#status Starting up.
+div#health
+  div.module
+    div#beat &hearts;
+    h4 BPM
+    span#pulse ???
+  div.module
+    h4 Beats
+    span#heartbeats 0
+  div.module
+    h4 Timeout
+    span#timer ???
+  div.module
+    h4 Status
+    span#mode Offline
+  div.module
+    h4 Comet
+    span#smode Offline
+  div#status Starting up.
+script(src: "/socket.io/socket.io.js")
+script(src: "/inc/json2.js")
 script(src: "/inc/run.js")
 script
-  !=bootstrap
+  !{bootstrap}

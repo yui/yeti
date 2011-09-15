@@ -1,6 +1,49 @@
 A Brief History of Yeti
 =======================
 
+0.1.7 / 2011-05-03
+------------------
+
+  * Updated to latest Express and Connect.
+  * Tested with npm 1.0.
+  * Use nopt instead of optparse.
+
+0.1.6 / 2011-03-29
+------------------
+
+  * Replaced optparse with built-in copy of optparse, since it isn't available on npm.
+
+0.1.5 / 2011-03-29
+------------------
+
+  * Replaced optimist with optparse for CLI option parsing.
+    Optimist didn't work with recent npm versions.
+
+0.1.4 / 2011-02-05
+------------------
+
+  * Fix for changed Node v0.3 HTTP API.
+
+0.1.3 / 2010-12-08
+------------------
+
+  * Require `--server` to start the server.
+  * Add usage statement.
+  * Windows support: Fix fatal error under Cygwin. (#9)
+  * Changed: Options must be "--port=8000" instead of "--port 8000".
+  * Upgrade Express to 1.0.0.
+  * Upgrade Connect to 0.5.0.
+  * Upgrade Jade to 0.5.7.
+  * Upgrade Optimist to 0.1.1.
+
+0.1.2 / 2010-11-10
+------------------
+
+  * Better fault tolerance: 404s, syntax errors, etc.
+  * Added some fun stats to the test runner.
+  * Fix missing module "jade" errors. (#5)
+  * Upgraded to Express 1.0.0rc4.
+
 0.1.1 / 2010-09-29
 ------------------
 

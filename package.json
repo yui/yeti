@@ -1,11 +1,24 @@
 { "name" : "yeti"
 , "description" : "The YUI Easy Testing Interface"
-, "version" : "0.1.1"
-, "author" : "Reid Burke <me@reidburke.com>"
+, "keywords" :
+    [ "YUI"
+    , "web app"
+    , "YUITest"
+    , "TDD"
+    , "BDD"
+    , "yui3"
+    , "test"
+    ]
+, "version" : "0.1.8pre"
+, "author" : "Reid Burke <me@reidburke.com> (http://reidburke.com)"
 , "contributors" :
     [ "Dav Glass <davglass@gmail.com>"
     ]
 , "homepage" : "http://yuilibrary.com/projects/yeti/"
+, "repository" :
+  { "type" : "git"
+  , "url" : "http://github.com/yui/yeti.git"
+  }
 , "bugs" :
     { "mail" : "yeti@reidburke.com"
     , "web" : "http://yuilibrary.com/projects/yeti/report"
@@ -14,13 +27,17 @@
     { "type" : "git"
     , "url" : "http://github.com/yui/yeti.git"
     }
-, "os" : [ "darwin" ]
 , "bin" : { "yeti" : "./cli.js" }
-, "engines" : { "node" : ">=0.1.101" }
+, "engines" : { "node" : ">=0.4.0" }
+, "scripts" :
+    { "postinstall" : "./scripts/postinstall.sh"
+    }
 , "dependencies" :
-    { "express" : "=1.0.0rc3"
-    , "connect" : "=0.2.5"
-    , "jade" : "=0.5.0"
+    { "express" : "~2.2.1"
+    , "connect" : "~1.2.3"
+    , "jade" : "~0.10.4"
+    , "nopt" : "~1.0"
+    , "socket.io" : "~0.6"
     }
 , "licenses" :
   [ { "type" : "BSD"

@@ -16,6 +16,9 @@ function script () {
             window : {},
             document : {
                 getElementById : function () {}
+            },
+            io : {
+                Socket : function () {}
             }
         };
         Script.runInNewContext(body, sandbox);
@@ -28,6 +31,7 @@ function exposeOnly (token) {
         for (var i in sandbox) switch (i) {
             case "document":
             case "window":
+            case "io":
             case token:
                 break;
             default:

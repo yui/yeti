@@ -5,6 +5,11 @@ function $yetify (config) {
         YTest = w.YUITest || Y2.TestRunner,
         matches;
 
+    // No YUI? Drop and move on.
+    // This file probably 404ed.
+    // TODO: Stop eating this error.
+    if (!Y2 && !w.YUI) return parent.YETI.next();
+
     if (!$yetify.config) { // first run
 
         var path = w.location.pathname;
@@ -36,6 +41,11 @@ function $yetify (config) {
 
     var href = w.location.href,
         YETI = parent.YETI;
+
+    // YETI may be undefined if we're running
+    // outside of server mode
+
+    if (YETI) YETI.heartbeat();
 
     function fixIE9 (v) {
         // TestReporter does UA sniffing
@@ -91,6 +101,10 @@ function $yetify (config) {
             return false;
         };
 
+        if (document.compatMode !== "CSS1Compat") {
+            w.onerror("Not in Standards Mode!");
+        }
+
         var Runner = YTest.TestRunner || YTest;
 
         if (Runner._root && Runner._root.results && Runner._root.results.type == "report") {
@@ -98,6 +112,12 @@ function $yetify (config) {
         }
 
         Runner.subscribe(Runner.COMPLETE_EVENT, submit);
+
+        if (YETI) {
+            Runner.subscribe(Runner.TEST_PASS_EVENT, YETI.heartbeat);
+            Runner.subscribe(Runner.TEST_FAIL_EVENT, YETI.heartbeat);
+            Runner.subscribe(Runner.TEST_IGNORE_EVENT, YETI.heartbeat);
+        }
 
     }
 

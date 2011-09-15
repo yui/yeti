@@ -1,4 +1,4 @@
-YETI = (function yeti (window, document, evaluator) {
+YETI = (function yeti (window, document) {
 
     var RETRY = "Server error, retrying in 5 seconds.",
         WAIT_FOR = "Waiting for ",
@@ -7,18 +7,37 @@ YETI = (function yeti (window, document, evaluator) {
         READYSTATE = "readyState",
         CONTENTWINDOW = "contentWindow",
         ENDPOINT = "/tests/wait",
-        TIMEOUT = 300000,
-        frame = null,
-        tests = [],
-        st = document.getElementById("status"),
-        idle = true,
-        source,
-        wait,
-        reaperTimeout;
+        DEFAULT_TIMEOUT = 30000, // after this many ms of no activity, skip the test
+        setTimeout = window.setTimeout,
+        clearTimeout = window.clearTimeout,
+        socket = new io.Socket(), // socket.io
+        heartbeats = 0, // counter for YETI.heartbeat() calls
+        reaperSecondsRemaining = 0, // counter for UI
+        frame = null, // test target frame's contentWindow
+        tests = [], // tests to run
+        currentBatch = null, // current batch id, falsy if idle
+        batches = [], // batches
+        elementCache = {}, // cache of getElementById calls
+        TIMEOUT, // see START, config.timeout || DEFAULT_TIMEOUT
+        startTime, // for elapsed time
+        reaperTimeout, // reaper(fn)'s timeout to call fn
+        syncUITimeout; // reaper(fn)'s timeout to sync UI
 
+    // caching getElementById
+    function _ (id) {
+        if (!(id in elementCache)) elementCache[id] = document.getElementById(id);
+        return elementCache[id];
+    }
+
+    function setContent (id, html) {
+        _(id).innerHTML = html;
+    }
+
+    // creates our test target
     function createFrame () {
         var frame = document.createElement("iframe");
-        document.getElementById("bd").appendChild(frame);
+        frame.frameBorder = 0; // IE 6
+        _("bd").appendChild(frame);
         return frame[CONTENTWINDOW] || frame.contentDocument[CONTENTWINDOW];
     }
 
@@ -26,128 +45,138 @@ YETI = (function yeti (window, document, evaluator) {
         frame.location.replace(url)
     }
 
-    function status (msg) {
-        st.innerHTML = msg;
+    // wrappers around setContent
+
+    function mode (str) {
+        setContent("mode", str);
     }
 
+    function smode (str) {
+        setContent("smode", str);
+    }
+
+    function status (str) {
+        setContent("status", str);
+    }
+
+    // clears all timers
     function phantom () {
-        if (reaperTimeout) window.clearTimeout(reaperTimeout);
-        reaperTimeout = null;
+        if (reaperTimeout) clearTimeout(reaperTimeout);
+        if (syncUITimeout) clearTimeout(syncUITimeout);
+        reaperTimeout = syncUITimeout = null;
     }
 
+    // starts the reaper timers
+    // updates the vitals UI
+    // calls the provided function after TIMEOUT ms
+    // unless reset by phantom() or by calling reaper again
     function reaper (fn) {
+        var second = 1000;
         phantom();
-        reaperTimeout = window.setTimeout(fn, TIMEOUT);
+        reaperTimeout = setTimeout(fn, TIMEOUT);
+        reaperSecondsRemaining = Math.floor(TIMEOUT / second);
+        (function SYNCUI () {
+            var bpm = Math.round(
+                ( (heartbeats * 60000) / ( (new Date).getTime() - startTime ) )
+            );
+            if (!isNaN(bpm) && bpm > 0) {
+                // add a leading zero if needed, always 2 digits
+                if ((""+bpm).length < 2) bpm = "0" + bpm;
+                setContent("pulse", bpm);
+            }
+            setContent("timer", reaperSecondsRemaining);
+            setContent("heartbeats", heartbeats);
+            reaperSecondsRemaining--;
+            if (reaperSecondsRemaining > 0)
+                syncUITimeout = setTimeout(SYNCUI, second);
+        })();
     }
 
-    function incoming (data) {
-        var response = evaluator(data);
-        if (response.shutdown) {
-            // the server was shutdown. no point in reconnecting.
-            if (source) source.close();
-            status("The server was shutdown. Refresh to reconnect.");
-            return;
-        }
-        if (response.tests.length) {
-            var t = response.tests;
-            for (var i in t) tests.push(t[i]);
-            idle && dequeue(); // run if necessary
-        }
-        wait();
-    }
+    // handling incoming data from the server
+    // this may be from EventSource or XHR
+    function incoming (response) {
+        if (response.tests.length && response.batch) {
+            mode("Run");
+            heartbeats = 0;
+            startTime = (new Date).getTime();
 
-    function patientEventSource () {
-        function setupEventSource () {
-            source = new EventSource(ENDPOINT);
-            source.onmessage = function (e) {
-                incoming(e.data);
-            };
-            source.onerror = function () {
-                if (source[READYSTATE] === 2) {
-                    // connection was closed
-                    source = null;
-                    window.setTimeout(wait, 5000);
-                    status(RETRY);
-                }
-            };
-        }
-        return function waitEventSource () {
-            source || setupEventSource();
-            status(WAIT_TESTS);
-        }
-    }
-
-    function patientXHR () {
-        var xhr, nativeXHR = window[XMLHTTPREQUEST];
-        if (nativeXHR) {
-            xhr = function () { return new nativeXHR(); }
+            if (currentBatch) {
+                batches[response.batch] = response.tests;
+            } else {
+                currentBatch = response.batch;
+                tests = response.tests;
+                dequeue();
+            }
         } else {
-            xhr = function () {
-                try {
-                    return new window.ActiveXObject("Microsoft.XMLHTTP");
-                } catch (e) {}
-            };
+            smode("Malformed Data");
         }
-        return function waitXHR () {
-            var poll,
-                req = xhr();
-            if (!req) return status("Unable to create " + XMLHTTPREQUEST);
-            req.open("POST", ENDPOINT, true);
-
-            // prevent memory leaks by polling
-            // instead of using onreadystatechange
-            poll = window.setInterval(function () {
-                if (req[READYSTATE] === 0) {
-                    // server is down
-                } else if (req[READYSTATE] === 4) {
-                    var data = req.responseText;
-                    if (req.status === 200 && req.responseText) {
-                        incoming(req.responseText);
-                    } else {
-                        window.setTimeout(wait, 5000);
-                        status(RETRY);
-                    }
-                } else {
-                    return;
-                }
-                // readystate is either 0 or 4, we're done.
-                req = null;
-                window.clearInterval(poll);
-            }, 50);
-
-            status(WAIT_TESTS);
-            req.send(null);
-        };
     }
 
+    // run the next test
     function dequeue () {
-        idle = false;
         var url = tests.shift();
         status(WAIT_FOR + "results: " + url);
         navigate(frame, url);
         reaper(YETI.next);
     }
 
+    // stop running all tests, restart with dequeue()
     function complete () {
-        idle = true;
         phantom();
         navigate(frame, "about:blank");
         status("Done. " + WAIT_FOR + "new tests.");
+        mode("Idle");
+        socket.send({
+            status: "done",
+            batch: currentBatch
+        });
+
+        currentBatch = null;
+        if (batches.length) {
+            for (var id in batches) {
+                // only need one!
+                currentBatch = id;
+                tests = batches[id];
+                return dequeue();
+            }
+        }
     }
 
+    function wait () {
+        socket.connect();
+        socket.on("connect", function () {
+            smode("Waiting");
+            status(WAIT_TESTS);
+        });
+
+        socket.on("message", incoming);
+
+        socket.on("disconnect", function () {
+            setTimeout(wait, 5000);
+            status(RETRY);
+        });
+    }
+
+    // public API
     return {
+        // called once by the Yeti runner
         start : function START (config) {
-            var transport = config.transport,
-                supportEV = "undefined" !== typeof EventSource,
-                forceXHR = transport == "xhr",
-                forceEV = transport == "eventsource";
             frame = createFrame();
-            wait = (
-                supportEV
-                && (!forceXHR || forceEV)
-            ) ? patientEventSource() : patientXHR();
+            TIMEOUT = config.timeout || DEFAULT_TIMEOUT;
             wait();
         },
+        // called by run.js when test activity occurs
+        heartbeat : function BEAT () {
+            // update the heartbeat symbol
+            _("beat").style.visibility = "visible";
+            setTimeout(function () {
+                // turn it off after a short time
+               _("beat").style.visibility = "hidden";
+            }, 50);
+            heartbeats++;
+            reaper(YETI.next); // restart the reaper timer
+        },
+        // called by run.js when it's ready to move on
         next : function NEXT () {
             tests.length ? dequeue() : complete();
         }
@@ -155,6 +184,5 @@ YETI = (function yeti (window, document, evaluator) {
 
 })(
     window,
-    document,
-    function (d) { return eval("(" + d + ")"); }
+    document
 );
