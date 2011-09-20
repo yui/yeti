@@ -1,6 +1,7 @@
 function $yetify (config) {
 
     var w = window,
+	parent = w.parent,
         Y2 = ("YAHOO" in w) ? w.YAHOO : false,
         YTest = w.YUITest || Y2.TestRunner,
         matches;
@@ -8,7 +9,7 @@ function $yetify (config) {
     // No YUI? Drop and move on.
     // This file probably 404ed.
     // TODO: Stop eating this error.
-    if (!Y2 && !w.YUI) return parent.YETI.next();
+    //if (!Y2 && !w.YUI) return parent.YETI.next();
 
     if (!$yetify.config) { // first run
 

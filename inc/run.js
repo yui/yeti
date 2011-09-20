@@ -42,7 +42,13 @@ YETI = (function yeti (window, document) {
     }
 
     function navigate (frame, url) {
-        frame.location.replace(url)
+        if (window.opera) {
+		setTimeout(function() {
+			frame.location.href = url;
+		}, 500);
+	} else {
+		frame.location.replace(url);
+	}
     }
 
     // wrappers around setContent
@@ -115,9 +121,14 @@ YETI = (function yeti (window, document) {
     // run the next test
     function dequeue () {
         var url = tests.shift();
-        status(WAIT_FOR + "results: " + url);
-        navigate(frame, url);
-        reaper(YETI.next);
+	if (url) {
+        	status(WAIT_FOR + "results: " + url);
+        	navigate(frame, url);
+        	reaper(YETI.next);
+	} else {
+		//If we get here, something may be wrong
+		complete();
+	}
     }
 
     // stop running all tests, restart with dequeue()
