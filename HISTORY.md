@@ -1,6 +1,15 @@
 A Brief History of Yeti
 =======================
 
+0.1.8 / 2011-10-19
+------------------
+
+  * Switched to socket.io for browser communication.
+  * Exit on batch completion: no more Ctrl-C when done.
+  * IE6 and Opera compatibility fixes. (Dav Glass)
+  * Better browser identification. (Dav Glass)
+  * Workaround /undefined route. (Dav Glass)
+
 0.1.7 / 2011-05-03
 ------------------
 
