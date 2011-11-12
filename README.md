@@ -138,7 +138,7 @@ Bugs & Feedback
 
 Open a ticket on [YUILibrary.com's Yeti Issue Tracker][issues] to report bugs or feature requests.
 
-Yeti is an experimental project of [YUI Labs][]. As such, it doesn't receive the same level of support as other mature YUI projects.
+Yeti is an experimental project of YUI Labs. As such, it doesn't receive the same level of support as other mature YUI projects.
 
 Testing
 -------
@@ -166,10 +166,9 @@ Your contributions are welcome! Please review the [YUI contributor guide][CLA] b
   [npm]: http://npmjs.org/
   [win]: https://github.com/reid/yeti/wiki/Yeti-on-Windows
   [issues]: http://yuilibrary.com/projects/yeti/newticket
-  [YUI Labs]: http://yuilibrary.com/labs/
   [Vows]: http://vowsjs.org/
-  [license]: http://developer.yahoo.com/yui/license.html
-  [CLA]: http://developer.yahoo.com/yui/community/#cla
+  [license]: http://yuilibrary.com/license/
+  [CLA]: http://yuilibrary.com/contribute/cla/
   [YUI]: http://yuilibrary.com/
   [doctype]: http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#the-doctype
   [No-Quirks Mode]: http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#no-quirks-mode
