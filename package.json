@@ -21,7 +21,7 @@
   }
 , "bugs" :
     { "mail" : "yeti@reidburke.com"
-    , "web" : "http://yuilibrary.com/projects/yeti/report"
+    , "url" : "http://yuilibrary.com/projects/yeti/report"
     }
 , "repositories" :
     { "type" : "git"
