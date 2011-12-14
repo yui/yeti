@@ -1,7 +1,7 @@
 all: install
 
 test:
-	vows test/*.js
+	npm test
 
 install-stable:
 	npm install yeti

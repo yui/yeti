@@ -30,7 +30,8 @@
 , "bin" : { "yeti" : "./cli.js" }
 , "engines" : { "node" : ">=0.4.0" }
 , "scripts" :
-    { "postinstall" : "./scripts/postinstall.sh"
+    { "test" : "vows test/*.js"
+    , "postinstall" : "./scripts/postinstall.sh"
     }
 , "dependencies" :
     { "express" : "~2.2.1"
@@ -39,6 +40,9 @@
     , "nopt" : "~1.0"
     , "socket.io" : "~0.6"
     }
+, "devDependencies" :
+   { "vows" : ">=0.5.9"
+   }
 , "licenses" :
   [ { "type" : "BSD"
     , "url" : "http://developer.yahoo.com/yui/license.html"
