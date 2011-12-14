@@ -1,51 +1,62 @@
-{ "name" : "yeti"
-, "description" : "The YUI Easy Testing Interface"
-, "keywords" :
-    [ "YUI"
-    , "web app"
-    , "YUITest"
-    , "TDD"
-    , "BDD"
-    , "yui3"
-    , "test"
-    ]
-, "version" : "0.2.0pre"
-, "author" : "Reid Burke <me@reidburke.com> (http://reidburke.com)"
-, "contributors" :
-    [ "Dav Glass <davglass@gmail.com>"
-    ]
-, "homepage" : "http://yuilibrary.com/projects/yeti/"
-, "repository" :
-  { "type" : "git"
-  , "url" : "http://github.com/yui/yeti.git"
-  }
-, "bugs" :
-    { "mail" : "yeti@reidburke.com"
-    , "url" : "http://yuilibrary.com/projects/yeti/report"
+{
+    "name": "yeti",
+    "description": "The YUI Easy Testing Interface.",
+    "author": "Reid Burke <me@reidburke.com> (http://reidburke.com)",
+    "contributors": [
+        "Dav Glass <davglass@gmail.com>"
+    ],
+    "keywords": [
+        "YUI",
+        "web app",
+        "YUITest",
+        "TDD",
+        "BDD",
+        "yui3",
+        "test"
+    ],
+    "version": "0.2.0pre",
+    "homepage": "htp://yuilibrary.com/projects/yeti",
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/yui/yeti.git"
+    },
+    "licenses": [
+        {
+            "type": "BSD",
+            "url" : "http://yuilibrary.com/license"
+        }
+    ],
+    "bugs": {
+        "url": "http://yuilibrary.com/projects/yeti/report"
+    },
+    "main": "lib/yeti",
+    "bin": {
+        "yeti": "./cli.js"
+    },
+    "scripts": {
+        "test": "vows test/*.js",
+        "postinstall": "./scripts/postinstall.sh"
+    },
+    "engines": {
+        "node": "~0.4.12 ~0.6.4"
+    },
+    "dependencies": {
+        "director": "~1.0.6",
+        "nconf": "~0.5.0",
+        "nopt": "~1.0.10",
+        "onyx": "~0.1.0",
+        "hollywood": "~0.0.0",
+        "socket.io": "~0.8.7",
+        "union": "~0.1.4",
+        "winston": "~0.5.9",
+        "graceful-fs": "~1.1.2",
+        "plates": "~0.2.2",
+        "express" : "~2.2.1",
+        "connect" : "~1.2.3",
+        "jade" : "~0.10.4"
+
+    },
+    "devDependencies": {
+        "vows": ">=0.5.0"
     }
-, "repositories" :
-    { "type" : "git"
-    , "url" : "http://github.com/yui/yeti.git"
-    }
-, "bin" : { "yeti" : "./cli_old.js" }
-, "engines" : { "node" : ">=0.4.0" }
-, "scripts" :
-    { "test" : "vows test/*.js"
-    , "postinstall" : "./scripts/postinstall.sh"
-    }
-, "dependencies" :
-    { "express" : "~2.2.1"
-    , "connect" : "~1.2.3"
-    , "jade" : "~0.10.4"
-    , "nopt" : "~1.0"
-    , "socket.io" : "~0.8.7"
-    }
-, "devDependencies" :
-   { "vows" : ">=0.5.9"
-   }
-, "licenses" :
-  [ { "type" : "BSD"
-    , "url" : "http://developer.yahoo.com/yui/license.html"
-    }
-  ]
 }

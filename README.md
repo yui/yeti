@@ -3,6 +3,17 @@ yeti
 
 Yeti is the YUI Easy Testing Interface.
 
+WARNING: This Is Yeti Next
+--------------------------
+
+This branch is the beginning of [Yeti Next][next]. Switch to master for something usable.
+
+You will need to install [Onyx][] and [Hollywood][] into `node_modules` manually.
+
+[Onyx]: http://github.com/reid/onyx
+[Hollywood]: http://github.com/reid/hollywood
+[next]: https://github.com/yui/yeti/wiki/Yeti-Next
+
 How easy?
 --------
 

@@ -1,0 +1,77 @@
+html, body, h1, iframe, p,
+.yeti-widget {
+    padding: 0;
+    margin: 0;
+}
+
+.yeti-widget {
+    font: 21px "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.yeti-widget .hd {
+}
+
+.yeti-widget h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 78px;
+    text-transform: lowercase;
+    font-weight: 100;
+    background: #333;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.yeti-widget .col {
+    float: left;
+    display: inline;
+    margin: 0;
+}
+
+.yeti-widget .col.first {
+    width: 250px;
+}
+
+.yeti-widget .hd h1, .yeti-widget .hd p {
+    line-height: 78px;
+    height: 78px;
+}
+
+.yeti-widget h1 .yeti {
+    letter-spacing: -5px;
+    font-weight: 900;
+    color: #fff;
+}
+
+.yeti-widget h1 .yeti,
+.yeti-widget .ft p {
+    padding-left: 20px;
+}
+
+.yeti-widget .ft p {
+    padding-top: 10px;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.yeti-widget .ft a {
+    color: #888;
+}
+
+.yeti-widget .status {
+    color: #fff;
+    background: #232323;
+}
+
+/* props to perishablepress.com! */
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
