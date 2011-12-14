@@ -10,7 +10,7 @@ YETI = (function yeti (window, document) {
         DEFAULT_TIMEOUT = 30000, // after this many ms of no activity, skip the test
         setTimeout = window.setTimeout,
         clearTimeout = window.clearTimeout,
-        socket = new io.Socket(), // socket.io
+        socket = io.connect(), // socket.io
         heartbeats = 0, // counter for YETI.heartbeat() calls
         reaperSecondsRemaining = 0, // counter for UI
         frame = null, // test target frame's contentWindow
@@ -154,7 +154,6 @@ YETI = (function yeti (window, document) {
     }
 
     function wait () {
-        socket.connect();
         socket.on("connect", function () {
             smode("Waiting");
             status(WAIT_TESTS);
