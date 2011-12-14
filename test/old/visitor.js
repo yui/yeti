@@ -1,17 +1,17 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var server = require("../lib/server");
-var visitor = require("../lib/visitor");
+var server = require("../lib/old/server");
+var visitor = require("../lib/old/visitor");
 
-var Browser = require("../lib/browsers").Browser;
+var Browser = require("../lib/old/browsers").Browser;
 
-var macros = require("../lib/macros"),
+var macros = require("../lib/old/macros"),
     request = macros.request,
     httpify = macros.httpify;
 
 // debugging
-var ui = require("../lib/ui");
+var ui = require("../lib/old/ui");
 ui.verbose(1); // show debug-level logs
 
 function requestTest (fixture, requestOnly) {

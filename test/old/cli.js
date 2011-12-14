@@ -1,7 +1,7 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var cli = require("../lib/cli");
+var cli = require("../lib/old/cli");
 
 vows.describe("CLI").addBatch({
     "Configuring the app" : {

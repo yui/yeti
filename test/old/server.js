@@ -1,12 +1,12 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var server = require("../lib/server");
-var ui = require("../lib/ui");
+var server = require("../lib/old/server");
+var ui = require("../lib/old/ui");
 
 var Script = process.binding("evals").Script;
 
-var macros = require("../lib/macros"),
+var macros = require("../lib/old/macros"),
     request = macros.request,
     httpify = macros.httpify;
 
