@@ -1,18 +1,14 @@
 all: install
+.PHONY: all
 
 test:
 	npm test
-
-install-stable:
-	npm install yeti
+.PHONY: test
 
 install:
 	npm install .
-
-remove:
-	npm uninstall yeti
+.PHONY: install
 
 lint:
-	find bin lib test -name "*.js" -print0 | xargs -0 node ./node_modules/.bin/jslint
-
-.PHONY: all install-stable install remove test
+	find bin lib test -name "*.js" -print0 | xargs -0 ./lint
+.PHONY: lint

@@ -1,2 +1,2 @@
 #!/bin/sh
-node node_modules/.bin/jslint $@
+node node_modules/.bin/jslint --nomen --bitwise $@
