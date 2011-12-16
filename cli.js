@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-var Hub = require("./lib/hub");
+var CLI = require("./lib/cli");
 
-var server = new Hub();
-server.listen(8090, function () {
-    console.log("Yeti Hub listening on port 8090.");
-});
+var interface = new CLI();
+
+interface.route(process.argv);
