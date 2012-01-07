@@ -57,7 +57,7 @@
 
     },
     "devDependencies": {
-        "jslint": ">=0.1.2",
+        "jslint": ">=0.1.4",
         "vows": ">=0.5.0"
     }
 }
