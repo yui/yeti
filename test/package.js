@@ -12,10 +12,7 @@ vows.describe("Package").addBatch({
             assert.ok(meta.homepage);
         },
         "should return a bug URL" : function (meta) {
-            assert.ok(meta.bugs.web);
-        },
-        "should return a bug email address" : function (meta) {
-            assert.ok(meta.bugs.mail);
+            assert.ok(meta.bugs.url);
         },
         "should return a version" : function (meta) {
             assert.ok(meta.version);
