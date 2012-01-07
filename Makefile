@@ -5,6 +5,10 @@ test:
 	npm test
 .PHONY: test
 
+spec:
+	./node_modules/.bin/vows --spec test/*.js
+.PHONY: spec
+
 install:
 	npm install .
 .PHONY: install
