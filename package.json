@@ -41,16 +41,14 @@
         "node": "~0.4.12 || ~0.6.4"
     },
     "dependencies": {
-        "binary": "~0.2.6"
+        "binary": "~0.2.6",
         "director": "~1.0.6",
         "eventemitter2": "~0.4.1",
         "nconf": "~0.5.0",
         "nopt": "~1.0.10",
         "onyx": "~0.1.2",
-        "hollywood": "~0.1.0",
         "socket.io": "~0.8.7",
         "union": "~0.1.4",
-        "winston": "~0.5.9",
         "graceful-fs": "~1.1.2",
         "plates": "~0.2.2",
         "express" : "~2.2.1",
