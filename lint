@@ -1,2 +1,3 @@
 #!/bin/sh
-node node_modules/.bin/jslint --nomen --bitwise $@
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+node $DIR/node_modules/.bin/jslint --nomen --bitwise $@
