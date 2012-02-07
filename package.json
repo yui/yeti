@@ -44,6 +44,7 @@
         "binary": "~0.2.6",
         "director": "~1.0.6",
         "eventemitter2": "~0.4.1",
+        "eventyoshi": "~0.1.2",
         "nconf": "~0.5.0",
         "nopt": "~1.0.10",
         "onyx": "~0.1.2",
