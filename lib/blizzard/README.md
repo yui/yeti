@@ -222,7 +222,10 @@ The message is considered complete. The callback function for the request is cal
 
 ## HTTP Upgrade
 
-In Yeti, Blizzard is started after an HTTP/1.1 Upgrade for the protocol `Blizzard-Yeti`.
+In Yeti, Blizzard is started after an HTTP/1.1 Upgrade for the protocol `Blizzard-Yeti`. The header `Sec-Blizzard-Version` MUST be sent in the Upgrade request with a value of `1`.
 
 After the HTTP handshake, the party that sent the Upgrade request (the HTTP client) sends Packet of zero length with type Handshake. When this Packet is received, the connection is ready for use.
 
+The `Sec-` prefix is used to [prevent Upgrade requests from XMLHttpRequest][sec-header].
+
+[sec-header]: http://www.w3.org/TR/XMLHttpRequest/#the-setrequestheader-method
