@@ -43,7 +43,7 @@
     "dependencies": {
         "binary": "~0.2.6",
         "director": "~1.0.6",
-        "eventemitter2": "~0.4.1",
+        "eventemitter2": "~0.4.8",
         "eventyoshi": "~0.1.2",
         "nopt": "~1.0.10",
         "socket.io": "~0.8.7",
