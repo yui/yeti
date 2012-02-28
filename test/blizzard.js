@@ -4,6 +4,7 @@ var vows = require("vows");
 var assert = require("assert");
 
 var blizzard = require("./lib/blizzard");
+var blizzardHTTP = require("./lib/blizzard-http");
 
 var BlizzardSession = require("../lib/blizzard/session");
 var BlizzardNamespace = require("../lib/blizzard/namespace");
@@ -99,7 +100,7 @@ function blizzardEventTests(ns) {
     };
 }
 
-function batch() {
+function batch(testHelper) {
     var ns = "ns1",
         subContext = blizzardEventTests(),
         namespaceContext = blizzardEventTests(ns);
@@ -117,7 +118,10 @@ function batch() {
 
     subContext["in a namespace"] = namespaceContext;
 
-    return blizzard.sessionContext(subContext);
+    return testHelper.sessionContext(subContext);
 }
 
-vows.describe("Blizzard").addBatch(batch()).export(module);
+vows.describe("Blizzard")
+    .addBatch(batch(blizzard))
+    .addBatch(batch(blizzardHTTP))
+    .export(module);
