@@ -61,8 +61,29 @@ vows.describe("Blizzard: Socket").addBatch(blizzard.sessionContext({
             assert.strictEqual(topic.event, "rpc.bridge1");
             assert.strictEqual(topic.res, "quux");
         },
-        "the BlizzardSession is the first argument to the bridge1 event": function (topic) {
+        "the BlizzardSession is the first argument to the bridged event": function (topic) {
             assert.ok(topic.context.session instanceof BlizzardSession);
+        }
+    },
+    "with events sent by the outgoingBridge API": {
+        topic: function (lastTopic) {
+            var vow = this,
+                context = {},
+                ee = new EventEmitter2();
+            lastTopic.server.on("request.bridge2", function (data, reply) {
+                reply(null, data);
+            });
+            lastTopic.client.outgoingBridge(ee, "bridge2");
+            ee.emit("bridge2", "dogcow", function (err, res) {
+                vow.callback(err, {
+                    event: this.event,
+                    res: res
+                });
+            });
+        },
+        "the response is correct": function (topic) {
+            assert.strictEqual(topic.event, "rpc.bridge2");
+            assert.strictEqual(topic.res, "dogcow");
         }
     }
 })).export(module);
