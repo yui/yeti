@@ -49,11 +49,7 @@
         "socket.io": "~0.8.7",
         "union": "~0.1.4",
         "graceful-fs": "~1.1.2",
-        "plates": "~0.2.2",
-        "express" : "~2.2.1",
-        "connect" : "~1.2.3",
-        "jade" : "~0.10.4"
-
+        "plates": "~0.2.2"
     },
     "devDependencies": {
         "jslint": ">=0.1.4",
