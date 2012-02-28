@@ -3,6 +3,8 @@ yeti
 
 Yeti is the YUI Easy Testing Interface.
 
+[![Build Status](https://secure.travis-ci.org/reid/yeti.png?branch=next)](http://travis-ci.org/reid/yeti)
+
 WARNING: This Is Yeti Next
 --------------------------
 
