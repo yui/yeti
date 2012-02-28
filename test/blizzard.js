@@ -96,7 +96,7 @@ function blizzardEventTests(ns) {
                 assert.strictEqual(topic.res, "dogcow");
             }
         }
-    }
+    };
 }
 
 function batch() {
