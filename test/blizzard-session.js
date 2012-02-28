@@ -3,67 +3,36 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var net = require("net");
-var BlizzardSession = require("../lib/blizzard/session");
+var blizzard = require("./lib/blizzard");
 
-vows.describe("Blizzard: Socket").addBatch({
-    "A net socket": {
-        topic: function () {
-            var vow = this,
-                server = net.createServer();
-
-            server.listen(function () {
-                // We did not define a port, the OS provided one.
-                // Pass this along to the next test context.
-                vow.callback(null, {
-                    port: server.address().port,
-                    server: server
-                });
-            });
+vows.describe("Blizzard: Socket").addBatch(blizzard.sessionContext({
+    "with a simple echo event": {
+        topic: blizzard.rpcTopic({
+            method: "echo",
+            request: "foo"
+        }, function (data, reply) {
+            reply(null, data);
+        }),
+        "the response should be the same as the request": function (topic) {
+            assert.strictEqual(topic.req, topic.res);
+        }
+    },
+    "with an event that responds with binary data": {
+        topic: blizzard.rpcTopic({
+            method: "binary",
+            request: "bar",
+            fixture: new Buffer(7068)
+        }, function (fixture, data, reply) {
+            reply(null, fixture);
+        }),
+        "the response should be a Buffer": function (topic) {
+            assert.ok(Buffer.isBuffer(topic.res));
         },
-        "is connected": function (topic) {
-            assert.ok(topic.port);
+        "the response should be the correct length": function (topic) {
+            assert.strictEqual(topic.res.length, topic.fixture.length);
         },
-        "used by Blizzard": {
-            topic: function (lastTopic) {
-                var vow = this,
-                    server = lastTopic.server,
-                    clientSession,
-                    clientSocket = net.connect(lastTopic.port, function () {
-                        clientSession = new BlizzardSession(clientSocket, true);
-                        clientSocket.removeListener("error", vow.callback);
-                    });
-
-                server.on("connection", function onServerConnection(clientSocket) {
-                    var serverSession = new BlizzardSession(clientSocket, false);
-                    serverSession.once("ready", function () {
-                        // The handshake completed.
-                        server.removeListener("connection", onServerConnection);
-                        vow.callback(null, {
-                            client: clientSession,
-                            server: serverSession
-                        });
-                    });
-                });
-
-                clientSocket.once("error", vow.callback);
-            },
-            "is ok": function (topic) {
-                assert.ok(topic.client);
-                assert.ok(topic.server);
-            },
-            "with a simple echo event": {
-                topic: function (lastTopic) {
-                    var fixture = "foo";
-                    lastTopic.server.on("request.echo", function (data, reply) {
-                        reply(null, data);
-                    });
-                    lastTopic.client.emit("rpc.echo", fixture, this.callback);
-                },
-                "the response should be the same as the request": function (data) {
-                    assert.strictEqual("foo", data);
-                }
-            }
+        "the response should be equal to the fixture": function (topic) {
+            assert.deepEqual(topic.res, topic.fixture);
         }
     }
-}).export(module);
+})).export(module);
