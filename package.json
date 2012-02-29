@@ -55,6 +55,7 @@
     "devDependencies": {
         "jslint": ">=0.1.4",
         "pact": ">=0.1.2",
+        "phantom": ">=0.3.3",
         "vows": ">=0.5.0"
     }
 }

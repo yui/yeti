@@ -10,8 +10,6 @@ WARNING: This Is Yeti Next
 
 This branch is the beginning of [Yeti Next][next]. Switch to master for something usable.
 
-[Onyx]: http://github.com/reid/onyx
-[Hollywood]: http://github.com/reid/hollywood
 [next]: https://github.com/yui/yeti/wiki/Yeti-Next
 
 How easy?
@@ -154,9 +152,13 @@ Yeti is an experimental project of YUI Labs. As such, it doesn't receive the sam
 Testing
 -------
 
-Yeti uses [Vows][] for testing its built-in server. After installing Vows, you may run the `vows` command to run all suites. See the [Vows website][Vows] for information on installing and running Vows.
+First, install the latest [PhantomJS][] for your platform. With [Homebrew][], just run `brew update; brew install phantomjs`.
 
-The server test suite requires [YUI 3][yui3] and [YUI 2][yui2] to be installed into tests/vendor to test its integration with YUI Test. Symlink yui2 and yui3 repo directories from elsewhere or place the library downloads there.
+Run `make test` to run Vows tests, `make spec` for more details.
+
+Run `make coverage` to generate code coverage using [JSCoverage for Node.js][jsc], which will be built and installed to `./tools/jscoverage`.
+
+Note: As of February 29, 2012, you must have an internet connection for Yeti to work and pass tests, since it currently pulls in YUI from yahooapis.com.
 
 License
 -------
@@ -168,11 +170,11 @@ Contribute
 
 Your contributions are welcome! Please review the [YUI contributor guide][CLA] before contributing. If you haven't contributed to a [YUI project][YUI] before, you'll need to review and sign the [YUI CLA][CLA] before we can accept your pull request.
 
+  [PhantomJS]: http://phantomjs.org/
+  [jsc]: https://github.com/visionmedia/node-jscoverage
   [jspec]: http://github.com/visionmedia/jspec
-  [yui3]: http://github.com/yui/yui3
-  [yui2]: http://github.com/yui/yui2
   [localtunnel]: http://localtunnel.com/
-  [homebrew]: http://github.com/mxcl/homebrew
+  [Homebrew]: http://github.com/mxcl/homebrew
   [node]: http://nodejs.org/
   [npm]: http://npmjs.org/
   [win]: https://github.com/reid/yeti/wiki/Yeti-on-Windows
