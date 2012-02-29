@@ -9,6 +9,9 @@ spec:
 	./node_modules/.bin/vows --spec test/*.js
 .PHONY: spec
 
+coverage:
+	sh scripts/coverage.sh
+
 install:
 	npm install .
 .PHONY: install
