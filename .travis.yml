@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-  - 0.4
   - 0.6
   - 0.7
 
@@ -10,5 +9,4 @@ before_script:
 
 matrix:
   allow_failures:
-    - node_js: 0.4
     - node_js: 0.7
