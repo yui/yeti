@@ -50,7 +50,7 @@ vows.describe("Yeti Client").addBatch({
                         timeout = setTimeout(function () {
                             vow.callback(new Error("Unable to start phantomjs."));
                             process.exit(1);
-                        }, 2000);
+                        }, 10000);
                     phantom.create(function (browser) {
                         clearInterval(timeout);
                         vow.callback(null, browser);
