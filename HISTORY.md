@@ -1,8 +1,6 @@
-A Brief History of Yeti
-=======================
+# A Brief History of Yeti
 
-0.1.8 / 2011-10-19
-------------------
+## 0.1.8 / 2011-10-19
 
   * Switched to socket.io for browser communication.
   * Exit on batch completion: no more Ctrl-C when done.
@@ -10,31 +8,26 @@ A Brief History of Yeti
   * Better browser identification. (Dav Glass)
   * Workaround /undefined route. (Dav Glass)
 
-0.1.7 / 2011-05-03
-------------------
+## 0.1.7 / 2011-05-03
 
   * Updated to latest Express and Connect.
   * Tested with npm 1.0.
   * Use nopt instead of optparse.
 
-0.1.6 / 2011-03-29
-------------------
+## 0.1.6 / 2011-03-29
 
   * Replaced optparse with built-in copy of optparse, since it isn't available on npm.
 
-0.1.5 / 2011-03-29
-------------------
+## 0.1.5 / 2011-03-29
 
   * Replaced optimist with optparse for CLI option parsing.
     Optimist didn't work with recent npm versions.
 
-0.1.4 / 2011-02-05
-------------------
+## 0.1.4 / 2011-02-05
 
   * Fix for changed Node v0.3 HTTP API.
 
-0.1.3 / 2010-12-08
-------------------
+## 0.1.3 / 2010-12-08
 
   * Require `--server` to start the server.
   * Add usage statement.
@@ -45,16 +38,14 @@ A Brief History of Yeti
   * Upgrade Jade to 0.5.7.
   * Upgrade Optimist to 0.1.1.
 
-0.1.2 / 2010-11-10
-------------------
+## 0.1.2 / 2010-11-10
 
   * Better fault tolerance: 404s, syntax errors, etc.
   * Added some fun stats to the test runner.
   * Fix missing module "jade" errors. (#5)
   * Upgraded to Express 1.0.0rc4.
 
-0.1.1 / 2010-09-29
-------------------
+## 0.1.1 / 2010-09-29
 
   * YUI 2.x support.
   * Internet Explorer 9 now reports test results.
@@ -63,38 +54,35 @@ A Brief History of Yeti
   * Fixed an issue when spaces where in the path of the test. (#2)
   * Upgraded to Express 1.0.0rc3.
 
-0.1.0 / 2010-08-25
-------------------
+## 0.1.0 / 2010-08-25
 
   * Report full User-agent string.
   * Corrected dependency versions in package.json.
   * Minor enhancements for future releases.
 
-0.1.0rc3 / 2010-08-16
----------------------
+## 0.1.0rc3 / 2010-08-16
 
   * Open source under BSD!
   * Better caching of test resources.
   * Prevent some IE memory leaks.
   * --solo option to exit on arrival of 1 result per file, with summary.
 
-0.1.0rc2 / 2010-08-11
----------------------
+## 0.1.0rc2 / 2010-08-11
 
   * Security: Yeti now only serves from the cwd you're in or the --path directory.
   * Polished the test runner page.
   * Removed dependency on class.js.
   * Files served in the same test run are cached.
 
-0.1.0rc / 2010-08-05
---------------------
+## 0.1.0rc / 2010-08-05
+
 Public release candidate.
 
   * Added YUI favicon.
   * Added additional cli tests.
 
-0.1.0demo / 2010-08-03
----------------------
+## 0.1.0demo / 2010-08-03
+
 Public demo.
 
   * Works with any standalone HTML document.
@@ -102,38 +90,32 @@ Public demo.
   * Broke up app.js into modules to make testing easier.
   * Cleaned up inject.js, app.js and cli.js.
 
-0.0.6 / 2010-07-23
-------------------
+## 0.0.6 / 2010-07-23
 
   * Server mode.
   * Display failed test details.
   * Added window.onerror handler.
 
-0.0.5 / 2010-07-20
-------------------
+## 0.0.5 / 2010-07-20
 
   * Added --port option to override the default port 8000.
   * Removed frozen dependencies from vendor directory.
 
-0.0.4 / 2010-07-19
-------------------
+## 0.0.4 / 2010-07-19
 
   * Safari opens tests much more reliably. (AppleScript is no longer used.)
   * Updated to Express 1.0.0beta.
 
-0.0.3 / 2010-07-19
-------------------
+## 0.0.3 / 2010-07-19
 
   * Added Firefox and Chrome browsers.
 
-0.0.2 / 2010-07-19
-------------------
+## 0.0.2 / 2010-07-19
 
   * First release to npm.
   * Test reporting looks better.
   * Multiple file support.
 
-0.0.1 / 2010-07-17
-------------------
+## 0.0.1 / 2010-07-17
 
   * Published to GitHub.

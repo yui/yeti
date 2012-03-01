@@ -1,19 +1,16 @@
-yeti
-====
+# yeti
 
 Yeti is the YUI Easy Testing Interface.
 
 [![Build Status](https://secure.travis-ci.org/reid/yeti.png?branch=next)](http://travis-ci.org/reid/yeti)
 
-WARNING: This Is Yeti Next
---------------------------
+## WARNING: This Is Yeti Next
 
 This branch is the beginning of [Yeti Next][next]. Switch to master for something usable.
 
 [next]: https://github.com/yui/yeti/wiki/Yeti-Next
 
-How easy?
---------
+## How easy?
 
 Here you go:
 
@@ -30,15 +27,13 @@ Here you go:
 
     195 tests passed! (3224ms)
 
-What just happened?
--------------------
+## What just happened?
 
 Yeti is a command-line tool for launching JavaScript unit tests in a browser and reporting the results without leaving your terminal. Yeti is designed to work with existing unmodified YUI-based tests.
 
 Yeti is designed to help you run tests before you commit. It compliments existing CI tools like Selenium and Hudson which run tests post-commit. Yeti is not a replacement for those tools.
 
-Server mode!
-------------
+## Server mode!
 
 You can also run Yeti as a server:
 
@@ -77,8 +72,7 @@ You can pass the `--port` option to override port 8000 with your preferred serve
 
 Yeti doesn't exit automatically when used with server mode. If you're using only 1 browser with server mode (i.e. just running tests on 1 browser on another computer or VM), you may use the `--solo 1` option to have Yeti exit with a summary after all tests run once. This is also handy for scripting Yeti: if a failure occurs, Yeti will exit with a non-zero status code.
 
-Special tests
--------------
+## Special tests
 
 Yeti will report an uncaught exception like so:
 
@@ -96,8 +90,7 @@ Yeti enforces [No-Quirks Mode][] in your tests because it may impact DOM-related
 
 [Add a DOCTYPE][doctype] to your test document to fix this.
 
-Mobile testing made easy
-------------------------
+## Mobile testing made easy
 
 When combined with [localtunnel][], running tests is simple. If you're not dealing with sensitive information, startup your Yeti server and then run:
 
@@ -106,8 +99,7 @@ When combined with [localtunnel][], running tests is simple. If you're not deali
 
 You can then visit that URL on your mobile (or any other) device and have it run new tests.
 
-Caveats
--------
+## Caveats
 
 Yeti is known to work on:
 
@@ -123,8 +115,7 @@ Yeti keeps running until you exit with Ctrl-C, even after all test results have 
 
 You must start Yeti in server mode in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
 
-Installation
-------------
+## Installation
 
 This is experimental software. Use at your own risk.
 
@@ -142,15 +133,13 @@ Installing [localtunnel][] helps proxy Yeti outside of your firewall. It's avail
 
     $ gem install localtunnel
 
-Bugs & Feedback
----------------
+## Bugs & Feedback
 
 Open a ticket on [YUILibrary.com's Yeti Issue Tracker][issues] to report bugs or feature requests.
 
 Yeti is an experimental project of YUI Labs. As such, it doesn't receive the same level of support as other mature YUI projects.
 
-Testing
--------
+## Testing
 
 First, install the latest [PhantomJS][] for your platform. With [Homebrew][], just run `brew update; brew install phantomjs`.
 
@@ -160,13 +149,11 @@ Run `make coverage` to generate code coverage using [JSCoverage for Node.js][jsc
 
 Note: As of February 29, 2012, you must have an internet connection for Yeti to work and pass tests, since it currently pulls in YUI from yahooapis.com.
 
-License
--------
+## License
 
 Yeti is free to use under YUI's BSD license. See the LICENSE file or the [YUI license page][license] for license text and copyright information.
 
-Contribute
-----------
+## Contribute
 
 Your contributions are welcome! Please review the [YUI contributor guide][CLA] before contributing. If you haven't contributed to a [YUI project][YUI] before, you'll need to review and sign the [YUI CLA][CLA] before we can accept your pull request.
 
