@@ -32,6 +32,14 @@ vows.describe("Yeti Functional").addBatch(hub.functionalContext({
                     });
                 });
 
+                if (process.env.TRAVIS) {
+                    page.set("onConsoleMessage", function () {
+                        console.log.apply(this, [
+                            "PhantomJS console message:"
+                        ].concat(Array.prototype.slice.apply(arguments)));
+                    });
+                }
+
                 page.open(lastTopic.url, function (status) {
                     if (status !== "success") {
                         vow.callback(new Error("Failed to load page."));
@@ -50,6 +58,10 @@ vows.describe("Yeti Functional").addBatch(hub.functionalContext({
                 var vow = this,
                     results = [],
                     agentCompleteFires = 0,
+                    timeout = setTimeout(function () {
+                        vow.callback(new Error("Batch dispatch failed."));
+                        process.exit(1);
+                    }, 20000),
                     batch = lastTopic.client.createBatch({
                         basedir: __dirname + "/fixture",
                         tests: ["basic.html"]
@@ -68,6 +80,7 @@ vows.describe("Yeti Functional").addBatch(hub.functionalContext({
                 });
 
                 batch.on("complete", function () {
+                    clearTimeout(timeout);
                     pageTopic.page.release();
                     vow.callback(null, {
                         agentResults: results,
