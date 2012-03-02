@@ -7,7 +7,7 @@ var phantom = require("phantom");
 var Hub = require("../lib/hub");
 var hubClient = require("../lib/client");
 
-vows.describe("Yeti Client").addBatch({
+vows.describe("Yeti Functional").addBatch({
     "A Yeti Hub": {
         topic: function () {
             var vow = this,
