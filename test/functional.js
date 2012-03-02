@@ -5,6 +5,16 @@ var assert = require("assert");
 
 var hub = require("./lib/hub");
 
+if (process.env.TRAVIS) {
+    // Debug test errors that only occur on Travis CI.
+    var _exit = process.exit;
+    process.exit = function (code) {
+        var e = new Error;
+        console.warn("TRAVIS: process.exit was called! Code:", code, "Stack:", e.stack);
+        return _exit(code);
+    };
+}
+
 vows.describe("Yeti Functional").addBatch(hub.functionalContext({
     "visits Yeti": {
         topic: function (browser, lastTopic) {
