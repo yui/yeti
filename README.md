@@ -1,101 +1,95 @@
-# yeti
-
-Yeti is the YUI Easy Testing Interface.
+# Yeti [Next][]
 
 [![Build Status](https://secure.travis-ci.org/reid/yeti.png?branch=next)](http://travis-ci.org/reid/yeti)
 
-## WARNING: This Is Yeti Next
+Yeti is a command-line tool for launching JavaScript unit tests in a browser and reporting the results without leaving your terminal. Yeti is designed to work with tests built on YUI Test just as they are.
 
-This branch is the beginning of [Yeti Next][next]. Switch to master for something usable.
+[Next]: https://github.com/yui/yeti/wiki/Yeti-Next
 
-[next]: https://github.com/yui/yeti/wiki/Yeti-Next
+## Getting Started
 
-## How easy?
+Just run Yeti with the HTML file containing your test.
 
-Here you go:
+    $ yeti test/fixture/basic.html
+    Creating a Hub at http://localhost:9000
+    Waiting for agents to connect at http://localhost:9000.
+    When ready, press Enter to begin testing.
 
-    [reid@benson ~/working/yui/yui3]
-    $ yeti src/dom/tests/dom.html src/attribute/tests/attribute.html src/json/tests/json.html
-    ✔  yuisuite on Safari (5.0.2) / Mac OS
-       21 passed,  0 failed
+Point your browsers at that URL, then come back and press Enter.
 
-    ✔  Attribute Unit Tests on Safari (5.0.2) / Mac OS
-       106 passed,  0 failed
+      Agent connected: Safari (5.1.2) / Mac OS [Hit Enter]
 
-    ✔  Y.JSON (JavaScript implementation) on Safari (5.0.2) / Mac OS
-       68 passed,  0 failed
+    ✔ Testing started!
+    ✔ Yeti Simple Test Suite on Safari (5.1.2) / Mac OS
+    ✔ Agent completed: Safari (5.1.2) / Mac OS
+    1 test passed! (175ms)
+    $
 
-    195 tests passed! (3224ms)
+Yeti exits automatically when all tests complete. If test failures occur, Yeti will exit with a non-zero status code.
 
-## What just happened?
+## Yeti Hub
 
-Yeti is a command-line tool for launching JavaScript unit tests in a browser and reporting the results without leaving your terminal. Yeti is designed to work with existing unmodified YUI-based tests.
-
-Yeti is designed to help you run tests before you commit. It compliments existing CI tools like Selenium and Hudson which run tests post-commit. Yeti is not a replacement for those tools.
-
-## Server mode!
-
-You can also run Yeti as a server:
+To save time, start a Yeti Hub.
 
     $ yeti --server
-    Yeti will only serve files inside /Users/reid
-    Visit http://localhost:8000, then run:
-        yeti <test document>
-    to run and report the results.
+    Yeti Hub listening on port 9000.
 
-Then subsequent Yeti commands will dispatch tests to all browsers pointed at the test page at that moment:
+Point browsers at your local Yeti on port 9000. Now, you're ready to run tests without having to reconnect browsers each time.
 
-    $ yeti src/datatype/tests/xml.html
-    Waiting for results. When you're done, hit Ctrl-C to exit.
-    ✔  DataType.XML Test Suite on Chrome (6.0.472.63) / Mac OS
-       6 passed,  0 failed
+In another Terminal, running Yeti will connect to this Hub instead of starting a new one.
 
-    ✖  DataType.XML Test Suite on Internet Explorer (9.0) / Windows
-       5 passed,  1 failed
-       in XML Format Tests
-         testFormat: Expected original string within new string.
-           Expected: true (boolean)
-           Actual: false (boolean)
+    $ yeti test/fixture/basic.html
+    Connected to http://localhost:9000
+    Waiting for agents to connect at http://localhost:9000.
+    When ready, press Enter to begin testing. [Hit Enter]
+    ✔ Testing started!
+    ✔ Yeti Simple Test Suite on Safari (5.1.2) / Mac OS
+    ✔ Agent completed: Safari (5.1.2) / Mac OS
+    1 test passed! (107ms)
 
-    ✔  DataType.XML Test Suite on Safari (5.0.2) / Mac OS
-       6 passed,  0 failed
+## Sharing Your Yeti Hub
 
-    ^C
+Your Yeti Hub can be shared with other developers.
 
-As you can see, this is very handy to quickly run tests on mobile devices. You can pass multiple tests to Yeti, as always.
+First, I'll start a Hub on test.yeti.cx on port 80.
 
-Server mode is great for working offline: you can test your commits across browsers in different local VMs without requiring a network connection to a centralized test system.
+    $ yeti --server --port 80
 
-### Advanced options
+Go ahead and point a few browsers there.
 
-You can pass the `--port` option to override port 8000 with your preferred server port. If you do this, be sure to also pass `--port` when running Yeti as a client.
+Now, others can connect to it from their computer like so:
 
-Yeti doesn't exit automatically when used with server mode. If you're using only 1 browser with server mode (i.e. just running tests on 1 browser on another computer or VM), you may use the `--solo 1` option to have Yeti exit with a summary after all tests run once. This is also handy for scripting Yeti: if a failure occurs, Yeti will exit with a non-zero status code.
+    $ yeti --hub http://test.yeti.cx/ test/fixture/basic.html
+    Connected to http://test.yeti.cx/
+    Waiting for agents to connect at http://test.yeti.cx/.
+    When ready, press Enter to begin testing.
 
-## Special tests
+Your `pwd` and your test file will be served through the Hub. Like magic.
 
-Yeti will report an uncaught exception like so:
+    [Hit Enter]
+    ✔ Testing started!
+    ✔ Yeti Simple Test Suite on Safari (5.1.2) / Mac OS
+    ✔ Agent completed: Safari (5.1.2) / Mac OS
+    1 test passed! (189ms)
 
-    ✖  http://10.1.1.10:8000/project/8364931/Users/reid/Development/yui/yui3/src/jsonp/tests/jsonp.html on Internet Explorer (9.0) / Windows
-       0 passed,  1 failed
-       in window.onerror handler (yeti virtual test)
-         window.onerror should not fire: Syntax error
+This makes it really simple to setup an ad-hoc testing lab shared with your team.
 
-Yeti enforces [No-Quirks Mode][] in your tests because it may impact DOM-related APIs. Yeti will abort testing in this case:
+Caveat: Yeti Next has not been tested with a large number of browsers and Hub clients. If you'd like to help change this, see the Contribute section below.
 
-    ✖  http://10.1.1.10:8000/project/8364931/Users/reid/Development/yui/yui3/src/test/tests/mock.html on Internet Explorer (9.0) / Windows
-       0 passed,  1 failed
-       in window.onerror handler (yeti virtual test)
-         window.onerror should not fire: Not in Standards Mode!
+## Error handling
 
-[Add a DOCTYPE][doctype] to your test document to fix this.
+Note: Yeti Next will fail when given test files that do not exist. This will be fixed in a future release.
+
+Yeti will report an uncaught exceptions as Script Errors.
+
+Yeti enforces [No-Quirks Mode][] in your tests because it may impact DOM-related APIs. [Add a DOCTYPE][doctype] to your test document to fix this.
 
 ## Mobile testing made easy
 
-When combined with [localtunnel][], running tests is simple. If you're not dealing with sensitive information, startup your Yeti server and then run:
+When combined with [localtunnel][], mobile testing is simple. If you're not dealing with sensitive information, startup your Yeti Hub and then run:
 
-    $ localtunnel 8000
-       Port 8000 is now publicly accessible from http://3z48.localtunnel.com ...
+    $ localtunnel 9000
+       Port 9000 is now publicly accessible from http://3z48.localtunnel.com ...
 
 You can then visit that URL on your mobile (or any other) device and have it run new tests.
 
@@ -104,50 +98,47 @@ You can then visit that URL on your mobile (or any other) device and have it run
 Yeti is known to work on:
 
  - Mac OS X
- - Windows in server mode, see [Yeti on Windows][win]
- - RHEL 5 in server mode
+ - Linux
 
-Yeti should work on other platforms as well, especially in server mode. Feel free to submit patches: see the Contribute section below.
-
-You can run tests on any platform: just run Yeti in server mode and point the browser on another OS to your Yeti server.
-
-Yeti keeps running until you exit with Ctrl-C, even after all test results have arrived. (This will be fixed in a future release.)
-
-You must start Yeti in server mode in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
+You must start Yeti's client in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
 
 ## Installation
 
 This is experimental software. Use at your own risk.
 
-If you have [npm][] installed, this will be easy.
+You will need Node.js v0.6.x or later. Node.js v0.6.11 is recommended.
 
-    $ npm install yeti
+If you want to run Yeti Next, clone this project if you haven't yet done so.
 
-Otherwise, install [npm][] first.
+    $ git clone git://github.com/reid/yeti.git
+    $ cd yeti
+    $ git checkout next
 
-If you want to run off the latest code, clone this project and then run make.
+Now install it.
 
-    $ git clone git://github.com/reid/yeti.git && cd yeti && make
+    $ npm install -g
 
 Installing [localtunnel][] helps proxy Yeti outside of your firewall. It's available as a Ruby gem:
 
     $ gem install localtunnel
 
-## Bugs & Feedback
-
-Open a ticket on [YUILibrary.com's Yeti Issue Tracker][issues] to report bugs or feature requests.
-
-Yeti is an experimental project of YUI Labs. As such, it doesn't receive the same level of support as other mature YUI projects.
-
 ## Testing
 
 First, install the latest [PhantomJS][] for your platform. With [Homebrew][], just run `brew update; brew install phantomjs`.
+
+Run `npm install` to locally install Vows and other dev dependencies.
 
 Run `make test` to run Vows tests, `make spec` for more details.
 
 Run `make coverage` to generate code coverage using [JSCoverage for Node.js][jsc], which will be built and installed to `./tools/jscoverage`.
 
 Note: As of February 29, 2012, you must have an internet connection for Yeti to work and pass tests, since it currently pulls in YUI from yahooapis.com.
+
+## Bugs & Feedback
+
+Open a ticket on [YUILibrary.com's Yeti Issue Tracker][issues] to report bugs or feature requests.
+
+Yeti is an experimental project of YUI Labs. As such, it doesn't receive the same level of support as other mature YUI projects.
 
 ## License
 
