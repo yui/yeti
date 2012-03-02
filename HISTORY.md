@@ -1,5 +1,10 @@
 # A Brief History of Yeti
 
+## 0.2.0 / In Development
+
+  * Rewrite. Requires Node.js v0.6.x.
+  * Yeti Hub (test server) can serve tests to browsers from remote machines.
+
 ## 0.1.8 / 2011-10-19
 
   * Switched to socket.io for browser communication.
