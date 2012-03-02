@@ -54,7 +54,7 @@ vows.describe("Yeti Functional").addBatch(hub.functionalContext({
                 });
 
                 batch.on("agentComplete", function (session, agent) {
-                    agentCompleteFires++;
+                    agentCompleteFires = agentCompleteFires + 1;
                 });
 
                 batch.on("complete", function () {
