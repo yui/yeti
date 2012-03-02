@@ -1,12 +1,8 @@
 language: node_js
 node_js:
   - 0.6
-  - 0.7
 
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-
-matrix:
-  allow_failures:
-    - node_js: 0.7
+  - "phantomjs --version"
