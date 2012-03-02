@@ -66,7 +66,7 @@ exports.functionalContext = function (subContext) {
                     process.exit(1);
                 }, 10000);
             phantom.create(function (browser) {
-                clearInterval(timeout);
+                clearTimeout(timeout);
                 vow.callback(null, browser);
             });
         },
