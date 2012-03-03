@@ -11,6 +11,7 @@ spec:
 
 coverage:
 	sh scripts/coverage.sh
+.PHONY: coverage
 
 html:
 	./node_modules/.bin/yuidoc
