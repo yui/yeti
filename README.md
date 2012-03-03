@@ -122,6 +122,17 @@ Installing [localtunnel][] helps proxy Yeti outside of your firewall. It's avail
 
     $ gem install localtunnel
 
+## Yeti API
+
+You can `require("yeti")` inside your application to script Yeti for your own use.
+
+For API documentation:
+
+ - Run `make html` to build HTML documentation to `./api`.
+ - Review code comments inside `lib/yeti.js`, `lib/client.js` and `lib/hub/index.js`.
+
+Yeti follows [Semantic Versioning](http://semver.org/) but is currently at a 0.x.y release. **The public API is not stable.** There will be changes.
+
 ## Testing
 
 First, install the latest [PhantomJS][] for your platform. With [Homebrew][], just run `brew update; brew install phantomjs`.

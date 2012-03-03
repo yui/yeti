@@ -12,6 +12,10 @@ spec:
 coverage:
 	sh scripts/coverage.sh
 
+html:
+	./node_modules/.bin/yuidoc
+.PHONY: html
+
 install:
 	npm install .
 .PHONY: install
