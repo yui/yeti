@@ -1,26 +1,31 @@
 all: install
 .PHONY: all
 
-test:
-	npm test
-.PHONY: test
-
-spec:
-	./node_modules/.bin/vows --spec test/*.js
-.PHONY: spec
-
-coverage:
-	sh scripts/coverage.sh
-.PHONY: coverage
-
-html:
-	./node_modules/.bin/yuidoc
-.PHONY: html
-
 install:
 	npm install .
 .PHONY: install
 
+test:
+	# Problem? Type `make install` first.
+	npm test
+.PHONY: test
+
+spec:
+	# Problem? Type `make install` first.
+	./node_modules/.bin/vows --spec test/*.js
+.PHONY: spec
+
+coverage:
+	# Problem? Type `make install` first.
+	sh scripts/coverage.sh
+.PHONY: coverage
+
+html:
+	# Problem? Type `make install` first.
+	./node_modules/.bin/yuidoc
+.PHONY: html
+
 lint:
+	# Problem? Type `make install` first.
 	find bin lib test -name "*.js" -print0 | xargs -0 ./lint
 .PHONY: lint
