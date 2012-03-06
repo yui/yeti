@@ -52,95 +52,89 @@ var context = {
         },
         "which fires agentConnect with the agent details": function (pageTopic) {
             assert.isString(pageTopic.agent);
-        }
-    }
-};
+        },
+        "for a batch": {
+            topic: function (pageTopic, browser, lastTopic) {
+                var vow = this,
+                    results = [],
+                    agentCompleteFires = 0,
+                    timeout = setTimeout(function () {
+                        vow.callback(new Error("Batch dispatch failed."));
+                        process.exit(1);
+                    }, 20000),
+                    batch = lastTopic.client.createBatch({
+                        basedir: __dirname + "/fixture",
+                        tests: ["basic.html"]
+                    });
 
-// FIXME: This sub-context will not run on Travis.
-// It appears that PhantomJS does not load Yeti properly on Travis.
-// It does run OK on at least OS X.
-if (!process.env.TRAVIS) {
-    context["visits Yeti"]["for a batch"] = {
-        topic: function (pageTopic, browser, lastTopic) {
-            var vow = this,
-                results = [],
-                agentCompleteFires = 0,
-                timeout = setTimeout(function () {
-                    vow.callback(new Error("Batch dispatch failed."));
-                    process.exit(1);
-                }, 20000),
-                batch = lastTopic.client.createBatch({
-                    basedir: __dirname + "/fixture",
-                    tests: ["basic.html"]
+                batch.on("agentResult", function (session, agent, details) {
+                    results.push(details);
                 });
 
-            batch.on("agentResult", function (session, agent, details) {
-                results.push(details);
-            });
-
-            batch.on("agentScriptError", function (session, agent, details) {
-                vow.callback(new Error("Unexpected script error: " + details.message));
-            });
-
-            batch.on("agentComplete", function (session, agent) {
-                agentCompleteFires = agentCompleteFires + 1;
-            });
-
-            batch.on("complete", function () {
-                clearTimeout(timeout);
-                pageTopic.page.release();
-                vow.callback(null, {
-                    agentResults: results,
-                    agentCompleteFires: agentCompleteFires
+                batch.on("agentScriptError", function (session, agent, details) {
+                    vow.callback(new Error("Unexpected script error: " + details.message));
                 });
-            });
-        },
-        "the agentComplete event fired once": function (topic) {
-            assert.strictEqual(topic.agentCompleteFires, 1);
-        },
-        "the agentResults are well-formed": function (topic) {
-            assert.isArray(topic.agentResults);
-            assert.strictEqual(topic.agentResults.length, 1);
 
-            var result = topic.agentResults[0];
+                batch.on("agentComplete", function (session, agent) {
+                    agentCompleteFires = agentCompleteFires + 1;
+                });
 
-            assert.include(result, "passed");
-            assert.include(result, "failed");
-            assert.include(result, "total");
-            assert.include(result, "ignored");
-            assert.include(result, "duration");
-            assert.include(result, "name");
-            assert.include(result, "timestamp");
-        }
-    };
-    /* TODO agentDisconnect is not yet implemented.
-    "visits Yeti briefly for the agentDisconnect event": {
-        topic: function (browser, lastTopic) {
-            var vow = this;
-            browser.createPage(function (page) {
-                var timeout = setTimeout(function () {
-                    vow.callback(new Error("Timed out."));
-                }, 500);
-
-                lastTopic.client.once("agentDisconnect", function (session, agent) {
+                batch.on("complete", function () {
                     clearTimeout(timeout);
-                    vow.callback(null, agent);
-                });
-
-                page.open(lastTopic.url, function (status) {
-                    if (status !== "success") {
-                        vow.callback(new Error("Failed to load page."));
-                    }
-                    lastTopic.client.once("agentConnect", function (session, agent) {
-                        page.release();
+                    pageTopic.page.release();
+                    vow.callback(null, {
+                        agentResults: results,
+                        agentCompleteFires: agentCompleteFires
                     });
                 });
-            });
-        },
-        "which fires with the agent details": function (agent) {
-            assert.isString(agent);
+            },
+            "the agentComplete event fired once": function (topic) {
+                assert.strictEqual(topic.agentCompleteFires, 1);
+            },
+            "the agentResults are well-formed": function (topic) {
+                assert.isArray(topic.agentResults);
+                assert.strictEqual(topic.agentResults.length, 1);
+
+                var result = topic.agentResults[0];
+
+                assert.include(result, "passed");
+                assert.include(result, "failed");
+                assert.include(result, "total");
+                assert.include(result, "ignored");
+                assert.include(result, "duration");
+                assert.include(result, "name");
+                assert.include(result, "timestamp");
+            }
         }
-    } */
-}
+        /* TODO agentDisconnect is not yet implemented.
+        "visits Yeti briefly for the agentDisconnect event": {
+            topic: function (browser, lastTopic) {
+                var vow = this;
+                browser.createPage(function (page) {
+                    var timeout = setTimeout(function () {
+                        vow.callback(new Error("Timed out."));
+                    }, 500);
+
+                    lastTopic.client.once("agentDisconnect", function (session, agent) {
+                        clearTimeout(timeout);
+                        vow.callback(null, agent);
+                    });
+
+                    page.open(lastTopic.url, function (status) {
+                        if (status !== "success") {
+                            vow.callback(new Error("Failed to load page."));
+                        }
+                        lastTopic.client.once("agentConnect", function (session, agent) {
+                            page.release();
+                        });
+                    });
+                });
+            },
+            "which fires with the agent details": function (agent) {
+                assert.isString(agent);
+            }
+        } */
+    }
+};
 
 vows.describe("Yeti Functional").addBatch(hub.functionalContext(context)).export(module);
