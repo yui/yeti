@@ -1,4 +1,0 @@
-Place symlinks to yui2 and yui3 here.
-
-I'm no longer using git-submodule because it makes the
-default use case of commands like git-diff pretty slow.
