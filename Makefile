@@ -22,8 +22,13 @@ coverage:
 
 html:
 	# Problem? Type `make install` first.
-	./node_modules/.bin/yuidoc
+	./node_modules/.bin/selleck
 .PHONY: html
+
+html-api:
+	# Problem? Type `make install` first.
+	./node_modules/.bin/yuidoc
+.PHONY: html-api
 
 lint:
 	# Problem? Type `make install` first.

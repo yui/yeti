@@ -1,10 +1,11 @@
-api
-tools
+/api/
+/tools/
 coverage.*
 node_modules
 npm-*.log
 test/vendor/yui*
 build_tmp*/
+build_docs/
 build_rollup_tmp*/
 .DS_Store
 .*.swp
