@@ -106,13 +106,12 @@ You must start Yeti's client in the directory you'll be serving tests from. For 
 
 This is experimental software. Use at your own risk.
 
-You will need Node.js v0.6.x or later. Node.js v0.6.11 is recommended.
+You will need Node.js v0.6.x or later. Node.js v0.6.12 is recommended.
 
 If you want to run Yeti Next, clone this project if you haven't yet done so.
 
     $ git clone git://github.com/reid/yeti.git
     $ cd yeti
-    $ git checkout next
 
 Now install it.
 
@@ -128,7 +127,7 @@ You can `require("yeti")` inside your application to script Yeti for your own us
 
 For API documentation:
 
- - Run `make html` to build HTML documentation to `./api`.
+ - Run `make html` to build HTML documentation to `./build_docs`.
  - Review code comments inside `lib/yeti.js`, `lib/client.js` and `lib/hub/index.js`.
 
 Yeti follows [Semantic Versioning](http://semver.org/) but is currently at a 0.x.y release. **The public API is not stable.** There will be changes.

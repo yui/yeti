@@ -4,6 +4,8 @@
 
   * Rewrite. Requires Node.js v0.6.x.
   * Yeti Hub (test server) can serve tests to browsers from remote machines.
+  * Yeti Hub can be attached to other servers.
+  * New documentation.
 
 ## 0.1.8 / 2011-10-19
 
