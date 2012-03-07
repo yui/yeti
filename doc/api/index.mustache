@@ -137,15 +137,8 @@ Emitted when the batch is complete. No more events will be fired.
 
 <h4>Event: 'agentComplete'</h4>
 
-<p class="volatile">
-<strong>
-Warning: The arguments of this event will change in a future release.
-</strong>
-The session argument will soon be removed.
-</p>
-
 ```
-function (session, agentName) {}
+function (agentName) {}
 ```
 
 <p>
@@ -155,15 +148,8 @@ Emitted when an agent has completed testing for this batch.
 
 <h4>Event: 'agentResult'</h4>
 
-<p class="volatile">
-<strong>
-Warning: The arguments of this event will change in a future release.
-</strong>
-The session argument will soon be removed.
-</p>
-
 ```
-function (session, agentName, details) {}
+function (agentName, details) {}
 ```
 
 <p>
@@ -174,15 +160,8 @@ Emitted when an agent has completed testing a web page.
 
 <h4>Event: 'agentScriptError'</h4>
 
-<p class="volatile">
-<strong>
-Warning: The arguments of this event will change in a future release.
-</strong>
-The session argument will soon be removed.
-</p>
-
 ```
-function (session, agentName, details) {}
+function (agentName, details) {}
 ```
 
 <p>

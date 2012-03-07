@@ -55,8 +55,7 @@ function blizzardEventTests(ns) {
                 var vow = this,
                     context = {},
                     ee = new EventEmitter2();
-                ee.once("bridge1", function (session, data, reply) {
-                    context.session = session;
+                ee.once("bridge1", function (data, reply) {
                     reply(null, data);
                 });
                 lastTopic.server.incomingBridge(ee, "bridge1");
@@ -71,9 +70,6 @@ function blizzardEventTests(ns) {
             "the response is correct": function (topic) {
                 assert.strictEqual(topic.event, rpcPrefix + "bridge1");
                 assert.strictEqual(topic.res, "quux");
-            },
-            "the parent object is the first argument to the bridged event": function (topic) {
-                assert.ok(topic.context.session instanceof parent);
             }
         },
         "with events sent by the outgoingBridge API": {

@@ -24,7 +24,7 @@ var context = {
                     vow.callback(new Error("Timed out."));
                 }, 500);
 
-                lastTopic.client.once("agentConnect", function (session, agent) {
+                lastTopic.client.once("agentConnect", function (agent) {
                     clearTimeout(timeout);
                     vow.callback(null, {
                         page: page,
@@ -67,15 +67,15 @@ var context = {
                         tests: ["basic.html"]
                     });
 
-                batch.on("agentResult", function (session, agent, details) {
+                batch.on("agentResult", function (agent, details) {
                     results.push(details);
                 });
 
-                batch.on("agentScriptError", function (session, agent, details) {
+                batch.on("agentScriptError", function (agent, details) {
                     vow.callback(new Error("Unexpected script error: " + details.message));
                 });
 
-                batch.on("agentComplete", function (session, agent) {
+                batch.on("agentComplete", function (agent) {
                     agentCompleteFires = agentCompleteFires + 1;
                 });
 
@@ -115,7 +115,7 @@ var context = {
                         vow.callback(new Error("Timed out."));
                     }, 500);
 
-                    lastTopic.client.once("agentDisconnect", function (session, agent) {
+                    lastTopic.client.once("agentDisconnect", function (agent) {
                         clearTimeout(timeout);
                         vow.callback(null, agent);
                     });
@@ -124,7 +124,7 @@ var context = {
                         if (status !== "success") {
                             vow.callback(new Error("Failed to load page."));
                         }
-                        lastTopic.client.once("agentConnect", function (session, agent) {
+                        lastTopic.client.once("agentConnect", function (agent) {
                             page.release();
                         });
                     });
