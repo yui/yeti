@@ -58,6 +58,7 @@ var context = {
                 var vow = this,
                     results = [],
                     agentCompleteFires = 0,
+                    agentSeenFires = 0,
                     timeout = setTimeout(function () {
                         vow.callback(new Error("Batch dispatch failed."));
                         process.exit(1);
@@ -75,21 +76,42 @@ var context = {
                     vow.callback(new Error("Unexpected script error: " + details.message));
                 });
 
+                lastTopic.client.on("agentSeen", function (agent) {
+                    agentSeenFires = agentSeenFires + 1;
+                });
+
                 batch.on("agentComplete", function (agent) {
                     agentCompleteFires = agentCompleteFires + 1;
                 });
 
                 batch.on("complete", function () {
-                    clearTimeout(timeout);
-                    pageTopic.page.release();
-                    vow.callback(null, {
-                        agentResults: results,
-                        agentCompleteFires: agentCompleteFires
+                    lastTopic.client.once("agentSeen", function (agent) {
+                        clearTimeout(timeout);
+                        pageTopic.page.evaluate(function () {
+                            return window.location.pathname;
+                        }, function (pathname) {
+                            pageTopic.page.release();
+                            vow.callback(null, {
+                                finalPathname: pathname,
+                                agentResults: results,
+                                agentSeenFires: agentSeenFires,
+                                agentCompleteFires: agentCompleteFires
+                            });
+                        });
                     });
                 });
             },
+            "the browser returned to the capture page": function (topic) {
+                assert.strictEqual(topic.finalPathname, "/");
+            },
             "the agentComplete event fired once": function (topic) {
                 assert.strictEqual(topic.agentCompleteFires, 1);
+            },
+            "the agentSeen event fired 3 times": function (topic) {
+                // 1. Capture page.
+                // 2. Test page.
+                // 3. Return to capture page.
+                assert.strictEqual(topic.agentSeenFires, 3);
             },
             "the agentResults are well-formed": function (topic) {
                 assert.isArray(topic.agentResults);
