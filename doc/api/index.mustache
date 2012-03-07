@@ -4,8 +4,6 @@
     background: #CD3735;
     color: #fff;
 }
-.volatile strong {
-}
 </style>
 
 <div class="intro">
@@ -58,12 +56,15 @@ Returns a new Hub.
 <p>
 Options:
 <ul>
-    <li><code>loglevel</code> Log level to begin logging to `console.log`. Defaults to `silent`. Options include `debug` and `info`.
+    <li><code>loglevel</code> Log level to begin logging to <a href="http://nodejs.org/docs/latest/api/globals.html#globals_console">console.log</a>.
+        Defaults to `silent`. Options include `debug` and `info`.</li>
 </ul>
 </p>
 
 <p>
-You will need to call `hub.listen()` to start the server or `hub.attachServer()` to attach the Hub to another `http.Server`.
+You will need to call <a href="#hublistenport-hostname-callback">hub.listen()</a>
+to start the server or <a href="#hubattachserverhttpserver">hub.attachServer()</a>
+to attach the Hub to another <a href="http://nodejs.org/docs/latest/api/http.html#http_class_http_server">http.Server</a>.
 </p>
 
 <h4>yeti.createClient(url)</h4>
@@ -77,7 +78,7 @@ Returns an instance of `client.Client`.
 </p>
 
 <p>
-You will need to call `client.connect()` to begin the connection.
+You will need to call <a href="#clientconnectcallback">client.connect()</a> to begin the connection.
 </p>
 
 <h2>Client</h2>
@@ -106,7 +107,7 @@ Begin the connection to the Hub.
 <h4>client.createBatch([configuration])</h4>
 
 <p>
-Configuration:
+The `configuration` is an object with the properties:
 
 <ul>
     <li>`tests`: An array of test filenames relative to `basedir` or pathnames.</li>
@@ -124,6 +125,10 @@ Returns an instance of `client.ClientBatch`.
 </p>
 
 <h3>Class: client.ClientBatch</h3>
+
+<p>
+This object is created internally by `client.createBatch()`.
+</p>
 
 <h4>Event: 'complete'</h4>
 
@@ -209,7 +214,7 @@ hub.on("log.debug", function (message) {
     console.log("Yeti Hub message:", message);
 });
 
-// Only socket.io messages:
+// Only Socket.io messages:
 
 hub.on("log.**.socketio", function (message) {
     console.log("Yeti Hub Socket.io message:", message);
@@ -239,20 +244,22 @@ Emitted when a batch request is recieved from a Client.
 
 <h4>hub.listen(port, [hostname], [callback])</h4>
 
+
 <p>
-Pass through to `http.Server`'s `listen()`.
+Pass through to <a href="http://nodejs.org/docs/latest/api/http.html#http_server_listen_port_hostname_callback">http.Server.listen()</a> for the `hub.server`.
 </p>
 
 <h4>hub.close()</h4>
 
 <p>
-Pass through to `http.Server`'s `close()`.
+Pass through to <a href="http://nodejs.org/docs/latest/api/http.html#http_server_close">http.Server.close()</a> for the `hub.server`.
 </p>
 
 <h4>hub.attachServer(httpServer)</h4>
 
 <p>
-Attach to another `http.Server`. Useful for testing paths on that server
+Attach to another <a href="http://nodejs.org/docs/latest/api/http.html#http_class_http_server">http.Server</a>.
+Useful for testing paths on that server
 when the client sets `useProxy` to false.
 </p>
 
