@@ -1,6 +1,6 @@
 # Yeti [Next][]
 
-[![Build Status](https://secure.travis-ci.org/reid/yeti.png?branch=next)](http://travis-ci.org/reid/yeti)
+[![Build Status](https://secure.travis-ci.org/yui/yeti.png?branch=master)](http://travis-ci.org/yui/yeti)
 
 Yeti is a command-line tool for launching JavaScript unit tests in a browser and reporting the results without leaving your terminal. Yeti is designed to work with tests built on YUI Test just as they are.
 
