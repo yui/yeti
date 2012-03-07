@@ -273,8 +273,9 @@ when the client sets `useProxy` to false.
 </p>
 
 <p>
-Yeti must be able to handle the `'upgrade'` event on this `http.Server`
+Yeti will use the `'upgrade'` event on this `http.Server`
 for handling the protocols Yeti uses to communicate with agents and clients.
-It may conflict with upgrades used by your server.
+<strong>Yeti may conflict with upgrades used by your server if your server uses Socket.io.</strong>
+All other HTTP upgrades will be passed along to your server.
 </p>
 

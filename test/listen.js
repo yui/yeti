@@ -6,7 +6,6 @@ var assert = require("assert");
 var http = require("http");
 
 var yeti = require("../lib/yeti");
-var Hub = require("../lib/hub");
 
 function request(path) {
     return function (hub, server) {
@@ -50,7 +49,7 @@ vows.describe("Yeti Listen").addBatch({
         "is hooked into a Yeti Hub": {
             topic: function (server) {
                 var vow = this,
-                    hub = new Hub();
+                    hub = yeti.createHub();
                 hub.attachServer(server, "/yeti");
                 return hub;
             },
@@ -67,6 +66,21 @@ vows.describe("Yeti Listen").addBatch({
                 topic: request("/foo"),
                 "the parent HTTP server response is correct": function (topic) {
                     assert.strictEqual(topic, "Dogcow!");
+                }
+            },
+            "and connected from a Yeti Client": {
+                topic: function (hub) {
+                    var vow = this,
+                        port = hub.hubListener.server.address().port,
+                        url = "http://localhost:" + port,
+                        client = yeti.createClient(url);
+
+                    client.connect(function (err) {
+                        vow.callback(err, client);
+                    });
+                },
+                "connects successfully": function (client) {
+                    assert.ok(client);
                 }
             }
         }
