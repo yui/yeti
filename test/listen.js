@@ -39,6 +39,15 @@ vows.describe("Yeti Listen").addBatch({
                     res.end("Dogcow!");
                 });
 
+            server.on("upgrade", function (req, socket, head) {
+                socket.write("HTTP/1.1 101 Welcome to TestSocket\r\n" +
+                    "Connection: Upgrade\r\n" +
+                    "Upgrade: TestSocket\r\n" +
+                    "\r\n\r\n" +
+                    "dogcow");
+                socket.end();
+            });
+
             server.listen(function () {
                 vow.callback(null, server);
             });
@@ -81,6 +90,40 @@ vows.describe("Yeti Listen").addBatch({
                 },
                 "connects successfully": function (client) {
                     assert.ok(client);
+                }
+            },
+            "when making a non-Yeti HTTP Upgrade request": {
+                topic: function (hub) {
+                    var vow = this,
+                        port = hub.hubListener.server.address().port,
+                        req = http.request({
+                            host: "localhost",
+                            port: port,
+                            headers: {
+                                "Connection": "Upgrade",
+                                "Upgrade": "TestSocket"
+                            }
+                        });
+
+                    req.end();
+
+                    req.on("upgrade", function (res, socket, head) {
+                        vow.callback(null, {
+                            res: res,
+                            socket: socket,
+                            head: head
+                        });
+                    });
+                },
+                "the headers are correct": function (topic) {
+                    assert.strictEqual(topic.res.headers.connection, "Upgrade");
+                    assert.strictEqual(topic.res.headers.upgrade, "TestSocket");
+                },
+                "the socket is valid": function (topic) {
+                    assert.isFunction(topic.socket.write);
+                },
+                "the head is correct": function (topic) {
+                    assert.strictEqual(topic.head.toString("utf8"), "\r\ndogcow");
                 }
             }
         }
