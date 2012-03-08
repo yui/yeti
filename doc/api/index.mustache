@@ -119,9 +119,9 @@ Begin the connection to the Hub.
 The `configuration` is an object with the properties:
 
 <ul>
-    <li>`tests`: An array of test filenames relative to `basedir` or pathnames.</li>
+    <li>`tests`: An array of test filenames relative to `basedir` or URL pathnames.</li>
     <li>`basedir`: The base directory to serve files from. Ignored if `useProxy` is false.</li>
-    <li>`useProxy`: True if `tests` are files to serve from this computer. False if they are pathnames, used only when Yeti is being embedded into another server.</li>
+    <li>`useProxy`: True if `tests` are files to serve from this computer. False if they are URL pathnames, used only when Yeti is being embedded into another server.</li>
 </ul>
 </p>
 
@@ -131,6 +131,26 @@ If this method is called before `client.connect()` has finished, an error will b
 
 <p>
 Returns an instance of `client.ClientBatch`.
+</p>
+
+<h5>Including Yeti scripts on your pages</h5>
+<p>
+When `useProxy` is false, you'll need to make sure the `tests` URLs you serve include Yeti injection scripts and a YUI Test that runs automatically.
+You may include Yeti scripts like this:
+</p>
+
+```
+<script src="/yeti/socket.io/socket.io.js"></script>
+<!-- If you provided a route to hub.attachServer, replace "/yeti" with that route: -->
+<script src="/yeti/public/inject.js"></script>
+```
+
+<p>
+These scripts should be included before all other scripts on the page, including YUI Test.
+</p>
+
+<p class="volatile">
+Note: Future Yeti releases will not require you to include socket.io.js yourself.
 </p>
 
 <h3>Class: client.ClientBatch</h3>
@@ -263,13 +283,15 @@ Pass through to <a href="http://nodejs.org/docs/latest/api/http.html#http_server
 Pass through to <a href="http://nodejs.org/docs/latest/api/http.html#http_server_close">http.Server.close()</a> for the `hub.server`.
 </p>
 
-<h4>hub.attachServer(httpServer)</h4>
+<h4>hub.attachServer(httpServer, [route])</h4>
 
 <p>
 Attach to another <a href="http://nodejs.org/docs/latest/api/http.html#http_class_http_server">http.Server</a>.
 Useful for testing paths on that server
 when the client sets `useProxy` to false.
 </p>
+
+<p>The route is optional, it defaults to `/yeti`.</p>
 
 <p>
 Yeti will use the `'upgrade'` event on this `http.Server`
