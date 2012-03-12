@@ -28,11 +28,11 @@ exports.rpcTopic = function (options, cb) {
 
 exports.sessionContext = function (subContext) {
     var blizzardContext = {
-        topic: function (lastTopic) {
+        topic: function (server) {
             var vow = this,
-                server = lastTopic.server,
+                port = server.address().port,
                 clientSession,
-                clientSocket = net.connect(lastTopic.port, function () {
+                clientSocket = net.connect(port, function () {
                     clientSession = new BlizzardSession(clientSocket, true);
                     clientSocket.removeListener("error", vow.callback);
                 });
@@ -70,16 +70,11 @@ exports.sessionContext = function (subContext) {
                     server = net.createServer();
 
                 server.listen(function () {
-                    // We did not define a port, the OS provided one.
-                    // Pass this along to the next test context.
-                    vow.callback(null, {
-                        port: server.address().port,
-                        server: server
-                    });
+                    vow.callback(null, server);
                 });
             },
-            "is connected": function (topic) {
-                assert.ok(topic.port);
+            "is connected": function (server) {
+                assert.isNumber(server.address().port);
             },
             "used by Blizzard": blizzardContext
         }

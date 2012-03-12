@@ -9,9 +9,9 @@ var hubClient = require("../../lib/client");
 
 var clientContext = exports.clientContext = function (subContext) {
     var context = {
-        topic: function (lastTopic) {
+        topic: function (hub) {
             var vow = this,
-                url = "http://localhost:" + lastTopic.port,
+                url = "http://localhost:" + hub.server.address().port,
                 client = hubClient.createClient(url);
             client.connect(function (err) {
                 vow.callback(err, {
@@ -37,19 +37,13 @@ var clientContext = exports.clientContext = function (subContext) {
                     hub = new Hub();
                 hub.listen(function () {
                     hub.removeListener("error", vow.callback);
-
-                    // We did not define a port, the OS provided one.
-                    // Pass this along to the next test context.
-                    vow.callback(null, {
-                        port: hub.server.address().port,
-                        hub: hub
-                    });
+                    vow.callback(null, hub);
                 });
                 hub.once("error", vow.callback);
             },
             "is ok": function (topic) {
-                assert.ok(topic.hub);
-                assert.isNumber(topic.port);
+                assert.ok(topic.server);
+                assert.isNumber(topic.server.address().port);
             },
             "used by the Hub Client": context
         }

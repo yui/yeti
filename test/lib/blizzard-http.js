@@ -7,16 +7,16 @@ var Blizzard = require("../../lib/blizzard");
 
 exports.sessionContext = function (subContext) {
     var blizzardContext = {
-        topic: function (lastTopic) {
+        topic: function (server) {
             var vow = this,
-                server = lastTopic.server,
+                port = server.address().port,
                 serverBlizzard = new Blizzard(),
                 clientBlizzard = new Blizzard(),
                 clientBlizzardSession;
 
             serverBlizzard.listen(server);
 
-            clientBlizzard.connect("http://127.0.0.1:" + lastTopic.port, function (err, newSession) {
+            clientBlizzard.connect("http://127.0.0.1:" + port, function (err, newSession) {
                 clientBlizzardSession = newSession;
             });
 
@@ -49,16 +49,11 @@ exports.sessionContext = function (subContext) {
                     server = http.createServer();
 
                 server.listen(function () {
-                    // We did not define a port, the OS provided one.
-                    // Pass this along to the next test context.
-                    vow.callback(null, {
-                        port: server.address().port,
-                        server: server
-                    });
+                    vow.callback(null, server);
                 });
             },
-            "is connected": function (topic) {
-                assert.ok(topic.port);
+            "is connected": function (server) {
+                assert.isNumber(server.address().port);
             },
             "used by Blizzard": blizzardContext
         }
