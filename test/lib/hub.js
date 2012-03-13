@@ -7,19 +7,27 @@ var phantom = require("phantom");
 var Hub = require("../../lib/hub");
 var hubClient = require("../../lib/client");
 
+var clientTopic = exports.clientTopic = function (pathname) {
+    if (!pathname) {
+        pathname = "/";
+    }
+    return function (hub) {
+        var vow = this,
+            server = (hub.hubListener && hub.hubListener.server) || hub.server,
+            url = "http://localhost:" + server.address().port + pathname,
+            client = hubClient.createClient(url);
+        client.connect(function (err) {
+            vow.callback(err, {
+                client: client,
+                url: url
+            });
+        });
+    };
+};
+
 var clientContext = exports.clientContext = function (subContext) {
     var context = {
-        topic: function (hub) {
-            var vow = this,
-                url = "http://localhost:" + hub.server.address().port,
-                client = hubClient.createClient(url);
-            client.connect(function (err) {
-                vow.callback(err, {
-                    client: client,
-                    url: url
-                });
-            });
-        },
+        topic: clientTopic(),
         "is ok": function (topic) {
             assert.ok(topic.client);
         }
@@ -41,29 +49,33 @@ var clientContext = exports.clientContext = function (subContext) {
                 });
                 hub.once("error", vow.callback);
             },
-            "is ok": function (topic) {
-                assert.ok(topic.server);
-                assert.isNumber(topic.server.address().port);
+            "is ok": function (hub) {
+                assert.ok(hub);
+                assert.isNumber(hub.server.address().port);
             },
             "used by the Hub Client": context
         }
     };
 };
 
+var phantomTopic = exports.phantomTopic = function () {
+    return function (lastTopic) {
+        var vow = this,
+            start = new Date(),
+            timeout = setTimeout(function () {
+                vow.callback(new Error("Unable to start phantomjs."));
+                process.exit(1);
+            }, 10000);
+        phantom.create(function (browser) {
+            clearTimeout(timeout);
+            vow.callback(null, browser);
+        });
+    };
+};
+
 exports.functionalContext = function (subContext) {
     var browserContext = {
-        topic: function (lastTopic) {
-            var vow = this,
-                start = new Date(),
-                timeout = setTimeout(function () {
-                    vow.callback(new Error("Unable to start phantomjs."));
-                    process.exit(1);
-                }, 10000);
-            phantom.create(function (browser) {
-                clearTimeout(timeout);
-                vow.callback(null, browser);
-            });
-        },
+        topic: phantomTopic(),
         "is ok": function (browser) {
             assert.isFunction(browser.createPage);
         }
@@ -78,5 +90,3 @@ exports.functionalContext = function (subContext) {
         "a browser": browserContext
     });
 };
-
-

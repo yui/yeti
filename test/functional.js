@@ -3,6 +3,10 @@
 var vows = require("vows");
 var assert = require("assert");
 
+var http = require("http");
+
+var Hub = require("../lib/hub");
+
 var hub = require("./lib/hub");
 
 if (process.env.TRAVIS) {
@@ -15,15 +19,14 @@ if (process.env.TRAVIS) {
     };
 }
 
-var context = {
-    "visits Yeti": {
+function visitorContext() {
+    return {
         topic: function (browser, lastTopic) {
             var vow = this;
             browser.createPage(function (page) {
                 var timeout = setTimeout(function () {
                     vow.callback(new Error("Timed out."));
                 }, 500);
-
                 lastTopic.client.once("agentConnect", function (agent) {
                     clearTimeout(timeout);
                     vow.callback(null, {
@@ -156,7 +159,93 @@ var context = {
                 assert.isString(agent);
             }
         } */
-    }
-};
+    };
+}
 
-vows.describe("Yeti Functional").addBatch(hub.functionalContext(context)).export(module);
+var DUMMY_PROTOCOL = "YetiDummyProtocol/1.0";
+
+function attachServerContext() {
+    return {
+        "A HTTP server with an upgrade listener": {
+            topic: function () {
+                var vow = this,
+                    server = http.createServer();
+
+                server.on("upgrade", function (req, socket, head) {
+                    if (req.headers.upgrade === DUMMY_PROTOCOL) {
+                        socket.write([
+                            "HTTP/1.1 101 Why not?",
+                            "Upgrade: " + DUMMY_PROTOCOL,
+                            "Connection: Upgrade",
+                            "",
+                            "dogcow"
+                        ].join("\r\n"));
+                    }
+                });
+
+                server.listen(function () {
+                    vow.callback(null, server);
+                });
+            },
+            "is connected": function (server) {
+                assert.isNumber(server.address().port);
+            },
+            "attached to a Yeti Hub": {
+                topic: function (server) {
+                    var vow = this,
+                        hub = new Hub();
+                    hub.attachServer(server, "/yeti-test-route");
+                    return hub;
+                },
+                "is ok": function (hub) {
+                    assert.ok(hub.server);
+                },
+                "when sending a non-Yeti upgrade request": {
+                    topic: function (hub) {
+                        var vow = this,
+                            req = http.request({
+                                port: hub.hubListener.server.address().port,
+                                host: "localhost",
+                                headers: {
+                                    "Connection": "Upgrade",
+                                    "Upgrade": DUMMY_PROTOCOL
+                                }
+                            });
+
+                        req.end();
+
+                        req.on("error", vow.callback);
+
+                        req.on("upgrade", function (res, socket, head) {
+                            socket.end();
+                            vow.callback(null, {
+                                res: res,
+                                head: head
+                            });
+                        });
+                    },
+                    "the data is correct": function (topic) {
+                        assert.strictEqual(topic.head.toString("utf8"), "dogcow");
+                    }
+                }
+                /*,
+                "used by the Hub Client": {
+                    // TODO: Handle without trailing slash.
+                    topic: hub.clientTopic("/yeti-test-route/"),
+                    "a browser": {
+                        topic: hub.phantomTopic(),
+                        "visits Yeti": visitorContext()
+                    }
+                }
+                */
+            }
+        }
+    };
+}
+
+vows.describe("Yeti Functional")
+    .addBatch(hub.functionalContext({
+        "visits Yeti": visitorContext()
+    }))
+    .addBatch(attachServerContext())
+    .export(module);
