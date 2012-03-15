@@ -25,8 +25,8 @@ function visitorContext() {
             var vow = this;
             browser.createPage(function (page) {
                 var timeout = setTimeout(function () {
-                    vow.callback(new Error("Timed out."));
-                }, 500);
+                    vow.callback(new Error("The capture page took too long to load."));
+                }, 1000);
                 lastTopic.client.once("agentConnect", function (agent) {
                     clearTimeout(timeout);
                     vow.callback(null, {
@@ -95,6 +95,7 @@ function visitorContext() {
                         }, function (pathname) {
                             pageTopic.page.release();
                             vow.callback(null, {
+                                expectedPathname: lastTopic.pathname,
                                 finalPathname: pathname,
                                 agentResults: results,
                                 agentSeenFires: agentSeenFires,
@@ -105,7 +106,7 @@ function visitorContext() {
                 });
             },
             "the browser returned to the capture page": function (topic) {
-                assert.strictEqual(topic.finalPathname, "/");
+                assert.strictEqual(topic.finalPathname, topic.expectedPathname);
             },
             "the agentComplete event fired once": function (topic) {
                 assert.strictEqual(topic.agentCompleteFires, 1);
@@ -169,7 +170,12 @@ function attachServerContext() {
         "A HTTP server with an upgrade listener": {
             topic: function () {
                 var vow = this,
-                    server = http.createServer();
+                    server = http.createServer(function (req, res) {
+                        res.writeHead(404, {
+                            "Content-Type": "text/plain"
+                        });
+                        res.end("You failed.");
+                    });
 
                 server.on("upgrade", function (req, socket, head) {
                     if (req.headers.upgrade === DUMMY_PROTOCOL) {
@@ -227,8 +233,7 @@ function attachServerContext() {
                     "the data is correct": function (topic) {
                         assert.strictEqual(topic.head.toString("utf8"), "dogcow");
                     }
-                }
-                /*,
+                },
                 "used by the Hub Client": {
                     // TODO: Handle without trailing slash.
                     topic: hub.clientTopic("/yeti-test-route/"),
@@ -237,7 +242,6 @@ function attachServerContext() {
                         "visits Yeti": visitorContext()
                     }
                 }
-                */
             }
         }
     };

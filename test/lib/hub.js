@@ -18,6 +18,7 @@ var clientTopic = exports.clientTopic = function (pathname) {
             client = hubClient.createClient(url);
         client.connect(function (err) {
             vow.callback(err, {
+                pathname: pathname || "/",
                 client: client,
                 url: url
             });
