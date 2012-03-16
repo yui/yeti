@@ -68,7 +68,7 @@ function visitorContext() {
                     }, 20000),
                     batch = lastTopic.client.createBatch({
                         basedir: __dirname + "/fixture",
-                        tests: ["basic.html"]
+                        tests: ["basic.html", "local-js.html"]
                     });
 
                 batch.on("agentResult", function (agent, details) {
@@ -111,15 +111,16 @@ function visitorContext() {
             "the agentComplete event fired once": function (topic) {
                 assert.strictEqual(topic.agentCompleteFires, 1);
             },
-            "the agentSeen event fired 3 times": function (topic) {
+            "the agentSeen event fired 4 times": function (topic) {
                 // 1. Capture page.
                 // 2. Test page.
-                // 3. Return to capture page.
-                assert.strictEqual(topic.agentSeenFires, 3);
+                // 3. Another test page.
+                // 4. Return to capture page.
+                assert.strictEqual(topic.agentSeenFires, 4);
             },
             "the agentResults are well-formed": function (topic) {
                 assert.isArray(topic.agentResults);
-                assert.strictEqual(topic.agentResults.length, 1);
+                assert.strictEqual(topic.agentResults.length, 2);
 
                 var result = topic.agentResults[0];
 
