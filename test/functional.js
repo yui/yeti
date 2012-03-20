@@ -26,7 +26,7 @@ function visitorContext() {
             browser.createPage(function (page) {
                 var timeout = setTimeout(function () {
                     vow.callback(new Error("The capture page took too long to load."));
-                }, 1000);
+                }, 5000);
                 lastTopic.client.once("agentConnect", function (agent) {
                     clearTimeout(timeout);
                     vow.callback(null, {
