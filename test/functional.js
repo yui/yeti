@@ -3,6 +3,7 @@
 var vows = require("vows");
 var assert = require("assert");
 
+var fs = require("graceful-fs");
 var http = require("http");
 
 var Hub = require("../lib/hub");
@@ -19,7 +20,7 @@ if (process.env.TRAVIS) {
     };
 }
 
-function visitorContext() {
+function visitorContext(createBatchConfiguration) {
     return {
         topic: function (browser, lastTopic) {
             var vow = this;
@@ -39,6 +40,14 @@ function visitorContext() {
                     page.set("onConsoleMessage", function () {
                         console.log.apply(this, [
                             "PhantomJS console message:"
+                        ].concat(Array.prototype.slice.apply(arguments)));
+                    });
+                }
+
+                if (process.env.RESOURCE_DEBUG) {
+                    page.set("onResourceRequested", function () {
+                        console.log.apply(this, [
+                            "PhantomJS resource requested:"
                         ].concat(Array.prototype.slice.apply(arguments)));
                     });
                 }
@@ -66,10 +75,7 @@ function visitorContext() {
                         vow.callback(new Error("Batch dispatch failed."));
                         process.exit(1);
                     }, 20000),
-                    batch = lastTopic.client.createBatch({
-                        basedir: __dirname + "/fixture",
-                        tests: ["basic.html", "local-js.html"]
-                    });
+                    batch = lastTopic.client.createBatch(createBatchConfiguration);
 
                 batch.on("agentResult", function (agent, details) {
                     results.push(details);
@@ -111,16 +117,14 @@ function visitorContext() {
             "the agentComplete event fired once": function (topic) {
                 assert.strictEqual(topic.agentCompleteFires, 1);
             },
-            "the agentSeen event fired 4 times": function (topic) {
-                // 1. Capture page.
-                // 2. Test page.
-                // 3. Another test page.
-                // 4. Return to capture page.
-                assert.strictEqual(topic.agentSeenFires, 4);
+            "the agentSeen event fired for each test and for capture pages": function (topic) {
+                // Capture page. + Test pages. + Return to capture page.
+                // 1 + (Batch tests) + 1 = Expected fires.
+                assert.strictEqual(topic.agentSeenFires, createBatchConfiguration.tests.length + 2);
             },
             "the agentResults are well-formed": function (topic) {
                 assert.isArray(topic.agentResults);
-                assert.strictEqual(topic.agentResults.length, 2);
+                assert.strictEqual(topic.agentResults.length, createBatchConfiguration.tests.length);
 
                 var result = topic.agentResults[0];
 
@@ -166,82 +170,89 @@ function visitorContext() {
 
 var DUMMY_PROTOCOL = "YetiDummyProtocol/1.0";
 
-function attachServerContext() {
+var SERVER_TEST_FIXTURE = fs.readFileSync(__dirname + "/fixture/attach-server.html");
+
+function attachServerContext(testContext) {
     return {
-        "A HTTP server with an upgrade listener": {
-            topic: function () {
-                var vow = this,
-                    server = http.createServer(function (req, res) {
+        topic: function () {
+            var vow = this,
+                server = http.createServer(function (req, res) {
+                    if (req.url === "/fixture") {
+                        res.writeHead(200, {
+                            "Content-Type": "text/html"
+                        });
+                        res.end(SERVER_TEST_FIXTURE);
+                    } else {
                         res.writeHead(404, {
                             "Content-Type": "text/plain"
                         });
                         res.end("You failed.");
-                    });
-
-                server.on("upgrade", function (req, socket, head) {
-                    if (req.headers.upgrade === DUMMY_PROTOCOL) {
-                        socket.write([
-                            "HTTP/1.1 101 Why not?",
-                            "Upgrade: " + DUMMY_PROTOCOL,
-                            "Connection: Upgrade",
-                            "",
-                            "dogcow"
-                        ].join("\r\n"));
                     }
                 });
 
-                server.listen(function () {
-                    vow.callback(null, server);
-                });
+            server.on("upgrade", function (req, socket, head) {
+                if (req.headers.upgrade === DUMMY_PROTOCOL) {
+                    socket.write([
+                        "HTTP/1.1 101 Why not?",
+                        "Upgrade: " + DUMMY_PROTOCOL,
+                        "Connection: Upgrade",
+                        "",
+                        "dogcow"
+                    ].join("\r\n"));
+                }
+            });
+
+            server.listen(function () {
+                vow.callback(null, server);
+            });
+        },
+        "is connected": function (server) {
+            assert.isNumber(server.address().port);
+        },
+        "attached to a Yeti Hub": {
+            topic: function (server) {
+                var vow = this,
+                    hub = new Hub();
+                hub.attachServer(server, "/yeti-test-route");
+                return hub;
             },
-            "is connected": function (server) {
-                assert.isNumber(server.address().port);
+            "is ok": function (hub) {
+                assert.ok(hub.server);
             },
-            "attached to a Yeti Hub": {
-                topic: function (server) {
+            "when sending a non-Yeti upgrade request": {
+                topic: function (hub) {
                     var vow = this,
-                        hub = new Hub();
-                    hub.attachServer(server, "/yeti-test-route");
-                    return hub;
-                },
-                "is ok": function (hub) {
-                    assert.ok(hub.server);
-                },
-                "when sending a non-Yeti upgrade request": {
-                    topic: function (hub) {
-                        var vow = this,
-                            req = http.request({
-                                port: hub.hubListener.server.address().port,
-                                host: "localhost",
-                                headers: {
-                                    "Connection": "Upgrade",
-                                    "Upgrade": DUMMY_PROTOCOL
-                                }
-                            });
-
-                        req.end();
-
-                        req.on("error", vow.callback);
-
-                        req.on("upgrade", function (res, socket, head) {
-                            socket.end();
-                            vow.callback(null, {
-                                res: res,
-                                head: head
-                            });
+                        req = http.request({
+                            port: hub.hubListener.server.address().port,
+                            host: "localhost",
+                            headers: {
+                                "Connection": "Upgrade",
+                                "Upgrade": DUMMY_PROTOCOL
+                            }
                         });
-                    },
-                    "the data is correct": function (topic) {
-                        assert.strictEqual(topic.head.toString("utf8"), "dogcow");
-                    }
+
+                    req.end();
+
+                    req.on("error", vow.callback);
+
+                    req.on("upgrade", function (res, socket, head) {
+                        socket.end();
+                        vow.callback(null, {
+                            res: res,
+                            head: head
+                        });
+                    });
                 },
-                "used by the Hub Client": {
-                    // TODO: Handle without trailing slash.
-                    topic: hub.clientTopic("/yeti-test-route/"),
-                    "a browser": {
-                        topic: hub.phantomTopic(),
-                        "visits Yeti": visitorContext()
-                    }
+                "the data is correct": function (topic) {
+                    assert.strictEqual(topic.head.toString("utf8"), "dogcow");
+                }
+            },
+            "used by the Hub Client": {
+                // TODO: Handle without trailing slash.
+                topic: hub.clientTopic("/yeti-test-route/"),
+                "a browser for testing": {
+                    topic: hub.phantomTopic(),
+                    "visits Yeti": testContext
                 }
             }
         }
@@ -250,7 +261,19 @@ function attachServerContext() {
 
 vows.describe("Yeti Functional")
     .addBatch(hub.functionalContext({
-        "visits Yeti": visitorContext()
+        "visits Yeti": visitorContext({
+            basedir: __dirname + "/fixture",
+            tests: ["basic.html", "local-js.html"]
+        })
     }))
-    .addBatch(attachServerContext())
+    .addBatch({
+        "A HTTP server with an upgrade listener (for Yeti files)": attachServerContext(visitorContext({
+            basedir: __dirname + "/fixture",
+            tests: ["basic.html", "local-js.html"]
+        })),
+        "A HTTP server with an upgrade listener (for Yeti paths)": attachServerContext(visitorContext({
+            tests: ["/fixture"],
+            useProxy: false
+        }))
+    })
     .export(module);
