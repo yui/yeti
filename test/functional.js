@@ -170,9 +170,19 @@ function visitorContext(createBatchConfiguration) {
 
 var DUMMY_PROTOCOL = "YetiDummyProtocol/1.0";
 
-var SERVER_TEST_FIXTURE = fs.readFileSync(__dirname + "/fixture/attach-server.html");
+var SERVER_TEST_FIXTURE = fs.readFileSync(__dirname + "/fixture/attach-server.html", "utf8");
 
-function attachServerContext(testContext) {
+function attachServerContext(testContext, explicitRoute) {
+    var route, testFixture;
+
+    if (explicitRoute) {
+        route = explicitRoute;
+    } else {
+        route = "/yeti";
+    }
+
+    testFixture = SERVER_TEST_FIXTURE.replace(/{route}/g, route);
+
     return {
         topic: function () {
             var vow = this,
@@ -181,7 +191,7 @@ function attachServerContext(testContext) {
                         res.writeHead(200, {
                             "Content-Type": "text/html"
                         });
-                        res.end(SERVER_TEST_FIXTURE);
+                        res.end(testFixture);
                     } else {
                         res.writeHead(404, {
                             "Content-Type": "text/plain"
@@ -213,7 +223,7 @@ function attachServerContext(testContext) {
             topic: function (server) {
                 var vow = this,
                     hub = new Hub();
-                hub.attachServer(server, "/yeti-test-route");
+                hub.attachServer(server, route);
                 return hub;
             },
             "is ok": function (hub) {
@@ -249,7 +259,7 @@ function attachServerContext(testContext) {
             },
             "used by the Hub Client": {
                 // TODO: Handle without trailing slash.
-                topic: hub.clientTopic("/yeti-test-route/"),
+                topic: hub.clientTopic(route + "/"),
                 "a browser for testing": {
                     topic: hub.phantomTopic(),
                     "visits Yeti": testContext
@@ -270,10 +280,10 @@ vows.describe("Yeti Functional")
         "A HTTP server with an upgrade listener (for Yeti files)": attachServerContext(visitorContext({
             basedir: __dirname + "/fixture",
             tests: ["basic.html", "local-js.html"]
-        })),
+        }), "/foo-test-route-1"),
         "A HTTP server with an upgrade listener (for Yeti paths)": attachServerContext(visitorContext({
             tests: ["/fixture"],
             useProxy: false
-        }))
+        }), "/bar-test-route-2")
     })
     .export(module);
