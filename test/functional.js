@@ -216,6 +216,9 @@ function attachServerContext(testContext, explicitRoute) {
                 vow.callback(null, server);
             });
         },
+        teardown: function (server) {
+            server.close();
+        },
         "is connected": function (server) {
             assert.isNumber(server.address().port);
         },
@@ -260,6 +263,10 @@ function attachServerContext(testContext, explicitRoute) {
             "used by the Hub Client": {
                 // TODO: Handle without trailing slash.
                 topic: hub.clientTopic(route + "/"),
+                teardown: function (topic) {
+                    // TODO Add end method, bug #54.
+                    // topic.client.end();
+                },
                 "a browser for testing": {
                     topic: hub.phantomTopic(),
                     "visits Yeti": testContext
@@ -270,7 +277,6 @@ function attachServerContext(testContext, explicitRoute) {
 }
 
 function attachServerBatch(definition) {
-
     var batch = {},
         routeWords = ["foo", "bar", "baz", "quux"];
 

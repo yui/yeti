@@ -52,6 +52,9 @@ vows.describe("Yeti Listen").addBatch({
                 vow.callback(null, server);
             });
         },
+        teardown: function (server) {
+            server.close();
+        },
         "is connected": function (topic) {
             assert.ok(topic.address().port);
         },

@@ -50,6 +50,9 @@ var clientContext = exports.clientContext = function (subContext) {
                 });
                 hub.once("error", vow.callback);
             },
+            teardown: function (hub) {
+                hub.close();
+            },
             "is ok": function (hub) {
                 assert.ok(hub);
                 assert.isNumber(hub.server.address().port);

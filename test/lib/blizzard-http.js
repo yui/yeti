@@ -28,7 +28,10 @@ exports.sessionContext = function (subContext) {
                     server: serverBlizzardSession
                 });
             });
-
+        },
+        teardown: function (topic) {
+            topic.client.end();
+            topic.server.end();
         }
     };
 

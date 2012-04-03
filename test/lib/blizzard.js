@@ -50,6 +50,10 @@ exports.sessionContext = function (subContext) {
             });
 
             clientSocket.once("error", vow.callback);
+        },
+        teardown: function (topic) {
+            topic.client.end();
+            topic.server.end();
         }
     };
 
