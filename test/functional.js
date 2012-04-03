@@ -269,6 +269,24 @@ function attachServerContext(testContext, explicitRoute) {
     };
 }
 
+function attachServerBatch(definition) {
+
+    var batch = {},
+        routeWords = ["foo", "bar", "baz", "quux"];
+
+    Object.keys(definition).forEach(function (name) {
+        var options = definition[name],
+            route = "/" + routeWords.sort(function () {
+                return 1 - Math.random() * 2;
+            }).join("-");
+
+        batch[name] = attachServerContext(visitorContext(options));
+        batch[name + " with a custom route"] = attachServerContext(visitorContext(options), route);
+    });
+
+    return batch;
+}
+
 vows.describe("Yeti Functional")
     .addBatch(hub.functionalContext({
         "visits Yeti": visitorContext({
@@ -276,14 +294,14 @@ vows.describe("Yeti Functional")
             tests: ["basic.html", "local-js.html"]
         })
     }))
-    .addBatch({
-        "A HTTP server with an upgrade listener (for Yeti files)": attachServerContext(visitorContext({
+    .addBatch(attachServerBatch({
+        "A HTTP server with an upgrade listener (for Yeti files)": {
             basedir: __dirname + "/fixture",
             tests: ["basic.html", "local-js.html"]
-        }), "/foo-test-route-1"),
-        "A HTTP server with an upgrade listener (for Yeti paths)": attachServerContext(visitorContext({
+        },
+        "A HTTP server with an upgrade listener (for Yeti paths)": {
             tests: ["/fixture"],
             useProxy: false
-        }), "/bar-test-route-2")
-    })
+        }
+    }))
     .export(module);
