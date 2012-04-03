@@ -265,7 +265,7 @@ function attachServerContext(testContext, explicitRoute) {
                 topic: hub.clientTopic(route + "/"),
                 teardown: function (topic) {
                     // TODO Add end method, bug #54.
-                    // topic.client.end();
+                    topic.client.end();
                 },
                 "a browser for testing": {
                     topic: hub.phantomTopic(),
