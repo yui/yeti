@@ -270,7 +270,6 @@ function attachServerContext(testContext, explicitRoute) {
                 // TODO: Handle without trailing slash.
                 topic: hub.clientTopic(route + "/"),
                 teardown: function (topic) {
-                    // TODO Add end method, bug #54.
                     topic.client.end();
                 },
                 "a browser for testing": {
