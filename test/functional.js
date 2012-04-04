@@ -226,7 +226,13 @@ function attachServerContext(testContext, explicitRoute) {
             topic: function (server) {
                 var vow = this,
                     hub = new Hub();
-                hub.attachServer(server, route);
+
+                if (!explicitRoute) {
+                    hub.attachServer(server);
+                } else {
+                    hub.attachServer(server, route);
+                }
+
                 return hub;
             },
             "is ok": function (hub) {
