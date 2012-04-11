@@ -20,7 +20,7 @@ if (process.env.TRAVIS) {
     };
 }
 
-function visitorContext(createBatchConfiguration) {
+function captureContext(batchContext) {
     return {
         topic: function (browser, lastTopic) {
             var vow = this;
@@ -65,107 +65,145 @@ function visitorContext(createBatchConfiguration) {
         "which fires agentConnect with the agent details": function (pageTopic) {
             assert.isString(pageTopic.agent);
         },
-        "for a batch": {
-            topic: function (pageTopic, browser, lastTopic) {
-                var vow = this,
-                    results = [],
-                    agentCompleteFires = 0,
-                    agentSeenFires = 0,
-                    timeout = setTimeout(function () {
-                        vow.callback(new Error("Batch dispatch failed for " + lastTopic.url));
-                        process.exit(1);
-                    }, 20000),
-                    batch = lastTopic.client.createBatch(createBatchConfiguration);
-
-                batch.on("agentResult", function (agent, details) {
-                    results.push(details);
-                });
-
-                batch.on("agentScriptError", function (agent, details) {
-                    vow.callback(new Error("Unexpected script error: " + details.message));
-                });
-
-                lastTopic.client.on("agentSeen", function (agent) {
-                    agentSeenFires = agentSeenFires + 1;
-                });
-
-                batch.on("agentComplete", function (agent) {
-                    agentCompleteFires = agentCompleteFires + 1;
-                });
-
-                batch.on("complete", function () {
-                    lastTopic.client.once("agentSeen", function (agent) {
-                        clearTimeout(timeout);
-                        pageTopic.page.evaluate(function () {
-                            return window.location.pathname;
-                        }, function (pathname) {
-                            pageTopic.page.release();
-                            vow.callback(null, {
-                                expectedPathname: lastTopic.pathname,
-                                finalPathname: pathname,
-                                agentResults: results,
-                                agentSeenFires: agentSeenFires,
-                                agentCompleteFires: agentCompleteFires
-                            });
-                        });
-                    });
-                });
-            },
-            "the browser returned to the capture page": function (topic) {
-                assert.strictEqual(topic.finalPathname, topic.expectedPathname);
-            },
-            "the agentComplete event fired once": function (topic) {
-                assert.strictEqual(topic.agentCompleteFires, 1);
-            },
-            "the agentSeen event fired for each test and for capture pages": function (topic) {
-                // Capture page. + Test pages. + Return to capture page.
-                // 1 + (Batch tests) + 1 = Expected fires.
-                assert.strictEqual(topic.agentSeenFires, createBatchConfiguration.tests.length + 2);
-            },
-            "the agentResults are well-formed": function (topic) {
-                assert.isArray(topic.agentResults);
-                assert.strictEqual(topic.agentResults.length, createBatchConfiguration.tests.length);
-
-                var result = topic.agentResults[0];
-
-                assert.include(result, "passed");
-                assert.include(result, "failed");
-                assert.include(result, "total");
-                assert.include(result, "ignored");
-                assert.include(result, "duration");
-                assert.include(result, "name");
-                assert.include(result, "timestamp");
-            }
-        }
-        /* TODO agentDisconnect is not yet implemented.
-        "visits Yeti briefly for the agentDisconnect event": {
-            topic: function (browser, lastTopic) {
-                var vow = this;
-                browser.createPage(function (page) {
-                    var timeout = setTimeout(function () {
-                        vow.callback(new Error("Timed out."));
-                    }, 500);
-
-                    lastTopic.client.once("agentDisconnect", function (agent) {
-                        clearTimeout(timeout);
-                        vow.callback(null, agent);
-                    });
-
-                    page.open(lastTopic.url, function (status) {
-                        if (status !== "success") {
-                            vow.callback(new Error("Failed to load page."));
-                        }
-                        lastTopic.client.once("agentConnect", function (agent) {
-                            page.release();
-                        });
-                    });
-                });
-            },
-            "which fires with the agent details": function (agent) {
-                assert.isString(agent);
-            }
-        } */
+        "for a batch": batchContext
     };
+    /* TODO agentDisconnect is not yet implemented.
+    "visits Yeti briefly for the agentDisconnect event": {
+        topic: function (browser, lastTopic) {
+            var vow = this;
+            browser.createPage(function (page) {
+                var timeout = setTimeout(function () {
+                    vow.callback(new Error("Timed out."));
+                }, 500);
+
+                lastTopic.client.once("agentDisconnect", function (agent) {
+                    clearTimeout(timeout);
+                    vow.callback(null, agent);
+                });
+
+                page.open(lastTopic.url, function (status) {
+                    if (status !== "success") {
+                        vow.callback(new Error("Failed to load page."));
+                    }
+                    lastTopic.client.once("agentConnect", function (agent) {
+                        page.release();
+                    });
+                });
+            });
+        },
+        "which fires with the agent details": function (agent) {
+            assert.isString(agent);
+        }
+    } */
+}
+
+function createBatchTopic(createBatchConfiguration) {
+    return function (pageTopic, browser, lastTopic) {
+        var vow = this,
+            results = [],
+            agentCompleteFires = 0,
+            agentErrorFires = 0,
+            agentSeenFires = 0,
+            timeout = setTimeout(function () {
+                vow.callback(new Error("Batch dispatch failed for " + lastTopic.url));
+                process.exit(1);
+            }, 20000),
+            batch = lastTopic.client.createBatch(createBatchConfiguration);
+
+        batch.on("agentResult", function (agent, details) {
+            results.push(details);
+        });
+
+        batch.on("agentScriptError", function (agent, details) {
+            vow.callback(new Error("Unexpected script error: " + details.message));
+        });
+
+        batch.on("agentError", function (agent, details) {
+            agentErrorFires = agentErrorFires + 1;
+        });
+
+        lastTopic.client.on("agentSeen", function (agent) {
+            agentSeenFires = agentSeenFires + 1;
+        });
+
+        batch.on("agentComplete", function (agent) {
+            agentCompleteFires = agentCompleteFires + 1;
+        });
+
+        batch.on("complete", function () {
+            lastTopic.client.once("agentSeen", function (agent) {
+                clearTimeout(timeout);
+                pageTopic.page.evaluate(function () {
+                    return window.location.pathname;
+                }, function (pathname) {
+                    pageTopic.page.release();
+                    vow.callback(null, {
+                        expectedPathname: lastTopic.pathname,
+                        finalPathname: pathname,
+                        agentResults: results,
+                        agentSeenFires: agentSeenFires,
+                        agentErrorFires: agentErrorFires,
+                        agentCompleteFires: agentCompleteFires
+                    });
+                });
+            });
+        });
+    };
+}
+
+function visitorContext(createBatchConfiguration) {
+    return captureContext({
+        topic: createBatchTopic(createBatchConfiguration),
+        "the browser returned to the capture page": function (topic) {
+            assert.strictEqual(topic.finalPathname, topic.expectedPathname);
+        },
+        "the agentComplete event fired once": function (topic) {
+            assert.strictEqual(topic.agentCompleteFires, 1);
+        },
+        "the agentSeen event fired for each test and for capture pages": function (topic) {
+            // Capture page. + Test pages. + Return to capture page.
+            // 1 + (Batch tests) + 1 = Expected fires.
+            assert.strictEqual(topic.agentSeenFires, createBatchConfiguration.tests.length + 2);
+        },
+        "the agentResults are well-formed": function (topic) {
+            assert.isArray(topic.agentResults);
+            assert.strictEqual(topic.agentResults.length, createBatchConfiguration.tests.length);
+
+            var result = topic.agentResults[0];
+
+            assert.include(result, "passed");
+            assert.include(result, "failed");
+            assert.include(result, "total");
+            assert.include(result, "ignored");
+            assert.include(result, "duration");
+            assert.include(result, "name");
+            assert.include(result, "timestamp");
+        }
+    });
+}
+
+function errorContext(createBatchConfiguration) {
+    return captureContext({
+        topic: createBatchTopic(createBatchConfiguration),
+        "the browser returned to the capture page": function (topic) {
+            assert.strictEqual(topic.finalPathname, topic.expectedPathname);
+        },
+        "the agentComplete event fired once": function (topic) {
+            assert.strictEqual(topic.agentCompleteFires, 1);
+        },
+        "the agentError event fired for all tests": function (topic) {
+            assert.strictEqual(topic.agentCompleteFires, createBatchConfiguration.tests.length);
+        },
+        "the agentSeen event fired for capture pages": function (topic) {
+            // Capture page. + (Nothing; all tests invalid) + Return to capture page.
+            // 1 + 1 = Expected fires.
+            assert.strictEqual(topic.agentSeenFires, 2);
+        },
+        "the agentResults is an empty array": function (topic) {
+            assert.isArray(topic.agentResults);
+            assert.strictEqual(topic.agentResults.length, 0);
+        }
+    });
 }
 
 var DUMMY_PROTOCOL = "YetiDummyProtocol/1.0";
@@ -303,6 +341,12 @@ vows.describe("Yeti Functional")
         "visits Yeti": visitorContext({
             basedir: __dirname + "/fixture",
             tests: ["basic.html", "local-js.html"]
+        })
+    }))
+    .addBatch(hub.functionalContext({
+        "visits Yeti with invalid files": errorContext({
+            basedir: __dirname + "/fixture",
+            tests: ["this-file-does-not-exist.html"]
         })
     }))
     .addBatch(attachServerBatch({
