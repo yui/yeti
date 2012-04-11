@@ -72,7 +72,7 @@ function visitorContext(createBatchConfiguration) {
                     agentCompleteFires = 0,
                     agentSeenFires = 0,
                     timeout = setTimeout(function () {
-                        vow.callback(new Error("Batch dispatch failed."));
+                        vow.callback(new Error("Batch dispatch failed for " + lastTopic.url));
                         process.exit(1);
                     }, 20000),
                     batch = lastTopic.client.createBatch(createBatchConfiguration);
