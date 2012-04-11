@@ -219,7 +219,7 @@ function attachServerContext(testContext, explicitRoute) {
         route = "/yeti";
     }
 
-    testFixture = SERVER_TEST_FIXTURE.replace(/{route}/g, route);
+    testFixture = SERVER_TEST_FIXTURE.replace(/\{route\}/g, route);
 
     return {
         topic: function () {
