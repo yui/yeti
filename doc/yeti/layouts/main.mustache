@@ -3,13 +3,19 @@
 <head>
     <meta charset="utf-8">
     <title>{{htmlTitle}}</title>
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Maven+Pro:400,700">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic">
     <link rel="stylesheet" href="{{yuiGridsUrl}}">
     <link rel="stylesheet" href="{{projectAssets}}/css/main.css">
     <link rel="stylesheet" href="{{projectAssets}}/vendor/prettify/prettify-min.css">
     <style>
+    body, h1, h2, h3, h4, h5, h6 {
+        font-family: 'PT Sans', 'DejaVu Sans', 'Bitstream Vera Sans', Verdana, sans-serif;
+    }
+    body {
+        font-size: 14px;
+    }
     .yeti-widget, .yeti-widget h1, .yeti-widget h2 {
-        font: 120% "Helvetica Neue", Helvetica, sans-serif;
+        font-size: 120%;
         text-align: center;
     }
     .yeti-widget h1 {
@@ -19,9 +25,9 @@
         margin: 0;
     }
     .yeti-widget h2 {
-        font-size: 470%;
-        font-weight: 100;
-        margin-top: -2%;
+        font-style: italic;
+        font-size: 250%;
+        margin-top: -1%;
         margin-bottom: 3%;
     }
     .yeti-widget h3 {

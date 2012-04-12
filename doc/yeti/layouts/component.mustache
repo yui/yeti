@@ -3,16 +3,28 @@
 <head>
     <meta charset="utf-8">
     <title>Yeti {{yetiVersion}} - {{htmlTitle}}</title>
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Maven+Pro:400,700">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic">
     <link rel="stylesheet" href="{{yuiGridsUrl}}">
     <link rel="stylesheet" href="{{projectAssets}}/css/main.css">
     <link rel="stylesheet" href="{{projectAssets}}/vendor/prettify/prettify-min.css">
     <style>
+    body, h1, h2, h3, h4, h5, h6 {
+        font-family: 'PT Sans', 'DejaVu Sans', 'Bitstream Vera Sans', Verdana, sans-serif;
+    }
+    body {
+        font-size: 14px;
+    }
+    .sidebox .bd {
+        font-size: 12px;
+    }
+    .toc li {
+        font-weight: normal;
+    }
     .yeti-hd {
         border-bottom: 1px solid #ddd;
     }
     .yeti-hd h1 {
-        font: bold 300% "Helvetica Neue", Helvetica, sans-serif;
+        font-size: 300%;
         letter-spacing: -1px;
         margin: 5px 0 0;
         padding: 0 20px;
@@ -26,9 +38,14 @@
         height: 52px;
         width: 117px;
     }
-    .yeti-hd .product {
-        line-height: 52px;
-        vertical-align: 25%;
+    .yeti-hd .version {
+        font-size: 40%;
+        font-weight: normal;
+        padding: 5px;
+        background: #30418C;
+        color: #fff;
+        vertical-align: 60%;
+        border-radius: 10px;
     }
     .yeti-hd .links {
         text-align: right;
@@ -45,7 +62,7 @@
     <div class="yeti-hd yui3-g">
         <div class="yui3-u-3-4">
         <h1>
-            <span class="product"><a href="../index.html">Yeti</a> {{yetiVersion}} Documentation</span>
+            <span class="product"><a href="../index.html">Yeti</a></span> <span class="version">{{yetiVersion}}</span>
         </h1>
         </div>
         <div class="yui3-u-1-4">
