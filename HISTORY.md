@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.2 / In Development
+
 ## 0.2.1 / 2012-04-11
 
   * Fix Bug #46 Yeti Hub with attachServer cannot serve Socket.io to browsers.
