@@ -1,6 +1,14 @@
 # A Brief History of Yeti
 
-## 0.2.1 / In Development
+## 0.2.1 / 2012-04-11
+
+  * Fix Bug #46 Yeti Hub with attachServer cannot serve Socket.io to browsers.
+  * Fix Bug #48 JavaScript files served by Yeti incorrectly contain injected script.
+  * Fix Bug #53 Firefox throws a script error during testing.
+  * Fix Bug #36 Handle test 404s.
+  * Fix Bug #40 Yeti Hub exits without error when its port is in use.
+  * Fix Bug #52 attachServer 'route' argument is required for proper function.
+  * Fix Bug #54 Close API for client connection.
 
 ## 0.2.0 / 2012-03-07
 
