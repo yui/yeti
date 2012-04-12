@@ -53,6 +53,7 @@
         "plates": "~0.2.2"
     },
     "devDependencies": {
+        "ronn": ">=0.3.8",
         "jslint": ">=0.1.4",
         "pact": ">=0.1.2",
         "phantom": ">=0.3.3",
