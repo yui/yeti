@@ -6,9 +6,9 @@ Yeti is a command-line tool for launching JavaScript unit tests in a browser and
 
 [Next]: https://github.com/yui/yeti/wiki/Yeti-Next
 
-# Using Yeti
+## Using Yeti
 
-## Running a test
+### Running a test
 
 Just run Yeti with the HTML file containing your test.
 
@@ -29,7 +29,7 @@ Point your browsers at that URL, then come back and press Enter.
 
 Yeti exits automatically when all tests complete. If test failures occur, Yeti will exit with a non-zero status code.
 
-## Yeti Hub
+### Yeti Hub
 
 To save time, start a Yeti Hub.
 
@@ -49,7 +49,7 @@ In another Terminal, running Yeti will connect to this Hub instead of starting a
     ✔ Agent completed: Safari (5.1.2) / Mac OS
     1 test passed! (107ms)
 
-## Sharing Your Yeti Hub
+### Sharing Your Yeti Hub
 
 Your Yeti Hub can be shared with other developers.
 
@@ -78,13 +78,13 @@ This makes it really simple to setup an ad-hoc testing lab shared with your team
 
 Caveat: Yeti Next has not been tested with a large number of browsers and Hub clients. If you'd like to help change this, see the Contribute section below.
 
-## Error handling
+### Error handling
 
 Yeti will report an uncaught exceptions as Script Errors.
 
 Yeti enforces [No-Quirks Mode][] in your tests because it may impact DOM-related APIs. [Add a DOCTYPE][doctype] to your test document to fix this.
 
-## Mobile testing made easy
+### Mobile testing made easy
 
 When combined with [localtunnel][], mobile testing is simple. If you're not dealing with sensitive information, startup your Yeti Hub and then run:
 
@@ -93,7 +93,7 @@ When combined with [localtunnel][], mobile testing is simple. If you're not deal
 
 You can then visit that URL on your mobile (or any other) device and have it run new tests.
 
-## Yeti API
+### Yeti API
 
 You can `require("yeti")` inside your application to script Yeti for your own use.
 
@@ -104,38 +104,38 @@ For API documentation:
 
 Yeti follows [Semantic Versioning](http://semver.org/) but is currently at a 0.x.y release. **The public API is not stable.** There will be changes.
 
-## Caveats
+### Caveats
 
 Yeti is known to work on Mac OS X and Linux.
 
 You must start Yeti's client in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
 
-# Installation
+## Installation
 
 Yeti requires [Node.js][] v0.6.x.
 
-## Latest snapshot
+### Latest snapshot
 
     # Install Yeti from the latest source from GitHub's yui/yeti repo.
     npm install -g http://latest.yeti.cx
 
-## Latest release
+### Latest release
 
 If you have problems with the latest Yeti, you may install the last stable release instead:
 
     npm install -g yeti
 
-## Localtunnel
+### Localtunnel
 
 Installing [localtunnel][] helps proxy Yeti outside of your firewall. It's available as a Ruby gem:
 
     gem install localtunnel
 
-# Develop Yeti
+## Develop Yeti
 
 Do you want to add new features or fix bugs in Yeti itself? We made it easy for you to hack on Yeti.
 
-## Install dependencies
+### Install dependencies
 
 Clone Yeti.
 
@@ -152,13 +152,13 @@ Yeti's automated tests use [PhantomJS][]. Install it.
     brew update
     brew install phantomjs
 
-## Run tests
+### Run tests
 
 Requires [PhantomJS][] to be installed.
 
     make test
 
-## Code coverage
+### Code coverage
 
 Requires [PhantomJS][] to be installed.
 
@@ -167,15 +167,15 @@ Requires [PhantomJS][] to be installed.
 This command uses [JSCoverage for Node.js][jsc],
 which will be built and installed to `./tools/jscoverage`.
 
-## HTML documentation
+### HTML documentation
 
     make html
 
-## JSLint
+### JSLint
 
     make lint
 
-## Contribute to Yeti
+### Contribute to Yeti
 
 Your contributions are welcome!
 Please review the [YUI contributor guide][CLA]
@@ -187,19 +187,19 @@ you'll need to review and sign
 the [YUI CLA][CLA]
 before we can accept your pull request.
 
-### Contribution Checklist
+#### Contribution Checklist
 
  1. Run `make lint` and make sure your new code runs through JSLint without error.
  1. Run `make coverage` and make sure your new code is covered with a test.
     Tests are located in `test` and use [Vows][].
 
-# Bugs & Feedback
+## Bugs & Feedback
 
 Open a ticket on [YUILibrary.com's Yeti Issue Tracker][issues] to report bugs or feature requests.
 
 Yeti is an experimental project of YUI Labs. As such, it doesn't receive the same level of support as other mature YUI projects.
 
-# License
+## License
 
 Yeti is free to use under YUI's BSD license. See the LICENSE file or the [YUI license page][license] for license text and copyright information.
 
