@@ -6,7 +6,9 @@ Yeti is a command-line tool for launching JavaScript unit tests in a browser and
 
 [Next]: https://github.com/yui/yeti/wiki/Yeti-Next
 
-## Getting Started
+# Using Yeti
+
+## Running a test
 
 Just run Yeti with the HTML file containing your test.
 
@@ -78,8 +80,6 @@ Caveat: Yeti Next has not been tested with a large number of browsers and Hub cl
 
 ## Error handling
 
-Note: Yeti Next will fail when given test files that do not exist. This will be fixed in a future release.
-
 Yeti will report an uncaught exceptions as Script Errors.
 
 Yeti enforces [No-Quirks Mode][] in your tests because it may impact DOM-related APIs. [Add a DOCTYPE][doctype] to your test document to fix this.
@@ -93,34 +93,6 @@ When combined with [localtunnel][], mobile testing is simple. If you're not deal
 
 You can then visit that URL on your mobile (or any other) device and have it run new tests.
 
-## Caveats
-
-Yeti is known to work on:
-
- - Mac OS X
- - Linux
-
-You must start Yeti's client in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
-
-## Installation
-
-This is experimental software. Use at your own risk.
-
-You will need Node.js v0.6.x or later. Node.js v0.6.12 is recommended.
-
-If you want to run Yeti Next, clone this project if you haven't yet done so.
-
-    $ git clone git://github.com/reid/yeti.git
-    $ cd yeti
-
-Now install it.
-
-    $ npm install -g
-
-Installing [localtunnel][] helps proxy Yeti outside of your firewall. It's available as a Ruby gem:
-
-    $ gem install localtunnel
-
 ## Yeti API
 
 You can `require("yeti")` inside your application to script Yeti for your own use.
@@ -132,32 +104,106 @@ For API documentation:
 
 Yeti follows [Semantic Versioning](http://semver.org/) but is currently at a 0.x.y release. **The public API is not stable.** There will be changes.
 
-## Testing
+## Caveats
 
-First, install the latest [PhantomJS][] for your platform. With [Homebrew][], just run `brew update; brew install phantomjs`.
+Yeti is known to work on Mac OS X and Linux.
 
-Run `npm install` to locally install Vows and other dev dependencies.
+You must start Yeti's client in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
 
-Run `make test` to run Vows tests, `make spec` for more details.
+# Installation
 
-Run `make coverage` to generate code coverage using [JSCoverage for Node.js][jsc], which will be built and installed to `./tools/jscoverage`.
+Yeti requires [Node.js][] v0.6.x.
 
-Note: As of February 29, 2012, you must have an internet connection for Yeti to work and pass tests, since it currently pulls in YUI from yahooapis.com.
+## Latest snapshot
 
-## Bugs & Feedback
+    # Install Yeti from the latest source from GitHub's yui/yeti repo.
+    npm install -g http://latest.yeti.cx
+
+## Latest release
+
+If you have problems with the latest Yeti, you may install the last stable release instead:
+
+    npm install -g yeti
+
+## Localtunnel
+
+Installing [localtunnel][] helps proxy Yeti outside of your firewall. It's available as a Ruby gem:
+
+    gem install localtunnel
+
+# Develop Yeti
+
+Do you want to add new features or fix bugs in Yeti itself? We made it easy for you to hack on Yeti.
+
+## Install dependencies
+
+Clone Yeti.
+
+    git clone https://github.com/yui/yeti.git
+    cd yeti
+
+Install Yeti's devDependencies.
+
+    npm install
+
+Yeti's automated tests use [PhantomJS][]. Install it.
+
+    # For Mac OS X and Homebrew:
+    brew update
+    brew install phantomjs
+
+## Run tests
+
+Requires [PhantomJS][] to be installed.
+
+    make test
+
+## Code coverage
+
+Requires [PhantomJS][] to be installed.
+
+    make coverage
+
+This command uses [JSCoverage for Node.js][jsc],
+which will be built and installed to `./tools/jscoverage`.
+
+## HTML documentation
+
+    make html
+
+## JSLint
+
+    make lint
+
+## Contribute to Yeti
+
+Your contributions are welcome!
+Please review the [YUI contributor guide][CLA]
+before contributing.
+
+If you haven't contributed to
+a YUI project before,
+you'll need to review and sign
+the [YUI CLA][CLA]
+before we can accept your pull request.
+
+### Contribution Checklist
+
+ 1. Run `make lint` and make sure your new code runs through JSLint without error.
+ 1. Run `make coverage` and make sure your new code is covered with a test.
+    Tests are located in `test` and use [Vows][].
+
+# Bugs & Feedback
 
 Open a ticket on [YUILibrary.com's Yeti Issue Tracker][issues] to report bugs or feature requests.
 
 Yeti is an experimental project of YUI Labs. As such, it doesn't receive the same level of support as other mature YUI projects.
 
-## License
+# License
 
 Yeti is free to use under YUI's BSD license. See the LICENSE file or the [YUI license page][license] for license text and copyright information.
 
-## Contribute
-
-Your contributions are welcome! Please review the [YUI contributor guide][CLA] before contributing. If you haven't contributed to a [YUI project][YUI] before, you'll need to review and sign the [YUI CLA][CLA] before we can accept your pull request.
-
+  [Node.js]: http://nodejs.org/
   [PhantomJS]: http://phantomjs.org/
   [jsc]: https://github.com/visionmedia/node-jscoverage
   [jspec]: http://github.com/visionmedia/jspec
