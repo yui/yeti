@@ -39,3 +39,7 @@ lint:
 	# Problem? Type `make install` first.
 	find bin lib test -name "*.js" -print0 | xargs -0 ./lint
 .PHONY: lint
+
+clean:
+	rm -rf build_docs
+.PHONY: clean
