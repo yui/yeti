@@ -112,7 +112,7 @@ You must start Yeti's client in the directory you'll be serving tests from. For 
 
 ## Installation
 
-Yeti requires [Node.js][] v0.6.x.
+Yeti requires [Node.js][node] v0.6.x.
 
 ### Latest snapshot
 
@@ -169,11 +169,29 @@ which will be built and installed to `./tools/jscoverage`.
 
 ### HTML documentation
 
+#### Website
+
+Documentation will be built to `build_docs/`.
+
     make html
+
+Yeti uses [Selleck][] to generate its website. Selleck files are located in `doc/`.
+
+#### JavaScript API
+
+Documentation will be built to `build_docs/api/`.
+
+    make html-api
+
+Yeti uses [YUIDocJS][] to generate API documentation from inline JSDoc comment blocks.
 
 ### JSLint
 
     make lint
+
+You may also run JSLint on individual files with `./lint`:
+
+    ./lint test/blizzard.js
 
 ### Contribute to Yeti
 
@@ -203,7 +221,8 @@ Yeti is an experimental project of YUI Labs. As such, it doesn't receive the sam
 
 Yeti is free to use under YUI's BSD license. See the LICENSE file or the [YUI license page][license] for license text and copyright information.
 
-  [Node.js]: http://nodejs.org/
+  [YUIDocJS]: https://github.com/davglass/yuidocjs
+  [Selleck]: http://github.com/rgrove/selleck
   [PhantomJS]: http://phantomjs.org/
   [jsc]: https://github.com/visionmedia/node-jscoverage
   [jspec]: http://github.com/visionmedia/jspec

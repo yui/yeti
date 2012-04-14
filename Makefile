@@ -31,7 +31,8 @@ html:
 
 html-api:
 	# Problem? Type `make install` first.
-	./node_modules/.bin/yuidoc
+	mkdir -p build_docs
+	./node_modules/.bin/yuidoc --project-version `node cli.js -v`
 .PHONY: html-api
 
 lint:
