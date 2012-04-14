@@ -179,7 +179,7 @@ Yeti uses [Selleck][] to generate its website. Selleck files are located in `doc
 
 #### JavaScript API
 
-Documentation will be built to `build_docs/api/`.
+Documentation will be built to `build_docs/api/everything/`.
 
     make html-api
 
