@@ -185,13 +185,15 @@ Documentation will be built to `build_docs/api/everything/`.
 
 Yeti uses [YUIDocJS][] to generate API documentation from inline JSDoc comment blocks.
 
-### JSLint
+### Linter
 
     make lint
 
-You may also run JSLint on individual files with `./lint`:
+You may also run the linter on individual files with `./lint`:
 
     ./lint test/blizzard.js
+
+Yeti uses [JSHint][] to analyze code for problems. See `.jshintrc` for options used by Yeti.
 
 ### Contribute to Yeti
 
@@ -207,7 +209,7 @@ before we can accept your pull request.
 
 #### Contribution Checklist
 
- 1. Run `make lint` and make sure your new code runs through JSLint without error.
+ 1. Run `make lint` and make sure your new code runs through the linter without error.
  1. Run `make coverage` and make sure your new code is covered with a test.
     Tests are located in `test` and use [Vows][].
 
@@ -221,6 +223,7 @@ Yeti is an experimental project of YUI Labs. As such, it doesn't receive the sam
 
 Yeti is free to use under YUI's BSD license. See the LICENSE file or the [YUI license page][license] for license text and copyright information.
 
+  [JSHint]: http://jshint.com/
   [YUIDocJS]: https://github.com/davglass/yuidocjs
   [Selleck]: http://github.com/rgrove/selleck
   [PhantomJS]: http://phantomjs.org/
