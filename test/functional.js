@@ -134,6 +134,8 @@ function createBatchTopic(createBatchConfiguration) {
             lastTopic.client.once("agentSeen", function (agent) {
                 clearTimeout(timeout);
                 pageTopic.page.evaluate(function () {
+                    /*global window:true */
+                    // This function runs in the scope of the web page.
                     return window.location.pathname;
                 }, function (pathname) {
                     pageTopic.page.release();
