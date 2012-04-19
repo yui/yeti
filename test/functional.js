@@ -153,6 +153,79 @@ function createBatchTopic(createBatchConfiguration) {
     };
 }
 
+function clientErrorContext(createBatchConfiguration) {
+    return captureContext({
+        topic: function (pageTopic, browser, lastTopic) {
+            var vow = this,
+                results = [],
+                batchStarted = false,
+                dispatchTimeout = setTimeout(function () {
+                    vow.callback(new Error("Batch dispatch failed for " + lastTopic.url));
+                    process.exit(1);
+                }, 20000),
+                seenTimeout,
+                batch = lastTopic.client.createBatch(createBatchConfiguration);
+
+            function onFinalPage(pathname) {
+                if (!pathname) {
+                    // We were called from setTimeout.
+                    pathname = "FAIL";
+                }
+
+                pageTopic.page.release();
+                vow.callback(null, {
+                    expectedPathname: lastTopic.pathname,
+                    finalPathname: pathname
+                });
+            }
+
+            seenTimeout = setTimeout(onFinalPage, 2000);
+
+            function finalPageCheck() {
+                pageTopic.page.evaluate(function () {
+                    /*global window:true */
+                    // This function runs in the scope of the web page.
+                    return window.location.pathname;
+                }, function (pathname) {
+                    onFinalPage(pathname);
+                });
+            }
+
+            lastTopic.client.on("agentSeen", function onAgentSeen() {
+                clearTimeout(dispatchTimeout);
+                clearTimeout(seenTimeout);
+
+                pageTopic.page.evaluate(function () {
+                    /*global window:true */
+                    // This function runs in the scope of the web page.
+                    return window.location.pathname;
+                }, function (pathname) {
+                    // We expect this event to fire like this:
+                    // 1st: Navigate to capture page.
+                    // 2nd: Navigate from capture to first test.
+
+                    if (pathname.indexOf("/batch") !== 0) {
+                        // 1st fire.
+                        return;
+                    }
+
+                    // 2nd fire. This section runs during the test.
+                    // We are done with this event.
+                    lastTopic.client.removeListener("agentSeen", onAgentSeen);
+
+                    // Disconnect from the Hub.
+                    lastTopic.client.end();
+
+                    setTimeout(finalPageCheck, 200);
+                });
+            });
+        },
+        "the browser returned to the capture page": function (topic) {
+            assert.strictEqual(topic.finalPathname, topic.expectedPathname);
+        }
+    });
+}
+
 function visitorContext(createBatchConfiguration) {
     return captureContext({
         topic: createBatchTopic(createBatchConfiguration),
@@ -341,6 +414,12 @@ function attachServerBatch(definition) {
 vows.describe("Yeti Functional")
     .addBatch(hub.functionalContext({
         "visits Yeti": visitorContext({
+            basedir: __dirname + "/fixture",
+            tests: ["basic.html", "local-js.html"]
+        })
+    }))
+    .addBatch(hub.functionalContext({
+        "visits Yeti and disconnects": clientErrorContext({
             basedir: __dirname + "/fixture",
             tests: ["basic.html", "local-js.html"]
         })
