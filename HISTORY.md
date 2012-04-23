@@ -1,6 +1,10 @@
 # A Brief History of Yeti
 
-## 0.2.2 / In Development
+## 0.2.2 / 2012-04-23
+
+  * Fix Bug #59 Fix `--version` command line option. (Ryuichi Okumura)
+  * Fix Bug #60 Fix code problems reported by the linter.
+  * Fix Bug #61 Improve Yeti HTML documentation, include contributor information.
 
 ## 0.2.1 / 2012-04-11
 
