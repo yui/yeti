@@ -37,7 +37,7 @@ html-api:
 
 lint:
 	# Problem? Type `make install` first.
-	find lib test -name "*.js" -print0 | xargs -0 ./lint
+	find lib test -name "*.js" -print0 | xargs -0 ./go lint
 .PHONY: lint
 
 clean:

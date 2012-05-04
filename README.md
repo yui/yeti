@@ -189,9 +189,9 @@ Yeti uses [YUIDocJS][] to generate API documentation from inline JSDoc comment b
 
     make lint
 
-You may also run the linter on individual files with `./lint`:
+You may also run the linter on individual files with `./go lint`:
 
-    ./lint test/blizzard.js
+    ./go lint test/blizzard.js
 
 Yeti uses [JSHint][] to analyze code for problems. See `.jshintrc` for options used by Yeti.
 
