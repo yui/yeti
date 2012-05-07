@@ -36,7 +36,7 @@ Make sure this directory contains YUI source: $YUI"
 
 cd $YUI
 
-YUI_TESTS="$(php <<'EOPHP'
+YUI_TESTS=$(php <<'EOPHP'
 <?php
 $txt = file_get_contents("src/common/tests/unit.xml");
 
@@ -46,18 +46,18 @@ foreach ($xml->tests->url as $item) {
     print "src/" . (string) $item . "\n";
 }
 ?>
-EOPHP)"
+EOPHP)
 
 if [ "x$QUERY" != "x" ]; then
     # Only tests matching $QUERY.
-    TESTS=`echo "$YUI_TESTS" | grep $QUERY`
+    TESTS=($(echo "$YUI_TESTS" | grep $QUERY))
 else
     # Run everything.
-    TESTS=$YUI_TESTS
+    TESTS=($YUI_TESTS)
 fi
 
 [ ${#TESTS} -gt 0 ] || die "No tests found for query: $QUERY"
 
-echo "Starting Yeti for YUI tests:\n$TESTS"
+echo "Starting Yeti for YUI tests:\n${TESTS[@]}"
 
-node $YETI "$TESTS"
+node $YETI "${TESTS[@]}"
