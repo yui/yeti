@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.4 / In Development
+
 ## 0.2.3 / 2012-05-08
 
   * Fix Bug #62 IE7+ does not run the test/fixture/basic.html test.
