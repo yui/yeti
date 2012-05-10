@@ -43,3 +43,8 @@ lint:
 clean:
 	rm -rf build_docs
 .PHONY: clean
+
+maintainer-clean:
+	npm rm webkit-devtools-agent
+	rm -rf tools
+.PHONY: maintainer-clean
