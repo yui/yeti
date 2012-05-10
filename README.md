@@ -195,6 +195,17 @@ You may also run the linter on individual files with `./go lint`:
 
 Yeti uses [JSHint][] to analyze code for problems. See `.jshintrc` for options used by Yeti.
 
+### Profiler
+
+Requires [Google Chrome Canary][canary] and Mac OS X.
+
+Profile the Yeti Hub:
+
+    ./go profile --server
+
+Using `./go profile` without `--server` to profile the Yeti client
+requires an interactive terminal, which does not yet work.
+
 ### Contribute to Yeti
 
 Your contributions are welcome!
@@ -223,6 +234,7 @@ Yeti is an experimental project of YUI Labs. As such, it doesn't receive the sam
 
 Yeti is free to use under YUI's BSD license. See the LICENSE file or the [YUI license page][license] for license text and copyright information.
 
+  [canary]: https://tools.google.com/dlpage/chromesxs
   [JSHint]: http://jshint.com/
   [YUIDocJS]: https://github.com/davglass/yuidocjs
   [Selleck]: http://github.com/rgrove/selleck
