@@ -66,9 +66,14 @@ function createInjectorTests() {
                         return vow.callback(err);
                     }
 
-                    var injectedBuffer = ts.inject(beforeBuffer);
+                    var actual = ts.inject(beforeBuffer).toString("utf8");
+
+                    // Remove the newline before EOF, if present.
+                    actual = actual.replace(/\n$/, "");
+                    expected = expected.replace(/\n$/, "");
+
                     vow.callback(err, {
-                        actual: ts.inject(beforeBuffer).toString("utf8"),
+                        actual: actual,
                         expected: expected
                     });
                 }
@@ -76,9 +81,6 @@ function createInjectorTests() {
                     if (err) {
                         return vow.callback(err);
                     }
-
-                    // Remove the newline before EOF, if present.
-                    expected = expected.replace(/\n$/, "");
 
                     fs.readFile([dir, before].join("/"), onFixtureRead.bind(null, expected));
                 });
