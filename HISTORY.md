@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.5 / In Development
+
 ## 0.2.4 / 2012-05-18
 
   * Fix Bug #64 Run tests where the first script tag is inside an HTML comment.
