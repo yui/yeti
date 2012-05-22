@@ -1,64 +1,64 @@
 {
-    "name": "yeti",
-    "description": "The YUI Easy Testing Interface.",
-    "author": "Reid Burke <me@reidburke.com> (http://reidburke.com)",
-    "contributors": [
-        "Dav Glass <davglass@gmail.com>"
-    ],
-    "keywords": [
-        "YUI",
-        "web app",
-        "YUITest",
-        "TDD",
-        "BDD",
-        "yui3",
-        "test"
-    ],
-    "version": "0.2.5pre",
-    "homepage": "htp://yuilibrary.com/projects/yeti",
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/yui/yeti.git"
-    },
-    "licenses": [
-        {
-            "type": "BSD",
-            "url" : "http://yuilibrary.com/license"
-        }
-    ],
-    "bugs": {
-        "url": "http://yuilibrary.com/projects/yeti/report"
-    },
-    "main": "lib/yeti",
-    "bin": {
-        "yeti": "./cli.js"
-    },
-    "scripts": {
-        "test": "vows test/*.js",
-        "postinstall": "./scripts/postinstall.sh"
-    },
-    "engines": {
-        "node": "~0.6.4"
-    },
-    "dependencies": {
-        "binary": "~0.2.6",
-        "director": "~1.0.6",
-        "eventemitter2": "~0.4.8",
-        "eventyoshi": "~0.1.2",
-        "nopt": "~1.0.10",
-        "onyx": "~0.1.2",
-        "socket.io": "~0.8.7",
-        "union": "~0.1.4",
-        "graceful-fs": "~1.1.2",
-        "plates": "~0.2.2"
-    },
-    "devDependencies": {
-        "ronn": ">=0.3.8",
-        "jshint": ">=0.6.1",
-        "pact": ">=0.1.2",
-        "phantom": ">=0.3.3",
-        "vows": "https://github.com/reid/vows/tarball/extras",
-        "selleck": ">=0.1.12",
-        "yuidocjs": ">=0.2.39"
+  "name": "yeti",
+  "description": "The YUI Easy Testing Interface.",
+  "author": "Reid Burke <me@reidburke.com> (http://reidburke.com)",
+  "contributors": [
+    "Dav Glass <davglass@gmail.com>"
+  ],
+  "keywords": [
+    "YUI",
+    "web app",
+    "YUITest",
+    "TDD",
+    "BDD",
+    "yui3",
+    "test"
+  ],
+  "version": "0.2.5pre",
+  "homepage": "htp://yuilibrary.com/projects/yeti",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/yui/yeti.git"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "http://yuilibrary.com/license"
     }
+  ],
+  "bugs": {
+    "url": "http://yuilibrary.com/projects/yeti/report"
+  },
+  "main": "lib/yeti",
+  "bin": {
+    "yeti": "./cli.js"
+  },
+  "scripts": {
+    "test": "vows test/*.js",
+    "postinstall": "./scripts/postinstall.sh"
+  },
+  "engines": {
+    "node": "~0.6.4"
+  },
+  "dependencies": {
+    "binary": "~0.2.6",
+    "director": "~1.0.6",
+    "eventemitter2": "~0.4.8",
+    "eventyoshi": "~0.1.2",
+    "nopt": "~1.0.10",
+    "onyx": "~0.1.2",
+    "socket.io": "~0.8.7",
+    "union": "~0.1.4",
+    "graceful-fs": "~1.1.2",
+    "plates": "~0.2.2"
+  },
+  "devDependencies": {
+    "ronn": ">=0.3.8",
+    "jshint": ">=0.6.1",
+    "pact": ">=0.1.2",
+    "phantom": ">=0.3.3",
+    "vows": "https://github.com/reid/vows/tarball/extras",
+    "selleck": ">=0.1.12",
+    "yuidocjs": ">=0.2.39"
+  }
 }
