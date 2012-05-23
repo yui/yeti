@@ -1,3 +1,4 @@
+/lib/hub/view/public/sockjs-*
 /doc/quick-start/index.mustache
 /api/
 /tools/

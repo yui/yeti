@@ -35,6 +35,7 @@
   },
   "scripts": {
     "test": "vows test/*.js",
+    "preinstall": "curl http://cdn.sockjs.org/sockjs-0.3.min.js > lib/hub/view/public/sockjs-0.3.min.js",
     "postinstall": "./scripts/postinstall.sh"
   },
   "engines": {
@@ -48,6 +49,7 @@
     "nopt": "~1.0.10",
     "onyx": "~0.1.2",
     "socket.io": "~0.8.7",
+    "sockjs": "~0.3.1",
     "union": "~0.3.0",
     "graceful-fs": "~1.1.2",
     "plates": "~0.2.2"
