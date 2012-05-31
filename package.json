@@ -35,7 +35,7 @@
   },
   "scripts": {
     "test": "vows test/*.js",
-    "postinstall": "./scripts/postinstall.sh"
+    "postinstall": "node scripts/postinstall.js"
   },
   "engines": {
     "node": "~0.6.4"

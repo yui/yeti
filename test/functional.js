@@ -3,6 +3,7 @@
 var vows = require("vows");
 var assert = require("assert");
 
+var path = require("path");
 var fs = require("graceful-fs");
 var http = require("http");
 
@@ -210,7 +211,8 @@ function errorContext(createBatchConfiguration) {
 
 var DUMMY_PROTOCOL = "YetiDummyProtocol/1.0";
 
-var SERVER_TEST_FIXTURE = fs.readFileSync(__dirname + "/fixture/attach-server.html", "utf8");
+var SERVER_TEST_FIXTURE = fs.readFileSync(path.join(__dirname, "fixture/attach-server.html"), "utf8");
+var YUI_TEST_FIXTURE = fs.readFileSync(path.resolve(__dirname, "../dep/yui-test.js"), "utf8");
 
 function attachServerContext(testContext, explicitRoute) {
     var route, testFixture;
@@ -232,6 +234,11 @@ function attachServerContext(testContext, explicitRoute) {
                             "Content-Type": "text/html"
                         });
                         res.end(testFixture);
+                    } else if (req.url === "/yui") {
+                        res.writeHead(200, {
+                            "Content-Type": "application/javascript"
+                        });
+                        res.end(YUI_TEST_FIXTURE);
                     } else {
                         res.writeHead(404, {
                             "Content-Type": "text/plain"
@@ -338,24 +345,30 @@ function attachServerBatch(definition) {
     return batch;
 }
 
+var basedir = path.join(__dirname, "..");
+
+function fixtures(basenames) {
+    return basenames.map(function (basename) {
+        return path.join(__dirname, "fixture", basename);
+    });
+}
+
+function withTests() {
+    return {
+        basedir: basedir,
+        tests: fixtures(Array.prototype.slice.call(arguments))
+    };
+}
+
 vows.describe("Yeti Functional")
     .addBatch(hub.functionalContext({
-        "visits Yeti": visitorContext({
-            basedir: __dirname + "/fixture",
-            tests: ["basic.html", "local-js.html"]
-        })
+        "visits Yeti": visitorContext(withTests("basic.html", "local-js.html"))
     }))
     .addBatch(hub.functionalContext({
-        "visits Yeti with invalid files": errorContext({
-            basedir: __dirname + "/fixture",
-            tests: ["this-file-does-not-exist.html"]
-        })
+        "visits Yeti with invalid files": errorContext(withTests("this-file-does-not-exist.html"))
     }))
     .addBatch(attachServerBatch({
-        "A HTTP server with an upgrade listener (for Yeti files)": {
-            basedir: __dirname + "/fixture",
-            tests: ["basic.html", "local-js.html"]
-        },
+        "A HTTP server with an upgrade listener (for Yeti files)": withTests("basic.html", "local-js.html"),
         "A HTTP server with an upgrade listener (for Yeti paths)": {
             tests: ["/fixture"],
             useProxy: false
