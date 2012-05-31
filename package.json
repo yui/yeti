@@ -36,7 +36,7 @@
   "scripts": {
     "test": "vows test/*.js",
     "preinstall": "curl http://cdn.sockjs.org/sockjs-0.3.min.js > lib/hub/view/public/sockjs-0.3.min.js",
-    "postinstall": "./scripts/postinstall.sh"
+    "postinstall": "node scripts/postinstall.js"
   },
   "engines": {
     "node": "~0.6.4"
