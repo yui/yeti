@@ -18,7 +18,7 @@
   "homepage": "htp://yuilibrary.com/projects/yeti",
   "repository": {
     "type": "git",
-    "url": "http://github.com/yui/yeti.git"
+    "url": "git://github.com/yui/yeti.git"
   },
   "licenses": [
     {
@@ -60,5 +60,6 @@
     "vows": "https://github.com/reid/vows/tarball/extras",
     "selleck": ">=0.1.12",
     "yuidocjs": ">=0.2.39"
-  }
+  },
+  "optionalDependencies": {}
 }
