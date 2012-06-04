@@ -11,7 +11,7 @@ vows.describe("Yeti Hub HTTP errors").addBatch({
         topic : pact.httpify(yeti.createHub()),
         "when a non-GET or HEAD request is used" : {
             topic : pact.request({
-                url : "/",
+                url : "http://localhost:9000",
                 method : "PUT"
             }),
             "should return a 405 error" : pact.code(405),
@@ -22,7 +22,7 @@ vows.describe("Yeti Hub HTTP errors").addBatch({
         },
         "when the desired route is not found" : {
             topic : pact.request({
-                url : "/foobar"
+                url : "http://localhost:9000/foobar"
             }),
             "should return a 404 error" : pact.code(404),
             "should return the proper error message" : function (topic) {
@@ -32,7 +32,7 @@ vows.describe("Yeti Hub HTTP errors").addBatch({
         },
         "when a HEAD request is not found" : {
             topic : pact.request({
-                url : "/foobar",
+                url : "http://localhost:9000/foobar",
                 method : "HEAD"
             }),
             "should end with no message" : function (topic) {
