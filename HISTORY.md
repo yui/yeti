@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.6 / In Development
+
 ## 0.2.5 / 2012-06-01
 
   * Security: Yeti Client will only serve files to the connected
