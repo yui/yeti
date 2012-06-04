@@ -16,8 +16,8 @@ vows.describe("Yeti Hub HTTP errors").addBatch({
             }),
             "should return a 405 error" : pact.code(405),
             "should return the proper error message" : function (topic) {
-                assert.equal(topic.body, "/* Method Not Allowed\n" +
-                                         "GET or HEAD method required. */");
+                assert.equal(topic.body, "Method Not Allowed\n" +
+                                         "GET or HEAD method required.");
             }
         },
         "when the desired route is not found" : {
@@ -26,8 +26,17 @@ vows.describe("Yeti Hub HTTP errors").addBatch({
             }),
             "should return a 404 error" : pact.code(404),
             "should return the proper error message" : function (topic) {
-                assert.equal(topic.body, "/* Not Found\n" + 
-                                         "Unable to find what you're looking for. */");
+                assert.equal(topic.body, "Not Found\n" + 
+                                         "Unable to find what you're looking for.");
+            }
+        },
+        "when a HEAD request is not found" : {
+            topic : pact.request({
+                url : "/foobar",
+                method : "HEAD"
+            }),
+            "should end with no message" : function (topic) {
+                assert.equal(topic.body, "");
             }
         }
     }
