@@ -57,9 +57,8 @@ function download(err) {
     }
 
     [
-        [YUI_TEST_URL, "yui-test.js"]
-        // When SockJS lands, we'll be downloading it here:
-        // ["http://cdn.sockjs.org/sockjs-0.3.min.js", "sock.js"]
+        [YUI_TEST_URL, "yui-test.js"],
+        ["http://cdn.sockjs.org/sockjs-0.3.min.js", "sock.js"]
     ].forEach(function downloader(args) {
         saveURLToDep.apply(null, args);
     });
