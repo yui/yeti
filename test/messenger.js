@@ -8,8 +8,8 @@ var pact = require("pact");
 var Hub = require("../lib/hub");
 
 vows.describe("Yeti Hub HTTP errors").addBatch({
-    "Hub setup and connection" : {
-        topic : function () {
+    "Hub setup and connection": {
+        topic: function () {
             var vow = this,
                 hub = new Hub();
             hub.listen(function () {
@@ -21,79 +21,82 @@ vows.describe("Yeti Hub HTTP errors").addBatch({
         },
         "when a non-GET or HEAD request is used" : {
             topic : function (hub) {
-                var vow = this;
-                var req = http.request({
-                    host : hub.server.address().address,
-                    port : hub.server.address().port,
-                    method : "PUT"
-                });
+                var vow = this,
+                    address = hub.server.address(),
+                    req = http.request({
+                        host: address.address,
+                        port: address.port,
+                        method: "PUT"
+                    });
                 req.on("response", function (res) {
                     res.setEncoding("utf8");
                     res.on("data", function (chunk) {
                         vow.callback(null, {
-                            body : chunk,
-                            status : res.statusCode,
-                            headers : res.headers
+                            body: chunk,
+                            status: res.statusCode,
+                            headers: res.headers
                         });
                     });
                 });
                 req.end();
             },
-            "should return a 405 error" : function (topic) {
+            "should return a 405 error": function (topic) {
                 assert.equal(topic.status, 405);
             },
-            "should return the proper error message" : function (topic) {
+            "should return the proper error message": function (topic) {
                 assert.equal(topic.body, "Method Not Allowed\n" +
                                          "GET or HEAD method required.");
             }
         },
-        "when the desired route is not found" : {
-            topic : function (hub) {
-                var vow = this;
-                var req = http.request({
-                    host : hub.server.address().address,
-                    port : hub.server.address().port,
-                    path : "/foobar",
-                    method : "GET"
-                });
+        "when the desired route is not found": {
+            topic: function (hub) {
+                var vow = this,
+                    address = hub.server.address(),
+                    req = http.request({
+                        host: address.address,
+                        port: address.port,
+                        path: "/foobar",
+                        method: "GET"
+                    });
                 req.on("response", function (res) {
                     res.setEncoding("utf8");
                     res.on("data", function (chunk) {
                         vow.callback(null, {
-                            body : chunk,
-                            status : res.statusCode,
-                            headers : res.headers
+                            body: chunk,
+                            status: res.statusCode,
+                            headers: res.headers
                         });
                     });
                 });
                 req.end();
             },
-            "should return a 404 error" : function (topic) {
+            "should return a 404 error": function (topic) {
                 assert.equal(topic.status, 404);
             },
-            "should return the proper error message" : function (topic) {
+            "should return the proper error message": function (topic) {
                 assert.equal(topic.body, "Not Found\n" +
                                          "Unable to find what you're looking for.");
             }
         },
-        "when a HEAD request is not found" : {
-            topic : function (hub) {
-                var vow = this;
-                var req = http.request({
-                    host : hub.server.address().address,
-                    port : hub.server.address().port,
-                    path : "/foobar",
-                    method : "HEAD"
-                });
+        "when a HEAD request is not found": {
+            topic: function (hub) {
+                var vow = this,
+                    address = hub.server.address(),
+                    req = http.request({
+                        host: address.address,
+                        port: address.port,
+                        path: "/foobar",
+                        method: "HEAD"
+                    });
                 req.on("response", function (res) {
                     vow.callback(null, {
-                        status : res.statusCode,
-                        headers : res.headers
+                        status: res.statusCode,
+                        headers: res.headers
                     });
                 });
                 req.end();
             },
-            "should return a 404 error" : function (topic) {
+            "should return a 404 error": function (topic) {
                 assert.equal(topic.status, 404);
             }
         }
