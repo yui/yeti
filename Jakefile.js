@@ -1,7 +1,7 @@
 var fs = require('fs');
 var execute = require('child_process').exec;
 var ronn = require('ronn').Ronn;
-var version = require('lib/package').readPackageSync().version;
+var version = require('./lib/package').readPackageSync().version;
 var rimraf = require('rimraf');
 var walk = require('walk');
 
