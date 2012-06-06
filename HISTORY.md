@@ -1,6 +1,16 @@
 # A Brief History of Yeti
 
-## 0.2.5 / In Development
+## 0.2.6 / In Development
+
+## 0.2.5 / 2012-06-01
+
+  * Security: Yeti Client will only serve files to the connected
+    Hub within the directory the Client was started in.
+    More details: http://yeti.cx/blog/2012/06/yeti-0-2-5-released/
+  * Fix Bug #76 Run fixture YUI Tests offline;
+    really no longer depend on yui.yahooapis.com at runtime.
+  * Fix Bug #74 `$yetify` JavaScript should not be injected into CSS.
+  * Avoid crashing Yeti on certain types of bad requests.
 
 ## 0.2.4 / 2012-05-18
 
