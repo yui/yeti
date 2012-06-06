@@ -61,6 +61,7 @@
     "selleck": ">=0.1.12",
     "yuidocjs": ">=0.2.39",
     "jake": ">=0.2.35",
+    "walk": "~2.2.1",
     "rimraf": ">=2.0.1"
   },
   "optionalDependencies": {}
