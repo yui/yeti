@@ -61,7 +61,7 @@ task('test', function () {
     var index, jsTestFiles = getTestFiles('test');
 
     for (index = 0; index < jsTestFiles.length; index++) {
-        exec('node node_modules/.bin/vows test/' + jsTestFiles[index],
+        exec('node node_modules/vows/bin/vows test/' + jsTestFiles[index],
             { customFds: [0,1,2] });
     }
 });
@@ -71,7 +71,7 @@ task('spec', function () {
     var index, jsTestFiles = getTestFiles('test');
 
     for (index = 0; index < jsTestFiles.length; index++) {
-        exec('node node_modules/.bin/vows --spec test/' + jsTestFiles[index],
+        exec('node node_modules/vows/bin/vows --spec test/' + jsTestFiles[index],
             { customFds: [0,1,2] });
     }
 });
@@ -91,19 +91,19 @@ task('html', function() {
         var moddedHtml = html.replace(/<[\/]*html>/, '')
                              .replace('<pre>', '<pre class="code"');
         fs.writeFileSync('doc/quick-start/index.mustache', moddedHtml);
-        exec('node node_modules/.bin/selleck');
+        exec('node node_modules/selleck/bin/selleck');
     });
 });
 
 desc('Build API documentation');
 task('html-api', ['html'], function () {
-    exec('node node_modules/.bin/yuidoc --project-version ' + version);
+    exec('node node_modules/yuidocjs/lib/cli.js --project-version ' + version);
 });
 
 desc('Run JSLint on all files, or a specific given file');
 task('lint', function () {
     getJsFiles('./lib', function (files) {
-        exec('node node_modules/.bin/jshint ' + files.join(' '));
+        exec('node node_modules/jshint/bin/hint ' + files.join(' '));
     });
 });
 
