@@ -59,7 +59,10 @@
     "phantom": ">=0.3.3",
     "vows": "https://github.com/reid/vows/tarball/extras",
     "selleck": ">=0.1.12",
-    "yuidocjs": ">=0.2.39"
+    "yuidocjs": ">=0.2.39",
+    "jake": ">=0.2.35",
+    "rimraf": ">=2.0.1",
+    "walk": ">=2.2.1"
   },
   "optionalDependencies": {}
 }
