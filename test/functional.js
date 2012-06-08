@@ -362,7 +362,7 @@ function withTests() {
 
 vows.describe("Yeti Functional")
     .addBatch(hub.functionalContext({
-        "visits Yeti": visitorContext(withTests("basic.html", "local-js.html"))
+        "visits Yeti": visitorContext(withTests("basic.html", "local-js.html", "404-script.html"))
     }))
     .addBatch(hub.functionalContext({
         "visits Yeti with invalid files": errorContext(withTests("this-file-does-not-exist.html"))
