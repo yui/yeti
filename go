@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 die () {
     filenames=($(ls -F scripts | grep '*' | sed -e 's/.sh\*//'))
