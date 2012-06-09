@@ -1,28 +1,50 @@
 var fs = require("fs");
-var execute = require("child_process").exec;
+var child_process = require("child_process");
+
 var ronn = require("ronn").Ronn;
-var version = require("./lib/package").readPackageSync().version;
 var rimraf = require("rimraf");
 var walk = require("walk");
 
-function exec(command, onComplete) {
-    execute(command, function (err, stdout, stderr) {
-        if (typeof(onComplete) !== "function" && stdout) {
-            console.log(stdout);
-        }
-        if (stderr) {
-            console.log(stderr);
-        }
-        if (typeof(onComplete) === "function") {
-            onComplete(stdout);
+var version = require("./lib/package").readPackageSync().version;
+
+function nuke(dir, completer) {
+    rimraf(dir, function (err) {
+        if (err) {
+            fail(err);
+        } else if ("function" === typeof completer) {
+            completer();
         }
     });
 }
 
-function getTestFiles(path) {
-    var jsFilter = new RegExp(".js$"),
-        jsTestFiles = fs.readdirSync(path).filter(function(elem, index, arr) {
+function spawn(command, args, completer) {
+    child_process.spawn(command, args, {
+        customFds: [0,1,2],
+        stdio: "inherit"
+    }).on("exit", function (code) {
+        if (code !== 0) {
+            fail(command + " " + args.join(" ") +
+                " failed with " + code);
+        } else if ("function" === typeof completer) {
+            completer();
+        }
+    });
+}
+
+function bin(name, args, completer) {
+    if (!args) {
+        args = [];
+    }
+    spawn("node", ["node_modules/.bin/" + name].concat(args), completer);
+}
+
+function getTestFiles() {
+    var path = "test",
+        jsFilter = new RegExp(".js$"),
+        jsTestFiles = fs.readdirSync(path).filter(function (elem, index, arr) {
             return jsFilter.test(elem);
+        }).map(function (file) {
+            return "test/" + file;
         });
 
     return jsTestFiles;
@@ -31,7 +53,9 @@ function getTestFiles(path) {
 function getJsFiles(path, cb) {
     var files = [],
         jsFilter = new RegExp(".js$");
-        walker = walk.walk(path, { followLInks: false });
+        walker = walk.walk(path, {
+            followLinks: false
+        });
 
     walker.on("file", function(root, stat, next) {
         if (jsFilter.test(stat.name)) {
@@ -46,82 +70,75 @@ function getJsFiles(path, cb) {
 }
 
 desc("Default: install all modules including devDependencies");
-task("default", function () {
-    exec("npm install .");       
-});
+task("default", ["install"]);
 
 desc("Install all modules including devDependencies");
 task("install", function () {
-    exec("npm install .");
+    spawn("npm", ["install"], complete);
+}, {
+    async: true
 });
 
 desc("Run all of Yeti's unit tests");
 task("test", function () {
-    // RegExp for JavaScript test files (used for Windows compatibility)
-    var index, jsTestFiles = getTestFiles("test");
-
-    for (index = 0; index < jsTestFiles.length; index++) {
-        exec("node node_modules/vows/bin/vows test/" + jsTestFiles[index],
-            { customFds: [0,1,2] });
-    }
+    bin("vows", getTestFiles(), complete);
+}, {
+    async: true
 });
 
 desc("Run all of Yeti's unit tests with the '--spec' flag");
 task("spec", function () {
-    var index, jsTestFiles = getTestFiles("test");
-
-    for (index = 0; index < jsTestFiles.length; index++) {
-        exec("node node_modules/vows/bin/vows --spec test/" + jsTestFiles[index],
-            { customFds: [0,1,2] });
-    }
+    bin("vows", ["--spec"].concat(getTestFiles()), complete);
+}, {
+    async: true
 });
 
 desc("Build coverage tools and write out test coverage HTML page");
 task("coverage", function () {
-    // nodejs-coverage may not work well on Windows so just use the original
-    exec("scripts/coverage.sh");
+    spawn("bash", ["scripts/coverage.sh"], complete);
+}, {
+    async: true
 });
 
 desc("Build HTML documentation");
 task("html", function() {
-    fs.readFile("README.md", function (err, data) {
+    fs.readFile("README.md", "utf8", function (err, data) {
+        var md, html;
         // Remove Travis info
-        var markdown = data.toString().substr(124);
-        var html = new ronn(markdown).html();
-        var moddedHtml = html.replace(/<[\/]*html>/, "")
-                             .replace("<pre>", '<pre class="code"');
-        fs.writeFileSync("doc/quick-start/index.mustache", moddedHtml);
-        exec("node node_modules/selleck/bin/selleck");
+        md = data.split("\n").slice(4).join("\n"),
+        html = new ronn(md).html()
+                .replace(/<[\/]*html>/, "")
+                .replace("<pre>", '<pre class="code"');
+        fs.writeFileSync("doc/quick-start/index.mustache", html);
+        bin("selleck", [], complete);
     });
+}, {
+    async: true
 });
 
 desc("Build API documentation");
 task("html-api", ["html"], function () {
-    exec("node node_modules/yuidocjs/lib/cli.js --project-version " + version);
+    bin("yuidoc", ["--project-version", version], complete);
+}, {
+    async: true
 });
 
 desc("Run JSLint on all files, or a specific given file");
 task("lint", function () {
     getJsFiles("./lib", function (files) {
-        exec("node node_modules/jshint/bin/hint " + files.join(" "));
+        bin("jshint", files, complete);
     });
+}, {
+    async: true
 });
 
 desc("Remove build documentation");
 task("clean", function () {
-    rimraf("build_docs", function (err) {
-        if (err) { 
-            console.log(err); 
-        }
-    });
+    nuke("build_docs");
 });
 
 desc("Remove development tools");
 task("maintainer-clean", function () {
-    exec("npm rm webkit-devtools-agent");
-    rimraf("tools", function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+    spawn("rpm" ["rm", "webkit-devtools-agent"]);
+    nuke("tools");
 });
