@@ -1,7 +1,11 @@
+/*global task, desc, fail, complete */
+
+"use strict";
+
 var fs = require("fs");
 var child_process = require("child_process");
 
-var ronn = require("ronn").Ronn;
+var Ronn = require("ronn").Ronn;
 var rimraf = require("rimraf");
 var walk = require("walk");
 
@@ -19,8 +23,8 @@ function nuke(dir, completer) {
 
 function spawn(command, args, completer) {
     child_process.spawn(command, args, {
-        customFds: [0,1,2],
-        stdio: "inherit"
+        stdio: "inherit",
+        customFds: [0, 1, 2]
     }).on("exit", function (code) {
         if (code !== 0) {
             fail(command + " " + args.join(" ") +
@@ -52,21 +56,21 @@ function getTestFiles() {
 
 function getJsFiles(path, cb) {
     var files = [],
-        jsFilter = new RegExp(".js$");
+        jsFilter = new RegExp(".js$"),
         walker = walk.walk(path, {
             followLinks: false
         });
 
-    walker.on("file", function(root, stat, next) {
+    walker.on("file", function (root, stat, next) {
         if (jsFilter.test(stat.name)) {
             files.push(root + "/" + stat.name);
         }
         next();
     });
 
-    walker.on("end", function() {
+    walker.on("end", function () {
         cb(files);
-    }); 
+    });
 }
 
 desc("Default: install all modules including devDependencies");
@@ -101,12 +105,12 @@ task("coverage", function () {
 });
 
 desc("Build HTML documentation");
-task("html", function() {
+task("html", function () {
     fs.readFile("README.md", "utf8", function (err, data) {
         var md, html;
         // Remove Travis info
         md = data.split("\n").slice(4).join("\n"),
-        html = new ronn(md).html()
+        html = new Ronn(md).html()
                 .replace(/<[\/]*html>/, "")
                 .replace("<pre>", '<pre class="code"');
         fs.writeFileSync("doc/quick-start/index.mustache", html);
@@ -139,6 +143,6 @@ task("clean", function () {
 
 desc("Remove development tools");
 task("maintainer-clean", function () {
-    spawn("rpm" ["rm", "webkit-devtools-agent"]);
+    spawn("rpm", ["rm", "webkit-devtools-agent"]);
     nuke("tools");
 });
