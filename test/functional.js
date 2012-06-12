@@ -105,6 +105,7 @@ function createBatchTopic(createBatchConfiguration) {
             agentCompleteFires = 0,
             agentErrorFires = 0,
             agentSeenFires = 0,
+            agentBeatFires = 0,
             timeout = setTimeout(function () {
                 vow.callback(new Error("Batch dispatch failed for " + lastTopic.url));
                 process.exit(1);
@@ -121,6 +122,10 @@ function createBatchTopic(createBatchConfiguration) {
 
         batch.on("agentError", function (agent, details) {
             agentErrorFires = agentErrorFires + 1;
+        });
+
+        batch.on("agentBeat", function (agent, details) {
+            agentBeatFires = agentBeatFires + 1;
         });
 
         lastTopic.client.on("agentSeen", function (agent) {
@@ -144,6 +149,7 @@ function createBatchTopic(createBatchConfiguration) {
                         expectedPathname: lastTopic.pathname,
                         finalPathname: pathname,
                         agentResults: results,
+                        agentBeats: agentBeatFires,
                         agentSeenFires: agentSeenFires,
                         agentErrorFires: agentErrorFires,
                         agentCompleteFires: agentCompleteFires
@@ -181,6 +187,13 @@ function visitorContext(createBatchConfiguration) {
             assert.include(result, "duration");
             assert.include(result, "name");
             assert.include(result, "timestamp");
+        },
+        "the agentBeat event fired for each beat received": function (topic) {
+            // Beats are subjective, they are a ping and not really trackable
+            // since they may be throttled they may not match up to the actual
+            // number of tests being executed, so we just need to make sure
+            // a ping actually happened.
+            assert.ok(topic.agentBeats);
         }
     });
 }
