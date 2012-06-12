@@ -194,6 +194,8 @@ function visitorContext(createBatchConfiguration) {
             // number of tests being executed, so we just need to make sure
             // a ping actually happened.
             assert.ok(topic.agentBeats);
+            //There should be at least one beat per test executed, maybe more
+            assert.ok(topic.agentBeats >= createBatchConfiguration.tests.length);
         }
     });
 }
