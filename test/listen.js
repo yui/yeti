@@ -80,6 +80,13 @@ vows.describe("Yeti Listen").addBatch({
                     assert.strictEqual(topic, "Dogcow!");
                 }
             },
+            "when /ping/unload/key is requested": {
+                topic: request("/yeti/ping/unload/key"),
+                "the parent HTTP server response is correct": function (topic) {
+                    assert.strictEqual(topic, "");
+                    assert.ok(topic !== "Dogcow!");
+                }
+            },
             "and connected from a Yeti Client": {
                 topic: function (hub) {
                     var vow = this,
