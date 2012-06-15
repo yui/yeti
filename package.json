@@ -41,7 +41,6 @@
     "node": "~0.6.4"
   },
   "dependencies": {
-    "binary": "~0.2.6",
     "director": "~1.0.6",
     "eventemitter2": "~0.4.8",
     "eventyoshi": "~0.1.2",
