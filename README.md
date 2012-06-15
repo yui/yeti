@@ -106,13 +106,14 @@ Yeti follows [Semantic Versioning](http://semver.org/) but is currently at a 0.x
 
 ### Caveats
 
-Yeti is known to work on Mac OS X and Linux.
+Yeti should work on all platforms supported by Node.js.
+It's tested on Linux and OS X.
 
 You must start Yeti's client in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
 
 ## Installation
 
-Yeti requires [Node.js][node] v0.6.x.
+Yeti requires [Node.js][node] v0.6. It also works on unstable v0.7.11.
 
 ### Latest snapshot
 
@@ -134,6 +135,11 @@ Installing [localtunnel][] helps proxy Yeti outside of your firewall. It's avail
 ## Develop Yeti
 
 Do you want to add new features or fix bugs in Yeti itself? We made it easy for you to hack on Yeti.
+
+### Experimental: Develop on Windows
+
+After running `npm install`, replace the `make` commands below with
+`.\jake.bat` to use the experimental Jake tasks that are Windows ready.
 
 ### Install dependencies
 
