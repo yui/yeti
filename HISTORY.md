@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.7 / In Development
+
 ## 0.2.6 / 2012-06-15
 
   * Node.js v0.7.11 support.
