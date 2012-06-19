@@ -66,6 +66,23 @@ function captureContext(batchContext) {
         "which fires agentConnect with the agent details": function (pageTopic) {
             assert.isString(pageTopic.agent);
         },
+        "when querying for connected agents": {
+            topic: function (pageTopic, browserTopic, yetiTopic) {
+                var vow = this;
+                yetiTopic.client.getAgents(function (err, agents) {
+                    vow.callback(err, {
+                        getAgentsResult: agents,
+                        agentName: pageTopic.agent
+                    });
+                });
+            },
+            "the result is an array": function (topic) {
+                assert.isArray(topic.getAgentsResult);
+            },
+            "this agent is in the list": function (topic) {
+                assert.strictEqual(topic.getAgentsResult[0], topic.agentName);
+            }
+        },
         "for a batch": batchContext
     };
     /* TODO agentDisconnect is not yet implemented.
