@@ -37,7 +37,7 @@ function saveURLToDep(sourceURL, filename, cb) {
             return;
         }
 
-        var data;
+        var data = "";
 
         res.setEncoding("utf8");
 
