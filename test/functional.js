@@ -407,12 +407,9 @@ vows.describe("Yeti Functional")
     }))
     .addBatch(attachServerBatch({
         "A HTTP server with an upgrade listener (for Yeti files)": withTests("basic.html", "local-js.html"),
-        /* FIXME The paths won't have the agentId in them.
-         * Find another way to identify agents.
         "A HTTP server with an upgrade listener (for Yeti paths)": {
             tests: ["/fixture"],
             useProxy: false
         }
-        */
     }))
     .export(module);
