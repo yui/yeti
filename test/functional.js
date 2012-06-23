@@ -37,12 +37,14 @@ function captureContext(batchContext) {
                 }, 5000);
 
                 lastTopic.client.once("agentConnect", function (agent) {
-                    page.evaluate(getUrl, function (url) {
-                        clearTimeout(timeout);
-                        vow.callback(null, {
-                            url: url,
-                            page: page,
-                            agent: agent
+                    lastTopic.client.once("agentSeen", function () {
+                        page.evaluate(getUrl, function (url) {
+                            clearTimeout(timeout);
+                            vow.callback(null, {
+                                url: url,
+                                page: page,
+                                agent: agent
+                            });
                         });
                     });
                 });
@@ -193,9 +195,9 @@ function visitorContext(createBatchConfiguration) {
             assert.strictEqual(topic.agentCompleteFires, 1);
         },
         "the agentSeen event fired for each test and for capture pages": function (topic) {
-            // Capture page. + Test pages. + Return to capture page.
-            // 1 + (Batch tests) + 1 = Expected fires.
-            assert.strictEqual(topic.agentSeenFires, createBatchConfiguration.tests.length + 2);
+            // Test pages. + Return to capture page.
+            // (Batch tests) + 1 = Expected fires.
+            assert.strictEqual(topic.agentSeenFires, createBatchConfiguration.tests.length + 1);
         },
         "the agentResults are well-formed": function (topic) {
             assert.isArray(topic.agentResults);
@@ -236,9 +238,9 @@ function errorContext(createBatchConfiguration) {
             assert.strictEqual(topic.agentCompleteFires, createBatchConfiguration.tests.length);
         },
         "the agentSeen event fired for capture pages": function (topic) {
-            // Capture page. + (Nothing; all tests invalid) + Return to capture page.
-            // 1 + 1 = Expected fires.
-            assert.strictEqual(topic.agentSeenFires, 2);
+            // (Nothing; all tests invalid) + Return to capture page.
+            // 1 = Expected fires.
+            assert.strictEqual(topic.agentSeenFires, 1);
         },
         "the agentResults is an empty array": function (topic) {
             assert.isArray(topic.agentResults);
