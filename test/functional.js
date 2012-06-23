@@ -21,6 +21,12 @@ if (process.env.TRAVIS) {
     };
 }
 
+function didNotThrow(topic) {
+    if (topic instanceof Error) {
+        assert.fail(topic, {}, "Topic error: " + topic.stack);
+    }
+}
+
 function getUrl() {
     /*global window:true */
     // This function runs in the scope of the web page.
@@ -72,6 +78,7 @@ function captureContext(batchContext) {
                 });
             });
         },
+        "did not throw": didNotThrow,
         "is ok": function (pageTopic) {
             assert.ok(pageTopic.page);
         },
@@ -188,6 +195,7 @@ function createBatchTopic(createBatchConfiguration) {
 function visitorContext(createBatchConfiguration) {
     return captureContext({
         topic: createBatchTopic(createBatchConfiguration),
+        "did not throw": didNotThrow,
         "the browser returned to the capture page": function (topic) {
             assert.strictEqual(topic.finalPathname, topic.expectedPathname);
         },
@@ -228,6 +236,7 @@ function visitorContext(createBatchConfiguration) {
 function errorContext(createBatchConfiguration) {
     return captureContext({
         topic: createBatchTopic(createBatchConfiguration),
+        "did not throw": didNotThrow,
         "the browser returned to the capture page": function (topic) {
             assert.strictEqual(topic.finalPathname, topic.expectedPathname);
         },
@@ -306,6 +315,7 @@ function attachServerContext(testContext, explicitRoute) {
         teardown: function (server) {
             server.close();
         },
+        "did not throw": didNotThrow,
         "is connected": function (server) {
             assert.isNumber(server.address().port);
         },
@@ -322,6 +332,7 @@ function attachServerContext(testContext, explicitRoute) {
 
                 return hub;
             },
+            "did not throw": didNotThrow,
             "is ok": function (hub) {
                 assert.ok(hub.server);
             },
