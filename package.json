@@ -38,7 +38,7 @@
     "postinstall": "node scripts/postinstall.js"
   },
   "engines": {
-    "node": "~0.6.4 || ~0.7.11"
+    "node": "~0.6.4 || ~0.7.11 || ~0.8.0"
   },
   "dependencies": {
     "director": "~1.0.6",
