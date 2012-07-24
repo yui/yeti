@@ -46,7 +46,7 @@ function didNotThrow(topic) {
     }
 }
 
-function getUrl() {
+function getPathname() {
     /*global window:true */
     // This function runs in the scope of the web page.
     return window.location.pathname;
@@ -63,7 +63,7 @@ function captureContext(batchContext) {
 
                 lastTopic.client.once("agentConnect", function (agent) {
                     lastTopic.client.once("agentSeen", function () {
-                        page.evaluate(getUrl, function (url) {
+                        page.evaluate(getPathname, function (url) {
                             clearTimeout(timeout);
                             vow.callback(null, {
                                 url: url,
@@ -194,7 +194,7 @@ function createBatchTopic(createBatchConfiguration) {
         batch.on("complete", function () {
             lastTopic.client.once("agentSeen", function (agent) {
                 clearTimeout(timeout);
-                pageTopic.page.evaluate(getUrl, function (pathname) {
+                pageTopic.page.evaluate(getPathname, function (pathname) {
                     pageTopic.page.release();
                     vow.callback(null, {
                         expectedPathname: pageTopic.url,
@@ -209,6 +209,104 @@ function createBatchTopic(createBatchConfiguration) {
             });
         });
     };
+}
+
+function waitForPathChange(page, cb) {
+    // When PhantomJS loads a new page,
+    // begin checking for the new URL and
+    // call the callback with the new URL
+    // if one is detected within 200ms.
+    //
+    // XXX: When we can use PhantomJS 1.6,
+    // replace with the onUrlChanged event.
+    var originalPathname,
+        attempts = 0;
+
+    page.evaluate(getPathname, function (pathname) {
+        originalPathname = pathname;
+        cb(pathname); // Record the first URL.
+    });
+
+    page.set("onLoadStarted", function () {
+        (function pathnameObserver() {
+            page.evaluate(getPathname, function (pathname) {
+                if (pathname !== originalPathname) {
+                    originalPathname = pathname;
+                    cb(pathname);
+                } else if (attempts > 20) {
+                    attempts = 0;
+                } else {
+                    attempts += 1;
+                    setTimeout(pathnameObserver, 10);
+                }
+            });
+        }());
+    });
+}
+
+function clientFailureContext(createBatchConfiguration) {
+    return captureContext({
+        topic: function (pageTopic, browser, lastTopic, hub) {
+            var vow = this,
+                results = [],
+                sessionEndFires = 0,
+                agentErrorFires = 0,
+                agentSeenFires = 0,
+                agentBeatFires = 0,
+                timeout = setTimeout(function () {
+                    vow.callback(new Error("Recovery to capture page failed for " + lastTopic.url));
+                    process.exit(1);
+                }, 20000),
+                visitedPaths = [],
+                clientSession,
+                batch;
+
+            // Recall that:
+            // Client (test provider) <-> Hub (server) <-> Agent (browser)
+            //
+            // In this test, we will disconnect the client
+            // very soon after submitting a batch to the hub
+            // and then make sure the agent has moved back to
+            // the capture page.
+
+            waitForPathChange(pageTopic.page, function (pathname) {
+                visitedPaths.push(pathname);
+                // Capture page + tests + Capture page
+                // 2 + tests = full test cycle
+                if (visitedPaths.length >= 2 + createBatchConfiguration.tests.length) {
+                    clearTimeout(timeout);
+                    pageTopic.page.release();
+                    vow.callback(null, {
+                        hub: hub,
+                        expectedPathname: pageTopic.url,
+                        finalPathname: pathname,
+                        sessionEndFires: sessionEndFires,
+                        visitedPaths: visitedPaths
+                    });
+                } else if (pathname.indexOf("fixture") !== -1) {
+                    // The URL is a test page.
+                    // Kill the Yeti Client session.
+                    // We should expect the Hub to send
+                    // the user back to the capture page.
+                    lastTopic.client.end();
+                }
+            });
+
+            batch = lastTopic.client.createBatch(createBatchConfiguration);
+
+            lastTopic.session.on("end", function () {
+                // Hub reports a client session disconnection.
+                sessionEndFires += 1;
+            });
+        },
+        "the agent returned to the capture page": function (topic) {
+            console.log("it's over, urls = ", topic.visitedPaths);
+            assert.strictEqual(topic.finalPathname, topic.expectedPathname);
+        },
+        "the session end event fired once": function (topic) {
+            assert.strictEqual(topic.sessionEndFires, 1);
+        }
+    });
 }
 
 function visitorContext(createBatchConfiguration) {
@@ -433,6 +531,9 @@ function withTests() {
 vows.describe("Yeti Functional")
     .addBatch(hub.functionalContext({
         "visits Yeti": visitorContext(withTests("basic.html", "local-js.html", "404-script.html"))
+    }))
+    .addBatch(hub.functionalContext({
+        "visits Yeti then aborts during the batch": clientFailureContext(withTests("long-async.html"))
     }))
     .addBatch(hub.functionalContext({
         "visits Yeti with invalid files": errorContext(withTests("this-file-does-not-exist.html"))
