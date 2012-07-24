@@ -1,11 +1,16 @@
 "use strict";
 
+var PHANTOMJS_MIN_VERSION = "1.5.0";
+
 var vows = require("vows");
 var assert = require("assert");
 
 var path = require("path");
 var fs = require("graceful-fs");
 var http = require("http");
+
+var child_process = require("child_process");
+var semver = require("semver");
 
 var Hub = require("../lib/hub");
 
@@ -20,6 +25,20 @@ if (process.env.TRAVIS) {
         return _exit(code);
     };
 }
+
+// PhantomJS version check
+child_process.exec("phantomjs -v", function (err, stdout) {
+    var message;
+    if (err) {
+        message = "Failed to start PhantomJS > {version}, error given: " + err;
+    } else if (!semver.satisfies(stdout, ">=" + PHANTOMJS_MIN_VERSION)) {
+        message = "Tests require PhantomJS {version} or newer. " +
+            "Please upgrade PhantomJS by visiting phantomjs.org"
+    }
+    if (message) {
+        throw new Error(message.replace(/{version}/, PHANTOMJS_MIN_VERSION));
+    }
+});
 
 function didNotThrow(topic) {
     if (topic instanceof Error) {
