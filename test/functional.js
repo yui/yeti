@@ -289,6 +289,10 @@ function clientFailureContext(createBatchConfiguration) {
                     // We should expect the Hub to send
                     // the user back to the capture page.
                     lastTopic.client.end();
+                    // Note: we call end() before the
+                    // browser actually can listen to events;
+                    // loading has only just begun at this point.
+                    // This, we must buffer events for sending later.
                 }
             });
 
@@ -300,7 +304,6 @@ function clientFailureContext(createBatchConfiguration) {
             });
         },
         "the agent returned to the capture page": function (topic) {
-            console.log("it's over, urls = ", topic.visitedPaths);
             assert.strictEqual(topic.finalPathname, topic.expectedPathname);
         },
         "the session end event fired once": function (topic) {
