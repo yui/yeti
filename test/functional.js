@@ -33,10 +33,10 @@ child_process.exec("phantomjs -v", function (err, stdout) {
         message = "Failed to start PhantomJS > {version}, error given: " + err;
     } else if (!semver.satisfies(stdout, ">=" + PHANTOMJS_MIN_VERSION)) {
         message = "Tests require PhantomJS {version} or newer. " +
-            "Please upgrade PhantomJS by visiting phantomjs.org"
+            "Please upgrade PhantomJS by visiting phantomjs.org";
     }
     if (message) {
-        throw new Error(message.replace(/{version}/, PHANTOMJS_MIN_VERSION));
+        throw new Error(message.replace(/\{version\}/, PHANTOMJS_MIN_VERSION));
     }
 });
 
