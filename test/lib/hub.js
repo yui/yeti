@@ -16,12 +16,18 @@ var clientTopic = exports.clientTopic = function (pathname) {
             server = (hub.hubListener && hub.hubListener.server) || hub.server,
             url = "http://localhost:" + server.address().port + pathname,
             client = hubClient.createClient(url);
-        client.connect(function (err) {
-            vow.callback(err, {
+        hub.on("newClientSession", function (session) {
+            vow.callback(null, {
+                session: session,
                 pathname: pathname || "/",
                 client: client,
                 url: url
             });
+        });
+        client.connect(function (err) {
+            if (err) {
+                vow.callback(err);
+            }
         });
     };
 };
