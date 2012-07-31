@@ -113,7 +113,7 @@ You must start Yeti's client in the directory you'll be serving tests from. For 
 
 ## Installation
 
-Yeti requires [Node.js][node] v0.6. It also works on unstable v0.7.11.
+Yeti requires [Node.js][node] v0.6 or v0.8.
 
 ### Latest snapshot
 
