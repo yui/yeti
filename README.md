@@ -1,10 +1,8 @@
-# Yeti [Next][]
+# Yeti
 
 [![Build Status](https://secure.travis-ci.org/yui/yeti.png?branch=master)](http://travis-ci.org/yui/yeti)
 
 Yeti is a command-line tool for launching JavaScript unit tests in a browser and reporting the results without leaving your terminal. Yeti is designed to work with tests built on YUI Test just as they are.
-
-[Next]: https://github.com/yui/yeti/wiki/Yeti-Next
 
 ## Using Yeti
 
@@ -76,7 +74,7 @@ Your `pwd` and your test file will be served through the Hub. Like magic.
 
 This makes it really simple to setup an ad-hoc testing lab shared with your team.
 
-Caveat: Yeti Next has not been tested with a large number of browsers and Hub clients. If you'd like to help change this, see the Contribute section below.
+Caveat: Yeti has not been tested with a large number of browsers and Hub clients. If you'd like to help change this, see the Contribute section below.
 
 ### Error handling
 
