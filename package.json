@@ -1,6 +1,6 @@
 {
   "name": "yeti",
-  "description": "The YUI Easy Testing Interface.",
+  "description": "Test your JavaScript with any browser.",
   "author": "Reid Burke <me@reidburke.com> (http://reidburke.com)",
   "contributors": [
     "Dav Glass <davglass@gmail.com>"
