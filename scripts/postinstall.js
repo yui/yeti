@@ -9,7 +9,7 @@ var fs = require("fs"),
 
 var depDir = path.join(__dirname, "..", "dep");
 
-var YUI_TEST_URL = "http://yui.yahooapis.com/combo?3.5.1/build/yui-base/yui-base-min.js&3.5.1/build/oop/oop-min.js&3.5.1/build/event-custom-base/event-custom-base-min.js&3.5.1/build/event-base/event-base-min.js&3.5.1/build/event-simulate/event-simulate-min.js&3.5.1/build/event-custom-complex/event-custom-complex-min.js&3.5.1/build/substitute/substitute-min.js&3.5.1/build/json-stringify/json-stringify-min.js&3.5.1/build/test/test-min.js";
+var YUI_TEST_URL = "http://yui.yahooapis.com/combo?3.6.0/build/yui-base/yui-base-min.js&3.6.0/build/oop/oop-min.js&3.6.0/build/event-custom-base/event-custom-base-min.js&3.6.0/build/event-base/event-base-min.js&3.6.0/build/event-simulate/event-simulate-min.js&3.6.0/build/event-custom-complex/event-custom-complex-min.js&3.6.0/build/substitute/substitute-min.js&3.6.0/build/json-stringify/json-stringify-min.js&3.6.0/build/test/test-min.js";
 
 function log() {
     if (process.env.npm_config_loglevel !== "silent") {
