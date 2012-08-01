@@ -1,6 +1,10 @@
 # A Brief History of Yeti
 
-## 0.2.7 / In Development
+## 0.2.7 / 2012-08-01
+
+  * Node.js v0.8 support.
+  * Return connected browsers to capture page when test batch is aborted.
+  * Identify browsers by pathname instead of cookies where possible.
 
 ## 0.2.6 / 2012-06-15
 
