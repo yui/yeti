@@ -83,7 +83,7 @@ vows.describe("Yeti Listen").addBatch({
             "when /ping/unload/key is requested": {
                 topic: request("/yeti/ping/unload/key"),
                 "the parent HTTP server response is correct": function (topic) {
-                    assert.strictEqual(topic, "");
+                    assert.strictEqual("Not Found\nUnable to find what you're looking for.", topic);
                     assert.ok(topic !== "Dogcow!");
                 }
             },
