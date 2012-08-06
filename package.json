@@ -46,8 +46,7 @@
     "nopt": "~1.0.10",
     "onyx": "~0.1.2",
     "sockjs": "~0.3.1",
-    "graceful-fs": "~1.1.2",
-    "plates": "~0.2.2"
+    "graceful-fs": "~1.1.2"
   },
   "devDependencies": {
     "semver": ">=1.0.14",
