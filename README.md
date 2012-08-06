@@ -8,21 +8,26 @@ Yeti is a command-line tool for launching JavaScript unit tests in a browser and
 
 ### Running a test
 
-Just run Yeti with the HTML file containing your test.
+Just run Yeti with the HTML files containing your tests.
 
-    $ yeti test/fixture/basic.html
+    $ yeti test/*.html
     Creating a Hub at http://localhost:9000
     Waiting for agents to connect at http://localhost:9000.
     When ready, press Enter to begin testing.
 
 Point your browsers at that URL, then come back and press Enter.
 
-      Agent connected: Safari (5.1.2) / Mac OS [Hit Enter]
+    [Open some browsers...]
 
-    ✔ Testing started!
-    ✔ Yeti Simple Test Suite on Safari (5.1.2) / Mac OS
-    ✔ Agent completed: Safari (5.1.2) / Mac OS
-    1 test passed! (175ms)
+      Agent connected: Safari (6.0) / Mac OS
+      Agent connected: Chrome (22.0.1221.0) / Mac OS
+
+    [Come back, press Enter]
+
+    ✔ Testing started on Safari (6.0) / Mac OS, Chrome (22.0.1221.0) / Mac OS
+    Testing... / 86% complete (19/22) 121.99 tests/sec ✔ Agent completed: Safari (6.0) / Mac OS
+    Testing... | 95% complete (21/22) 115.40 tests/sec ✔ Agent completed: Chrome (22.0.1221.0) / Mac OS
+    Testing... \ 100% complete (22/22) 115.23 tests/sec 504 tests passed! (9164ms)
     $
 
 Yeti exits automatically when all tests complete. If test failures occur, Yeti will exit with a non-zero status code.
@@ -36,16 +41,18 @@ To save time, start a Yeti Hub.
 
 Point browsers at your local Yeti on port 9000. Now, you're ready to run tests without having to reconnect browsers each time.
 
-In another Terminal, running Yeti will connect to this Hub instead of starting a new one.
+Starting Yeti in another terminal will connect to that Hub instead of starting a new one
+and will begin testing immediately if browsers are already connected.
 
-    $ yeti test/fixture/basic.html
+    $ yeti test/*.html
     Connected to http://localhost:9000
-    Waiting for agents to connect at http://localhost:9000.
-    When ready, press Enter to begin testing. [Hit Enter]
-    ✔ Testing started!
-    ✔ Yeti Simple Test Suite on Safari (5.1.2) / Mac OS
-    ✔ Agent completed: Safari (5.1.2) / Mac OS
-    1 test passed! (107ms)
+      Agent connected: Chrome (22.0.1221.0) / Mac OS
+      Agent connected: Safari (6.0) / Mac OS
+    ✔ Testing started on Chrome (22.0.1221.0) / Mac OS, Safari (6.0) / Mac OS
+    Testing... / 68% complete (15/22) 98.84 tests/sec ✔ Agent completed: Chrome (22.0.1221.0) / Mac OS
+    Testing... | 95% complete (21/22) 91.65 tests/sec ✔ Agent completed: Safari (6.0) / Mac OS
+    Testing... \ 100% complete (22/22) 91.60 tests/sec 504 tests passed! (11529ms)
+    $
 
 ### Sharing Your Yeti Hub
 
@@ -59,7 +66,7 @@ Go ahead and point a few browsers there.
 
 Now, others can connect to it from their computer like so:
 
-    $ yeti --hub http://test.yeti.cx/ test/fixture/basic.html
+    $ yeti --hub http://test.yeti.cx/ test/*.html
     Connected to http://test.yeti.cx/
     Waiting for agents to connect at http://test.yeti.cx/.
     When ready, press Enter to begin testing.
@@ -67,10 +74,12 @@ Now, others can connect to it from their computer like so:
 Your `pwd` and your test file will be served through the Hub. Like magic.
 
     [Hit Enter]
-    ✔ Testing started!
-    ✔ Yeti Simple Test Suite on Safari (5.1.2) / Mac OS
-    ✔ Agent completed: Safari (5.1.2) / Mac OS
-    1 test passed! (189ms)
+      Agent connected: Chrome (22.0.1221.0) / Mac OS
+      Agent connected: Safari (6.0) / Mac OS
+    ✔ Testing started on Chrome (22.0.1221.0) / Mac OS, Safari (6.0) / Mac OS
+    Testing... - 91% complete (20/22) 122.51 tests/sec ✔ Agent completed: Safari (6.0) / Mac OS
+    Testing... | 95% complete (21/22) 120.21 tests/sec ✔ Agent completed: Chrome (22.0.1221.0) / Mac OS
+    Testing... \ 100% complete (22/22) 120.05 tests/sec 504 tests passed! (8763ms)
 
 This makes it really simple to setup an ad-hoc testing lab shared with your team.
 
