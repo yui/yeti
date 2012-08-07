@@ -1,6 +1,9 @@
 # A Brief History of Yeti
 
-## 0.2.8 / In Development
+## 0.2.8 / 2012-08-06
+
+  * New feedback line details Yeti's status during your batch.
+  * Remove dependency on director, plates, and union modules.
 
 ## 0.2.7 / 2012-08-01
 
