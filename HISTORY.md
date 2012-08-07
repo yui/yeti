@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.9 / In Development
+
 ## 0.2.8 / 2012-08-06
 
   * New feedback line details Yeti's status during your batch.
