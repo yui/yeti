@@ -139,10 +139,10 @@ If this method is called before `client.connect()` has finished, an error will b
 Returns an instance of `client.ClientBatch`.
 </p>
 
-<h5>Including Yeti scripts on your pages</h5>
+<h5>Including Yeti script on your pages</h5>
 <p>
-When `useProxy` is false, you'll need to make sure the `tests` URLs you serve include Yeti injection scripts and a YUI Test that runs automatically.
-You may include Yeti scripts like this:
+When `useProxy` is false, you'll need to make sure the `tests` URLs you serve include Yeti injection script and a YUI Test that runs automatically.
+You may include Yeti script like this:
 </p>
 
 ```
@@ -151,11 +151,7 @@ You may include Yeti scripts like this:
 ```
 
 <p>
-These scripts should be included before all other scripts on the page, including YUI Test.
-</p>
-
-<p class="volatile">
-Note: Future Yeti releases will not require you to include socket.io.js yourself.
+This script should be included before all other scripts on the page, including YUI Test.
 </p>
 
 <h3>Class: client.ClientBatch</h3>
@@ -249,7 +245,7 @@ function (message, [...]) {}
 ```
 
 <p>
-Emitted when the Hub or Socket.io have noteworthy messages to report.
+Emitted when the Hub has noteworthy messages to report.
 </p>
 
 Example:
@@ -258,15 +254,15 @@ hub.on("log.debug", function (message) {
     console.log("Yeti Hub message:", message);
 });
 
-// Only Socket.io messages:
+// Only WebSocket-related messages:
 
-hub.on("log.**.socketio", function (message) {
-    console.log("Yeti Hub Socket.io message:", message);
+hub.on("log.**.websocket", function (message) {
+    console.log("Yeti Hub WebSocket message:", message);
 });
 ```
 
 <p>
-The first namespace represents the loglevel. The second is optional and is used for Socket.io.
+The first namespace represents the loglevel. The second is optional and is used for WebSocket-related messages.
 </p>
 
 <h4>Event: 'batch'</h4>
@@ -311,7 +307,6 @@ when the client sets `useProxy` to false.
 <p>
 Yeti will use the `'upgrade'` event on this `http.Server`
 for handling the protocols Yeti uses to communicate with agents and clients.
-<strong>Yeti may conflict with upgrades used by your server if your server uses Socket.io.</strong>
 All other HTTP upgrades will be passed along to your server.
 </p>
 
