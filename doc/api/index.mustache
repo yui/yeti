@@ -193,6 +193,11 @@ Emitted when an agent has completed testing a web page.
 `details` is an YUI Test formatted object detailing test results.
 </p>
 
+<p>
+If the code tested was instrumented with <a href="http://yuilibrary.com/yuitest/">YUI Test Coverage</a>,
+the `details.coverage` object will contain coverage data for this result.
+</p>
+
 <h4>Event: 'agentError'</h4>
 
 ```

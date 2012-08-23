@@ -60,4 +60,4 @@ fi
 
 echo "Starting Yeti for YUI tests:\n${TESTS[@]}"
 
-node $YETI "${TESTS[@]}"
+node $YETI --query "filter=coverage" "${TESTS[@]}"
