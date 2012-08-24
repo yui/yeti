@@ -34,7 +34,7 @@
     "yeti": "./cli.js"
   },
   "scripts": {
-    "test": "jake test",
+    "test": "jake test --trace",
     "postinstall": "node scripts/postinstall.js"
   },
   "engines": {
