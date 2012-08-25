@@ -32,6 +32,13 @@ Point your browsers at that URL, then come back and press Enter.
 
 Yeti exits automatically when all tests complete. If test failures occur, Yeti will exit with a non-zero status code.
 
+### Code coverage
+
+Yeti automatically includes a line coverage summary if your tests were instrumented with [YUI Test Coverage][yuitest].
+
+    ✔ Testing started on Safari (6.0) / Mac OS
+    Testing... \ 13% complete (10/60) 11.85 tests/sec 44% line coverage
+
 ### Yeti Hub
 
 To save time, start a Yeti Hub.
@@ -83,7 +90,24 @@ Your `pwd` and your test file will be served through the Hub. Like magic.
 
 This makes it really simple to setup an ad-hoc testing lab shared with your team.
 
-Caveat: Yeti has not been tested with a large number of browsers and Hub clients. If you'd like to help change this, see the Contribute section below.
+### Timeouts
+
+Yeti will disconnect a browser if it does not record any activity from it for 45 seconds.
+You can adjust this interval with the `--timeout` option.
+
+This will run Yeti with a 120 second timeout:
+
+    $ yeti --timeout 120 test.html
+
+### Query string parameters
+
+Yeti can include a query string parameter to add to your test URLs.
+This can be used to pass information to your tests that control its behavior.
+
+This will append `?fliter=coverage` to your tests, which is used by the tests
+for the [YUI Library][YUI] to trigger loading instrumented code.
+
+    $ yeti --query 'filter=coverage' test/*.html
 
 ### Error handling
 
