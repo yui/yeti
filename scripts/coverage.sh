@@ -21,8 +21,10 @@ tools/jscoverage/jscoverage lib-raw lib
 ./node_modules/.bin/vows --cover-html test/*.js
 rm -rf lib
 mv lib-raw lib
+mkdir -p build_docs
+mv coverage.html build_docs/
 
-echo "Coverage report written to coverage.html."
+echo "Coverage report written to build_docs/coverage.html."
 
 # Open the report on OS X.
-hash open 2>&- && open coverage.html
+hash open 2>&- && open build_docs/coverage.html
