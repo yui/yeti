@@ -20,7 +20,7 @@ h1 {
     margin: 0;
 }
 h2 {
-    font-style: italic;
+    font-weight: 100;
     font-size: 250%;
     margin-top: -1%;
     margin-bottom: 3%;
@@ -102,7 +102,7 @@ ul {
 }
 
 .divider hr {
-    background: #f3f3f3;
+    background: #ddd;
     border: none;
     height: 1px;
 }
