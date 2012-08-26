@@ -2,7 +2,19 @@
 
 [![Build Status](https://secure.travis-ci.org/yui/yeti.png?branch=master)](http://travis-ci.org/yui/yeti)
 
-Yeti is a command-line tool for launching JavaScript unit tests in a browser and reporting the results without leaving your terminal. Yeti is designed to work with tests built on YUI Test just as they are.
+Yeti is a command-line tool for launching JavaScript unit tests in a browser
+and reporting the results without leaving your terminal.
+Yeti is designed to work with tests built on [YUI Test][yuitest] just as they are.
+
+## Install Yeti
+
+The latest release can be installed easily:
+
+    npm install -g yeti
+
+Yeti requires Node.js, which provides the `npm` command for installation.
+You can [download Node.js](http://nodejs.org/download/) source or pre-built
+installers from their website.
 
 ## Using Yeti
 
@@ -142,26 +154,14 @@ It's tested on Linux and OS X.
 
 You must start Yeti's client in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
 
-## Installation
+## Install latest Yeti snapshot
 
-Yeti requires [Node.js][node] v0.6 or v0.8.
+You can install the latest in-development snapshot of Yeti easily, too:
 
-### Latest snapshot
-
-    # Install Yeti from the latest source from GitHub's yui/yeti repo.
     npm install -g http://latest.yeti.cx
 
-### Latest release
-
-If you have problems with the latest Yeti, you may install the last stable release instead:
-
-    npm install -g yeti
-
-### Localtunnel
-
-Installing [localtunnel][] helps proxy Yeti outside of your firewall. It's available as a Ruby gem:
-
-    gem install localtunnel
+This will install Yeti as it exists on the [yui/yeti GitHub repository][github].
+You can check the stability of the Yeti snapshot by checking [yui/yeti on Travis][travis].
 
 ## Develop Yeti
 
@@ -179,48 +179,39 @@ Clone Yeti.
     git clone https://github.com/yui/yeti.git
     cd yeti
 
-Install Yeti's devDependencies.
+Install Yeti's dependencies.
 
     npm install
 
-Yeti's automated tests use [PhantomJS][]. Install it.
+### Run tests & code coverage
 
-    # For Mac OS X and Homebrew:
-    brew update
-    brew install phantomjs
-
-### Run tests
-
-Requires [PhantomJS][] to be installed.
+Yeti's automated tests require PhantomJS.
+You can [download PhantomJS](http://phantomjs.org/download.html) source or pre-built
+binaries from their website. Make sure the `phantomjs` binary is installed in your PATH.
 
     make test
-
-### Code coverage
-
-Requires [PhantomJS][] to be installed.
-
     make coverage
 
-This command uses [JSCoverage for Node.js][jsc],
+The latter command uses [JSCoverage for Node.js][jsc],
 which will be built and installed to `./tools/jscoverage`.
 
 ### HTML documentation
 
 #### Website
 
-Documentation will be built to `build_docs/`.
+Yeti uses [Selleck][] to generate its website. Selleck files are located in `doc/`.
 
     make html
 
-Yeti uses [Selleck][] to generate its website. Selleck files are located in `doc/`.
+Documentation will be built to `build_docs/`.
 
 #### JavaScript API
 
-Documentation will be built to `build_docs/api/everything/`.
+Yeti uses [YUIDocJS][] to generate API documentation from inline JSDoc comment blocks.
 
     make html-api
 
-Yeti uses [YUIDocJS][] to generate API documentation from inline JSDoc comment blocks.
+Documentation will be built to `build_docs/api/everything/`.
 
 ### Linter
 
@@ -234,7 +225,7 @@ Yeti uses [JSHint][] to analyze code for problems. See `.jshintrc` for options u
 
 ### Profiler
 
-Requires [Google Chrome Canary][canary] and Mac OS X.
+Requires [Google Chrome Canary][canary] and OS X.
 
 Profile the Yeti Hub:
 
@@ -265,28 +256,26 @@ before we can accept your pull request.
 
 Open a ticket on [YUILibrary.com's Yeti Issue Tracker][issues] to report bugs or feature requests.
 
-Yeti is an experimental project of YUI Labs. As such, it doesn't receive the same level of support as other mature YUI projects.
-
 ## License
 
-Yeti is free to use under YUI's BSD license. See the LICENSE file or the [YUI license page][license] for license text and copyright information.
+Yeti is free to use under YUI's BSD license.
+See the LICENSE file or the [YUI license page](http://yuilibrary.com/license/)
+for license text and copyright information.
 
   [canary]: https://tools.google.com/dlpage/chromesxs
+  [github]: https://github.com/yui/yeti
+  [travis]: http://travis-ci.org/yui/yeti
   [JSHint]: http://jshint.com/
   [YUIDocJS]: https://github.com/davglass/yuidocjs
   [Selleck]: http://github.com/rgrove/selleck
-  [PhantomJS]: http://phantomjs.org/
   [jsc]: https://github.com/visionmedia/node-jscoverage
-  [jspec]: http://github.com/visionmedia/jspec
   [localtunnel]: http://localtunnel.com/
-  [Homebrew]: http://github.com/mxcl/homebrew
   [node]: http://nodejs.org/
   [npm]: http://npmjs.org/
-  [win]: https://github.com/reid/yeti/wiki/Yeti-on-Windows
   [issues]: http://yuilibrary.com/projects/yeti/newticket
   [Vows]: http://vowsjs.org/
-  [license]: http://yuilibrary.com/license/
   [CLA]: http://yuilibrary.com/contribute/cla/
   [YUI]: http://yuilibrary.com/
+  [yuitest]: http://yuilibrary.com/yuitest/
   [doctype]: http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#the-doctype
   [No-Quirks Mode]: http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#no-quirks-mode
