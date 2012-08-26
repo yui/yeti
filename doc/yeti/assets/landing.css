@@ -13,29 +13,33 @@ body {
     font-size: 120%;
     text-align: center;
 }
+.content {
+    padding: 0 16px;
+}
 h1 {
     font-size: 1000%;
     font-weight: 900;
     letter-spacing: -4px;
     margin: 0;
+    padding: 0;
 }
 h2 {
     font-weight: 100;
     font-size: 250%;
     margin-top: -1%;
-    margin-bottom: 3%;
+    margin-bottom: 25px;
 }
 h3 {
     margin-top: 3%;
 }
 p {
-    margin: 1%;
+    margin: 15px;
 }
 .yui3-button {
     color: #444;
     font-size: 120%;
     line-height: 101%;
-    padding: 1em 2em .95em;
+    padding: 1em 1em .95em;
 }
 a.yui3-button:visited {
     color: #444;
