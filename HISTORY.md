@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.10 / In Development
+
 ## 0.2.9 / 2012-08-27
 
   * Configurable query string.
