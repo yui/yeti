@@ -1,6 +1,16 @@
 # A Brief History of Yeti
 
-## 0.2.9 / In Development
+## 0.2.9 / 2012-08-27
+
+  * Configurable query string.
+  * Configurable timeout.
+  * Provide YUI Test Coverage results.
+  * Prevent race condition during IE6 page navigation.
+  * Capture page reconnects after server comes back online.
+  * Reset heartbeat timer after test files are served.
+  * Test results print on stdout instead of stderr.
+  * Yeti's RPC system (Blizzard) will buffer writes if its socket is not writable.
+  * Improved doc landing page.
 
 ## 0.2.8 / 2012-08-06
 
