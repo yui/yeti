@@ -113,7 +113,7 @@ This will run Yeti with a 120 second timeout:
 
 ### Query string parameters
 
-Yeti can include a query string parameter to add to your test URLs.
+You can specify query string parameters to add to your test URLs.
 This can be used to pass information to your tests that control its behavior.
 
 This will append `?fliter=coverage` to your tests, which is used by the tests
