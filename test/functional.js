@@ -359,6 +359,10 @@ function visitorContext(createBatchConfiguration) {
             assert.include(result, "name");
             assert.include(result, "timestamp");
         },
+        "the client-side test passed": function (topic) {
+            assert.strictEqual(topic.agentResults[0].passed, 1);
+            assert.strictEqual(topic.agentResults[0].failed, 0);
+        },
         "the agentBeat event fired for each beat received": function (topic) {
             // Beats are subjective, they are a ping and not really trackable
             // since they may be throttled they may not match up to the actual
@@ -552,6 +556,13 @@ function withTests() {
 vows.describe("Yeti Functional")
     .addBatch(hub.functionalContext({
         "visits Yeti": visitorContext(withTests("basic.html", "local-js.html", "404-script.html"))
+    }))
+    .addBatch(hub.functionalContext({
+        "visits Yeti with a query string parameter": visitorContext({
+            basedir: basedir,
+            tests: fixtures(["query-string.html"]),
+            query: "dogcow=moof"
+        })
     }))
     .addBatch(hub.functionalContext({
         "visits Yeti then aborts during the batch": clientFailureContext(withTests("long-async.html"))
