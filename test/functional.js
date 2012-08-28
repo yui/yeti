@@ -330,6 +330,22 @@ function clientFailureContext(createBatchConfiguration) {
     });
 }
 
+function clientTimeoutContext(createBatchConfiguration) {
+    return captureContext({
+        topic: createBatchTopic(createBatchConfiguration),
+        "did not throw": didNotThrow,
+        "the browser returned to the capture page": function (topic) {
+            assert.strictEqual(topic.finalPathname, topic.expectedPathname);
+        },
+        "the agentComplete event fired once": function (topic) {
+            assert.strictEqual(topic.agentCompleteFires, 1);
+        },
+        "the agentError event fired once": function (topic) {
+            assert.strictEqual(topic.agentErrorFires, 1);
+        }
+    });
+}
+
 function visitorContext(createBatchConfiguration) {
     return captureContext({
         topic: createBatchTopic(createBatchConfiguration),
@@ -562,6 +578,13 @@ vows.describe("Yeti Functional")
             basedir: basedir,
             tests: fixtures(["query-string.html"]),
             query: "dogcow=moof"
+        })
+    }))
+    .addBatch(hub.functionalContext({
+        "visits Yeti with test that will timeout": clientTimeoutContext({
+            basedir: basedir,
+            tests: fixtures(["long-async.html", "basic.html"]),
+            timeout: 1 // long-async.html takes 10s to run, we expect it to be skipped
         })
     }))
     .addBatch(hub.functionalContext({
