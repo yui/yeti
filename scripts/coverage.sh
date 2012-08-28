@@ -1,5 +1,23 @@
 #!/bin/sh
 
+istanbul=./node_modules/.bin/istanbul
+
+if [ ! -x $istanbul ]; then
+    if hash istanbul 2>&-; then
+        istanbul=`type -P istanbul`
+    fi
+fi
+
+if [ -x $istanbul ]; then
+    echo "Running coverage with Istanbul at $istanbul"
+    $istanbul cover \
+        --report html --dir build_docs/coverage \
+        ./node_modules/.bin/vows -- test/*.js
+    echo "Coverage report written to build_docs/coverage/index.html"
+    hash open 2>&- && open build_docs/coverage/index.html
+    exit 0
+fi
+
 if [ ! -d tools/jscoverage ]; then
     mkdir -p tools/jscoverage
 fi
@@ -22,9 +40,9 @@ tools/jscoverage/jscoverage lib-raw lib
 rm -rf lib
 mv lib-raw lib
 mkdir -p build_docs
-mv coverage.html build_docs/
+mv coverage.html build_docs/jscoverage.html
 
-echo "Coverage report written to build_docs/coverage.html."
+echo "Coverage report written to build_docs/jscoverage.html."
 
 # Open the report on OS X.
-hash open 2>&- && open build_docs/coverage.html
+hash open 2>&- && open build_docs/jscoverage.html
