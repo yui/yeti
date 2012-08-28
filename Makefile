@@ -45,7 +45,7 @@ clean:
 .PHONY: clean
 
 publish: clean html-api html coverage
-	rsync -avz build_docs/ rburke@yeti.cx:public/doc/dev/
+	rsync -avz build_docs/ yeti.cx:public/doc/dev/
 
 maintainer-clean:
 	npm rm webkit-devtools-agent
