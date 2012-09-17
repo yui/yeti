@@ -236,21 +236,7 @@ requires an interactive terminal, which does not yet work.
 
 ### Contribute to Yeti
 
-Your contributions are welcome!
-Please review the [YUI contributor guide][CLA]
-before contributing.
-
-If you haven't contributed to
-a YUI project before,
-you'll need to review and sign
-the [YUI CLA][CLA]
-before we can accept your pull request.
-
-#### Contribution Checklist
-
- 1. Run `make lint` and make sure your new code runs through the linter without error.
- 1. Run `make coverage` and make sure your new code is covered with a test.
-    Tests are located in `test` and use [Vows][].
+See [CONTRIBUTING.md](https://github.com/yui/yeti/blob/master/CONTRIBUTING.md).
 
 ## Bugs & Feedback
 
@@ -273,8 +259,6 @@ for license text and copyright information.
   [node]: http://nodejs.org/
   [npm]: http://npmjs.org/
   [issues]: http://yuilibrary.com/projects/yeti/newticket
-  [Vows]: http://vowsjs.org/
-  [CLA]: http://yuilibrary.com/contribute/cla/
   [YUI]: http://yuilibrary.com/
   [yuitest]: http://yuilibrary.com/yuitest/
   [doctype]: http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#the-doctype
