@@ -17,6 +17,26 @@ function log() {
     }
 }
 
+var minify = true,
+    argv = {};
+
+if (process.env.npm_config_argv) {
+    try {
+        argv = JSON.parse(process.env.npm_config_argv);
+    } catch (ex) {
+        // Nothing.
+    }
+
+    if (argv.original) {
+        minify = !argv.original.some(function (arg) {
+            return "--no-minify" === arg;
+        });
+        if (!minify) {
+            log("Disabled minification.");
+        }
+    }
+}
+
 function die(message) {
     console.warn(message.message || message);
     process.exit(1);
@@ -60,6 +80,9 @@ function download(err) {
         [YUI_TEST_URL, "yui-test.js"],
         ["http://cdn.sockjs.org/sockjs-0.3.min.js", "sock.js"]
     ].forEach(function downloader(args) {
+        if (!minify) {
+            args[0] = args[0].replace(/[\.\-]min\.js/g, ".js");
+        }
         saveURLToDep.apply(null, args);
     });
 }
