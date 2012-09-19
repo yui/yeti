@@ -17,7 +17,7 @@ function log() {
     }
 }
 
-var minify = true,
+var minify = false,
     argv = {};
 
 if (process.env.npm_config_argv) {
@@ -28,11 +28,11 @@ if (process.env.npm_config_argv) {
     }
 
     if (argv.original) {
-        minify = !argv.original.some(function (arg) {
-            return "--no-minify" === arg;
+        minify = argv.original.some(function (arg) {
+            return "--minify" === arg;
         });
-        if (!minify) {
-            log("Disabled minification.");
+        if (minify) {
+            log("Enabled minification.");
         }
     }
 }
