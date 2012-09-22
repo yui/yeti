@@ -136,7 +136,52 @@ When combined with [localtunnel][], mobile testing is simple. If you're not deal
 
 You can then visit that URL on your mobile (or any other) device and have it run new tests.
 
-### Yeti API
+### Options
+
+Here's a breakdown of all available CLI options.
+
+ - *query* (String) Query string parameters to pass to tests.
+ - *timeout* (Number in seconds) Test timeout.
+ - *hub* (URL) Location of the Yeti Hub to use.
+   Set to `false` or specify `--no-hub` to override a configuration file.
+ - *server* Starts a Yeti Hub.
+ - *port* (Number) Yeti Hub will listen to this port.
+ - *loglevel* (`debug` or `info`) Print debugging information.
+ - *help* Print usage.
+ - *version* Print the Yeti version.
+
+#### Configuration file
+
+You may use place JSON in a `.yeti.json` file to set project or user specific configuration.
+
+Yeti will look for `.yeti.json` in these places:
+
+ - Recursively starting in the directory you start Yeti
+ - In your home folder
+
+Here is an example `.yeti.json` for the YUI project, which is placed in the repositiory root:
+
+    {
+        "hub": "http://hub.yeti.cx/",
+        "basedir": ".",
+        "glob": "**/tests/unit/*.html"
+    }
+
+Here is the breakdown of these settings:
+
+ - The *hub* option defines a Yeti Hub URL to use.
+ - The *basedir* option indicates that the directory where `.yeti.json` lives is
+    permitted to serve files to the Yeti Hub.
+ - The *glob* option defines a pattern to search for test files.
+
+These settings let YUI developers simply run `yeti` inside of the project directory
+to run tests. Since all tests in the project match the glob pattern, the `yeti`
+command works for specific components as well as for the entire project.
+
+This configuration can be overridden on the command line. For example, to ignore the
+hub setting, you can run Yeti with `--no-hub`.
+
+## Yeti API
 
 You can `require("yeti")` inside your application to script Yeti for your own use.
 
@@ -147,7 +192,7 @@ For API documentation:
 
 Yeti follows [Semantic Versioning](http://semver.org/) but is currently at a 0.x.y release. **The public API is not stable.** There will be changes.
 
-### Caveats
+## Caveats
 
 Yeti should work on all platforms supported by Node.js.
 It's tested on Linux and OS X.
