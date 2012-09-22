@@ -2,7 +2,6 @@
 /dep/
 /doc/quick-start/index.mustache
 /api/
-/tools/
 coverage.*
 node_modules
 npm-*.log
