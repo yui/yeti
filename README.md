@@ -44,12 +44,46 @@ Point your browsers at that URL, then come back and press Enter.
 
 Yeti exits automatically when all tests complete. If test failures occur, Yeti will exit with a non-zero status code.
 
-### Code coverage
+#### Code coverage
 
 Yeti automatically includes a line coverage summary if your tests were instrumented with [YUI Test Coverage][yuitest].
 
     ✔ Testing started on Safari (6.0) / Mac OS
     Testing... \ 13% complete (10/60) 11.85 tests/sec 44% line coverage
+
+#### Timeouts
+
+Yeti will disconnect a browser if it does not record any activity from it for 45 seconds.
+You can adjust this interval with the `--timeout` option.
+
+This will run Yeti with a 120 second timeout:
+
+    $ yeti --timeout 120 test.html
+
+#### Query string parameters
+
+You can specify query string parameters to add to your test URLs.
+This can be used to pass information to your tests that control its behavior.
+
+This will append `?fliter=coverage` to your tests, which is used by the tests
+for the [YUI Library][YUI] to trigger loading instrumented code.
+
+    $ yeti --query 'filter=coverage' test/*.html
+
+#### Error handling
+
+Yeti will report an uncaught exceptions as Script Errors.
+
+Yeti enforces [No-Quirks Mode][] in your tests because it may impact DOM-related APIs. [Add a DOCTYPE][doctype] to your test document to fix this.
+
+#### Mobile testing made easy
+
+When combined with [localtunnel][], mobile testing is simple. If you're not dealing with sensitive information, startup your Yeti Hub and then run:
+
+    $ localtunnel 9000
+       Port 9000 is now publicly accessible from http://3z48.localtunnel.com ...
+
+You can then visit that URL on your mobile (or any other) device and have it run new tests.
 
 ### Yeti Hub
 
@@ -73,7 +107,7 @@ and will begin testing immediately if browsers are already connected.
     Testing... \ 100% complete (22/22) 91.60 tests/sec 504 tests passed! (11529ms)
     $
 
-### Sharing Your Yeti Hub
+#### Sharing
 
 Your Yeti Hub can be shared with other developers.
 
@@ -102,40 +136,6 @@ Your `pwd` and your test file will be served through the Hub. Like magic.
 
 This makes it really simple to setup an ad-hoc testing lab shared with your team.
 
-### Timeouts
-
-Yeti will disconnect a browser if it does not record any activity from it for 45 seconds.
-You can adjust this interval with the `--timeout` option.
-
-This will run Yeti with a 120 second timeout:
-
-    $ yeti --timeout 120 test.html
-
-### Query string parameters
-
-You can specify query string parameters to add to your test URLs.
-This can be used to pass information to your tests that control its behavior.
-
-This will append `?fliter=coverage` to your tests, which is used by the tests
-for the [YUI Library][YUI] to trigger loading instrumented code.
-
-    $ yeti --query 'filter=coverage' test/*.html
-
-### Error handling
-
-Yeti will report an uncaught exceptions as Script Errors.
-
-Yeti enforces [No-Quirks Mode][] in your tests because it may impact DOM-related APIs. [Add a DOCTYPE][doctype] to your test document to fix this.
-
-### Mobile testing made easy
-
-When combined with [localtunnel][], mobile testing is simple. If you're not dealing with sensitive information, startup your Yeti Hub and then run:
-
-    $ localtunnel 9000
-       Port 9000 is now publicly accessible from http://3z48.localtunnel.com ...
-
-You can then visit that URL on your mobile (or any other) device and have it run new tests.
-
 ### Options
 
 Here's a breakdown of all available CLI options.
@@ -162,7 +162,7 @@ Yeti will look for `.yeti.json` in these places:
 Here is an example `.yeti.json` for the YUI project, which is placed in the repositiory root:
 
     {
-        "hub": "http://hub.yeti.cx/",
+        "hub": "http://test.yeti.cx/",
         "basedir": ".",
         "glob": "**/tests/unit/*.html"
     }
@@ -217,7 +217,9 @@ Do you want to add new features or fix bugs in Yeti itself? We made it easy for 
 After running `npm install`, replace the `make` commands below with
 `.\jake.bat` to use the experimental Jake tasks that are Windows ready.
 
-### Install dependencies
+### Code
+
+#### Install dependencies
 
 Clone Yeti.
 
@@ -228,7 +230,7 @@ Install Yeti's dependencies.
 
     npm install
 
-### Run tests & code coverage
+#### Run tests & code coverage
 
 Yeti's automated tests require PhantomJS.
 You can [download PhantomJS](http://phantomjs.org/download.html) source or pre-built
@@ -239,6 +241,27 @@ binaries from their website. Make sure the `phantomjs` binary is installed in yo
 
 The latter command uses [JSCoverage for Node.js][jsc],
 which will be built and installed to `./tools/jscoverage`.
+
+#### Linter
+
+    make lint
+
+You may also run the linter on individual files with `./go lint`:
+
+    ./go lint test/blizzard.js
+
+Yeti uses [JSHint][] to analyze code for problems. See `.jshintrc` for options used by Yeti.
+
+#### Profiler
+
+Requires [Google Chrome Canary][canary] and OS X.
+
+Profile the Yeti Hub:
+
+    ./go profile --server
+
+Using `./go profile` without `--server` to profile the Yeti client
+requires an interactive terminal, which does not yet work.
 
 ### HTML documentation
 
@@ -257,27 +280,6 @@ Yeti uses [YUIDocJS][] to generate API documentation from inline JSDoc comment b
     make html-api
 
 Documentation will be built to `build_docs/api/everything/`.
-
-### Linter
-
-    make lint
-
-You may also run the linter on individual files with `./go lint`:
-
-    ./go lint test/blizzard.js
-
-Yeti uses [JSHint][] to analyze code for problems. See `.jshintrc` for options used by Yeti.
-
-### Profiler
-
-Requires [Google Chrome Canary][canary] and OS X.
-
-Profile the Yeti Hub:
-
-    ./go profile --server
-
-Using `./go profile` without `--server` to profile the Yeti client
-requires an interactive terminal, which does not yet work.
 
 ### Contribute to Yeti
 
