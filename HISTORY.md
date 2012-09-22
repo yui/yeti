@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.11 / In Development
+
 ## 0.2.10 / 2012-09-21
 
   * Display LAN and Local IPs for connecting browsers.
