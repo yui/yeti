@@ -1,6 +1,16 @@
 # A Brief History of Yeti
 
-## 0.2.10 / In Development
+## 0.2.10 / 2012-09-21
+
+  * Display LAN and Local IPs for connecting browsers.
+  * Use `.yeti.json` configuration file when available.
+  * Add the `basedir` option to specify the directory Yeti is allowed to serve.
+  * Add the `glob` option to locate test files matching a pattern.
+  * Hub URLs without an explicit port set in the URL now correctly use port 80.
+  * Install unminified SockJS client script to workaround an issue in IE 10.
+  * Detect Chrome browser for mobile devices.
+  * Do not change Yeti behavior when stderr is not a TTY.
+  * Remove broken assertions in Yeti's RPC system (Blizzard).
 
 ## 0.2.9 / 2012-08-27
 
