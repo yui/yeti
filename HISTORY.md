@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.12 / In Development
+
 ## 0.2.11 / 2012-09-28
 
   * Fix feedback line for Windows. Use portable line-clearing code.
