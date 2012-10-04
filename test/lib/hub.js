@@ -68,7 +68,7 @@ var clientContext = exports.clientContext = function (subContext) {
     };
 };
 
-var phantomTopic = exports.phantomTopic = function () {
+var phantomTopic = function () {
     return function (lastTopic) {
         var vow = this,
             start = new Date(),
@@ -83,7 +83,7 @@ var phantomTopic = exports.phantomTopic = function () {
     };
 };
 
-exports.functionalContext = function (subContext) {
+var phantomContext = exports.phantomContext = function (subContext) {
     var browserContext = {
         topic: phantomTopic(),
         teardown: function (browser) {
@@ -99,7 +99,11 @@ exports.functionalContext = function (subContext) {
         browserContext[key] = subContext[key];
     });
 
+    return browserContext;
+};
+
+exports.functionalContext = function (subContext) {
     return clientContext({
-        "a browser": browserContext
+        "a browser": phantomContext(subContext)
     });
 };

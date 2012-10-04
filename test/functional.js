@@ -541,13 +541,9 @@ function attachServerContext(testContext, explicitRoute) {
                 teardown: function (topic) {
                     topic.client.end();
                 },
-                "a browser for testing": {
-                    topic: hub.phantomTopic(),
-                    teardown: function (browser) {
-                        browser.exit();
-                    },
+                "a browser for testing": hub.phantomContext({
                     "visits Yeti": testContext
-                }
+                })
             }
         }
     };
