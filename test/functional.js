@@ -268,6 +268,7 @@ function clientFailureContext(createBatchConfiguration) {
             var vow = this,
                 results = [],
                 firstPathname = null,
+                finalPathname = null,
                 sessionEndFires = 0,
                 agentErrorFires = 0,
                 agentSeenFires = 0,
@@ -279,6 +280,18 @@ function clientFailureContext(createBatchConfiguration) {
                 visitedPaths = [],
                 clientSession,
                 batch;
+
+            function maybeCallback() {
+                if (sessionEndFires && finalPathname) {
+                    vow.callback(null, {
+                        hub: hub,
+                        expectedPathname: firstPathname,
+                        finalPathname: finalPathname,
+                        sessionEndFires: sessionEndFires,
+                        visitedPaths: visitedPaths
+                    });
+                }
+            }
 
             // Recall that:
             // Client (test provider) <-> Hub (server) <-> Agent (browser)
@@ -298,13 +311,8 @@ function clientFailureContext(createBatchConfiguration) {
                 if (visitedPaths.length >= 2 + createBatchConfiguration.tests.length) {
                     clearTimeout(timeout);
                     pageTopic.page.release();
-                    vow.callback(null, {
-                        hub: hub,
-                        expectedPathname: firstPathname,
-                        finalPathname: pathname,
-                        sessionEndFires: sessionEndFires,
-                        visitedPaths: visitedPaths
-                    });
+                    finalPathname = pathname;
+                    maybeCallback();
                 } else if (pathname.indexOf("fixture") !== -1) {
                     // The URL is a test page.
                     // Kill the Yeti Client session.
@@ -323,6 +331,7 @@ function clientFailureContext(createBatchConfiguration) {
             lastTopic.session.on("end", function () {
                 // Hub reports a client session disconnection.
                 sessionEndFires += 1;
+                maybeCallback();
             });
         },
         "the agent returned to the capture page": function (topic) {
