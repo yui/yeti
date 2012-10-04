@@ -56,7 +56,7 @@ function captureContext(batchContext) {
     return {
         topic: function (browser, lastTopic) {
             var vow = this;
-            browser.createPage(function (page) {
+            browser.createPage(function (err, page) {
                 var timeout = setTimeout(function () {
                     vow.callback(new Error("The capture page took too long to load."));
                 }, 10000),
@@ -78,23 +78,23 @@ function captureContext(batchContext) {
                 });
 
                 if (process.env.TRAVIS) {
-                    page.set("onConsoleMessage", function () {
+                    page.onConsoleMessage = function () {
                         console.log.apply(this, [
                             "PhantomJS console message:"
                         ].concat(Array.prototype.slice.apply(arguments)));
-                    });
+                    };
                 }
 
                 if (process.env.RESOURCE_DEBUG) {
-                    page.set("onResourceRequested", function () {
+                    page.onResourceRequested = function () {
                         console.log.apply(this, [
                             "PhantomJS resource requested:"
                         ].concat(Array.prototype.slice.apply(arguments)));
-                    });
+                    };
                 }
 
                 (function opener() {
-                    page.open(lastTopic.url, function (status) {
+                    page.open(lastTopic.url, function (err, status) {
                         if (status !== "success") {
                             openAttempts += 1;
                             if (openAttempts > 5) {
@@ -240,14 +240,14 @@ function waitForPathChange(page, cb) {
     var originalPathname,
         attempts = 0;
 
-    page.evaluate(getPathname, function (pathname) {
+    page.evaluate(getPathname, function (err, pathname) {
         originalPathname = pathname;
         cb(pathname); // Record the first URL.
     });
 
-    page.set("onLoadStarted", function () {
+    page.onLoadStarted = function () {
         (function pathnameObserver() {
-            page.evaluate(getPathname, function (pathname) {
+            page.evaluate(getPathname, function (err, pathname) {
                 if (pathname !== originalPathname) {
                     originalPathname = pathname;
                     cb(pathname);
@@ -259,7 +259,7 @@ function waitForPathChange(page, cb) {
                 }
             });
         }());
-    });
+    };
 }
 
 function clientFailureContext(createBatchConfiguration) {
@@ -267,6 +267,7 @@ function clientFailureContext(createBatchConfiguration) {
         topic: function (pageTopic, browser, lastTopic, hub) {
             var vow = this,
                 results = [],
+                firstPathname = null,
                 sessionEndFires = 0,
                 agentErrorFires = 0,
                 agentSeenFires = 0,
@@ -289,6 +290,9 @@ function clientFailureContext(createBatchConfiguration) {
 
             waitForPathChange(pageTopic.page, function (pathname) {
                 visitedPaths.push(pathname);
+                if (firstPathname === null) {
+                    firstPathname = pathname;
+                }
                 // Capture page + tests + Capture page
                 // 2 + tests = full test cycle
                 if (visitedPaths.length >= 2 + createBatchConfiguration.tests.length) {
@@ -296,7 +300,7 @@ function clientFailureContext(createBatchConfiguration) {
                     pageTopic.page.release();
                     vow.callback(null, {
                         hub: hub,
-                        expectedPathname: pageTopic.url,
+                        expectedPathname: firstPathname,
                         finalPathname: pathname,
                         sessionEndFires: sessionEndFires,
                         visitedPaths: visitedPaths
@@ -530,6 +534,9 @@ function attachServerContext(testContext, explicitRoute) {
                 },
                 "a browser for testing": {
                     topic: hub.phantomTopic(),
+                    teardown: function (browser) {
+                        browser.exit();
+                    },
                     "visits Yeti": testContext
                 }
             }

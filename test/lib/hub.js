@@ -2,7 +2,7 @@
 
 var assert = require("assert");
 var http = require("http");
-var phantom = require("phantom");
+var phantom = require("node-phantom");
 
 var Hub = require("../../lib/hub");
 var hubClient = require("../../lib/client");
@@ -75,10 +75,10 @@ var phantomTopic = exports.phantomTopic = function () {
             timeout = setTimeout(function () {
                 vow.callback(new Error("Unable to start phantomjs."));
                 process.exit(1);
-            }, 10000);
-        phantom.create(function (browser) {
+            }, 20000);
+        phantom.create(function (err, browser) {
             clearTimeout(timeout);
-            vow.callback(null, browser);
+            vow.callback(err, browser);
         });
     };
 };
@@ -86,6 +86,9 @@ var phantomTopic = exports.phantomTopic = function () {
 exports.functionalContext = function (subContext) {
     var browserContext = {
         topic: phantomTopic(),
+        teardown: function (browser) {
+            browser.exit();
+        },
         "is ok": function (browser) {
             assert.isFunction(browser.createPage);
         }

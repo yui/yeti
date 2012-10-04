@@ -56,7 +56,7 @@
     "ronn": ">=0.3.8",
     "jshint": ">=0.6.1",
     "pact": ">=0.1.2",
-    "phantom": ">=0.3.3",
+    "node-phantom": ">=0.1.2",
     "vows": "https://github.com/reid/vows/tarball/extras",
     "selleck": ">=0.1.12",
     "yuidocjs": ">=0.2.39",
