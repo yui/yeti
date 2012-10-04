@@ -5,11 +5,10 @@
 var CLI = require("./lib/cli").CLI;
 
 var frontend = new CLI({
-    readableStream: process.stdin,
-    writableStream: process.stderr,
+    stdin:  process.stdin,
+    stdout: process.stdout,
+    stderr: process.stderr,
     exitFn: process.exit,
-    errorFn: console.error,
-    putsFn: console.log
 });
 
 frontend.setupExceptionHandler();
