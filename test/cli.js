@@ -156,6 +156,73 @@ vows.describe("Yeti CLI").addBatch({
                 }
             }
         })
+    },
+    "A Yeti CLI with a failing file": {
+        topic: cliTopic(function (topic) {
+            topic.stderr.expect("When ready", this.callback);
+
+            topic.fe.route([
+                "node",
+                "cli.js",
+                "-p", "9012",
+                __dirname + "/fixture/query-string.html",
+            ]);
+        }),
+        "prints hub creation message on stderr": function (topic) {
+            assert.ok(topic.output.indexOf("Creating a Hub.") === 0);
+        },
+        "waits for agents to connect on stderr": function (topic) {
+            assert.include(topic.output, "Waiting for agents to connect");
+            assert.include(topic.output, "also available locally at");
+        },
+        "prompts on the writableStream": function (topic) {
+            assert.include(topic.output, "When ready, press Enter");
+        },
+        "a browser": hub.phantomContext({
+            "visits Yeti": {
+                topic: function (browser, cli) {
+                    var vow = this;
+
+                    expectThenCallback(vow, cli.config.stderr, "Agent connected");
+
+                    function onPageOpen(err, status) {
+                        if (err) {
+                            vow.callback(err);
+                        }
+                    }
+
+                    browser.createPage(function (err, page) {
+                        page.open("http://localhost:9012", onPageOpen);
+                    });
+                },
+                "is ok": function (topic) {
+                    assert.isUndefined(topic.stack);
+                },
+                "the stderr output contains the User-Agent": function (topic) {
+                    assert.include(topic.output, "Mozilla");
+                },
+                "when Enter is pressed": {
+                    topic: function (connectionSnapshot, browser, cli) {
+                        expectThenCallback(this, cli.config.stdout, "failed");
+
+                        cli.config.stdin.write("\n"); // Enter
+                    },
+                    "is ok": function (topic) {
+                        assert.isUndefined(topic.stack);
+                    },
+                    "the stderr output contains the failing test details": function (topic) {
+                        assert.include(topic.output, "testMoof");
+                        assert.include(topic.output, "Values should be equal.");
+                        assert.include(topic.output, "Expected: moof (string)");
+                        assert.include(topic.output, "Actual: ? (string)");
+                        assert.include(topic.output, "1 of 1 tests failed");
+                    },
+                    "the stderr output contains Agent complete": function (topic) {
+                        assert.include(topic.output, "Agent complete");
+                    }
+                }
+            }
+        })
     }
 }).addBatch({
     "parseArgv when given arguments": {

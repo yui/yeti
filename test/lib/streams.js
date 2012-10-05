@@ -7,6 +7,8 @@
 var util = require("util");
 var EventEmitter2 = require("../../lib/events").EventEmitter2;
 
+var DEBUG = process.env.YETI_MOCK_DEBUG;
+
 function makeString(data) {
     if (Buffer.isBuffer(data)) {
         data = data.toString("utf8");
@@ -78,6 +80,10 @@ MockReadableStream.prototype.write = WRITE;
  */
 function MockWritableStream() {
     EventEmitter2.call(this);
+
+    if (DEBUG) {
+        this.id = (Math.random() * 100000) | 0;
+    }
 }
 
 util.inherits(MockWritableStream, EventEmitter2);
@@ -114,12 +120,22 @@ MockWritableStream.prototype.write = WRITE;
  */
 MockWritableStream.prototype.expect = function (expectedString, cb) {
     var self = this,
+        what,
         dataEvents = [];
+
+    if (DEBUG) {
+        what = "MockWritableStream<" + self.id + ">#expect:";
+        console.log(what, "Expecting:", expectedString);
+    }
 
     self.on("data", function ondata(data) {
         data = makeString(data);
 
         dataEvents.push(data);
+
+        if (DEBUG) {
+            console.log(what, "Collecting:", data);
+        }
 
         if (expectedString && data.indexOf(expectedString) !== -1) {
             self.removeListener("data", ondata);
