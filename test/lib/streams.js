@@ -32,6 +32,8 @@ function MockReadableStream() {
 
 util.inherits(MockReadableStream, EventEmitter2);
 
+MockReadableStream.prototype.isTTY = false;
+
 /**
  * No-op.
  *
@@ -45,6 +47,20 @@ MockReadableStream.prototype.setEncoding = NOOP;
  * @method resume
  */
 MockReadableStream.prototype.resume = NOOP;
+
+/**
+ * No-op.
+ *
+ * @method pause
+ */
+MockReadableStream.prototype.pause = NOOP;
+
+/**
+ * No-op.
+ *
+ * @method destroy
+ */
+MockReadableStream.prototype.destroy = NOOP;
 
 /**
  * Emit the `data` event with first argument
@@ -65,6 +81,8 @@ function MockWritableStream() {
 }
 
 util.inherits(MockWritableStream, EventEmitter2);
+
+MockWritableStream.prototype.isTTY = false;
 
 /**
  * No-op.
@@ -103,7 +121,7 @@ MockWritableStream.prototype.expect = function (expectedString, cb) {
 
         dataEvents.push(data);
 
-        if (data.indexOf(expectedString) !== -1) {
+        if (expectedString && data.indexOf(expectedString) !== -1) {
             self.removeListener("data", ondata);
             cb(null, dataEvents.join(""));
         }
