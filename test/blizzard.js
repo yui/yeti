@@ -25,8 +25,8 @@ function blizzardEventTests(ns) {
             topic: blizzard.rpcTopic({
                 method: "echo",
                 request: "foo"
-            }, function (data, reply) {
-                reply(null, data);
+            }, function (params, reply) {
+                reply(null, params[0]);
             }),
             "the response should be the same as the request": function (topic) {
                 assert.strictEqual(topic.req, topic.res);
@@ -37,8 +37,12 @@ function blizzardEventTests(ns) {
                 method: "binary",
                 request: "bar",
                 fixture: new Buffer(7068)
-            }, function (fixture, data, reply) {
-                reply(null, fixture);
+            }, function (fixture, params, reply) {
+                var err = null;
+                if (params[0] !== "bar") { // the request
+                    err = new Error("Bad request, expected bar, got: " + params[0]);
+                }
+                reply(err, fixture);
             }),
             "the response should be a Buffer": function (topic) {
                 assert.ok(Buffer.isBuffer(topic.res));
@@ -50,26 +54,38 @@ function blizzardEventTests(ns) {
                 assert.deepEqual(topic.res, topic.fixture);
             }
         },
-        "with events responded to from the incomingBridge API": {
+        "with events from the incomingBridge API": {
             topic: function (lastTopic) {
                 var vow = this,
                     context = {},
                     ee = new EventEmitter2();
-                ee.once("bridge1", function (data, reply) {
-                    reply(null, data);
-                });
-                lastTopic.server.incomingBridge(ee, "bridge1");
-                lastTopic.client.emit("rpc.bridge1", "quux", function (err, res) {
-                    vow.callback(err, {
+
+                // Note: the reply callback is no longer passed
+                // to event bridges with the incomingBridge API.
+
+                ee.once("bridge1", function (first, second) {
+                    vow.callback(null, {
                         context: context,
                         event: this.event,
-                        res: res
+                        res: first,
+                        reply: second // should be undefined
                     });
+                });
+                lastTopic.server.incomingBridge(ee, "bridge1");
+                lastTopic.client.emit("rpc.bridge1", "quux", function () {
+                    // no-op callback, used to indicate that a reply
+                    // is requested. We want to test that the reply
+                    // callback, which normally is presented to request.*
+                    // events, is not passed when bridged.
+                    throw new Error("Unexpected reply.");
                 });
             },
             "the response is correct": function (topic) {
-                assert.strictEqual(topic.event, rpcPrefix + "bridge1");
+                assert.strictEqual(topic.event, "bridge1");
                 assert.strictEqual(topic.res, "quux");
+            },
+            "only one argument was given to the bridged event": function (topic) {
+                assert.isUndefined(topic.reply);
             }
         },
         "with events sent by the outgoingBridge API": {
@@ -77,8 +93,8 @@ function blizzardEventTests(ns) {
                 var vow = this,
                     context = {},
                     ee = new EventEmitter2();
-                lastTopic.server.on("request.bridge2", function (data, reply) {
-                    reply(null, data);
+                lastTopic.server.on("request.bridge2", function (params, reply) {
+                    reply(null, params[0]); // data
                 });
                 lastTopic.client.outgoingBridge(ee, "bridge2");
                 ee.emit("bridge2", "dogcow", function (err, res) {
