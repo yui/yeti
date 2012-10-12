@@ -44,6 +44,14 @@ Point your browsers at that URL, then come back and press Enter.
 
 Yeti exits automatically when all tests complete. If test failures occur, Yeti will exit with a non-zero status code.
 
+#### JUnit XML output
+
+Yeti can output machine-readable JUnit XML suitable for use in [Jenkins][] with the `--junit` option.
+
+    $ yeti --junit test/*.html > yeti.xml
+
+Yeti will output XML on stdout and status messages on stderr.
+
 #### Code coverage
 
 Yeti automatically includes a line coverage summary if your tests were instrumented with [YUI Test Coverage][yuitest].
@@ -295,6 +303,7 @@ Yeti is free to use under YUI's BSD license.
 See the LICENSE file or the [YUI license page](http://yuilibrary.com/license/)
 for license text and copyright information.
 
+  [Jenkins]: http://jenkins-ci.org/
   [canary]: https://tools.google.com/dlpage/chromesxs
   [github]: https://github.com/yui/yeti
   [travis]: http://travis-ci.org/yui/yeti
