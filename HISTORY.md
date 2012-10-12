@@ -1,6 +1,12 @@
 # A Brief History of Yeti
 
-## 0.2.12 / In Development
+## 0.2.12 / 2012-10-12
+
+  * Fix #11, introduce `--junit` option to output JUnit XML.
+  * Fix #96, `--hub` option properly accepts urls and Booleans.
+  * Fix #98, resolved a flaky event test race condition.
+  * Fix #100, prevent crashes from malformed Yeti RPC calls.
+  * Free up RPC garbage when the other side disconnects.
 
 ## 0.2.11 / 2012-09-28
 
