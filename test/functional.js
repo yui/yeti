@@ -596,7 +596,7 @@ vows.describe("Yeti Functional")
         "visits Yeti with test that will timeout": clientTimeoutContext({
             basedir: basedir,
             tests: fixtures(["long-async.html", "basic.html"]),
-            timeout: 1 // long-async.html takes 10s to run, we expect it to be skipped
+            timeout: 3 // long-async.html takes 10s to run, we expect it to be skipped
         })
     }))
     .addBatch(hub.functionalContext({
