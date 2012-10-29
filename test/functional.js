@@ -85,6 +85,12 @@ function captureContext(batchContext) {
                     };
                 }
 
+                page.onError = function () {
+                    console.log.apply(this, [
+                        "PhantomJS error message:"
+                    ].concat(Array.prototype.slice.apply(arguments)));
+                };
+
                 if (process.env.RESOURCE_DEBUG) {
                     page.onResourceRequested = function () {
                         console.log.apply(this, [
