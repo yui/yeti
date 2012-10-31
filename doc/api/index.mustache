@@ -205,7 +205,17 @@ function (agentName, details) {}
 ```
 
 <p>
-Emitted when a test file could not be served to the Agent.
+Emitted when a test could not be served to the Agent.
+</p>
+
+<h4>Event: 'agentPedanticError'</h4>
+
+```
+function (agentName, details) {}
+```
+
+<p>
+Emitted when a file could not be served to the Agent that is not a test.
 </p>
 
 <h4>Event: 'agentScriptError'</h4>
