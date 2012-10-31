@@ -11,6 +11,9 @@ var depDir = path.join(__dirname, "..", "dep");
 
 var YUI_TEST_URL = "http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.js&3.7.3/build/oop/oop-min.js&3.7.3/build/event-custom-base/event-custom-base-min.js&3.7.3/build/event-base/event-base-min.js&3.7.3/build/event-simulate/event-simulate-min.js&3.7.3/build/event-custom-complex/event-custom-complex-min.js&3.7.3/build/substitute/substitute-min.js&3.7.3/build/json-stringify/json-stringify-min.js&3.7.3/build/test/test-min.js";
 
+var QUNIT_JS_URL = "http://code.jquery.com/qunit/qunit-1.10.0.js";
+var QUNIT_CSS_URL = "http://code.jquery.com/qunit/qunit-1.10.0.css";
+
 var YUI_RUNTIME_URL = "http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.js&3.7.3/build/oop/oop-min.js&3.7.3/build/event-custom-base/event-custom-base-min.js&3.7.3/build/event-custom-complex/event-custom-complex-min.js&3.7.3/build/attribute-events/attribute-events-min.js&3.7.3/build/attribute-core/attribute-core-min.js&3.7.3/build/base-core/base-core-min.js&3.7.3/build/cookie/cookie-min.js&3.7.3/build/array-extras/array-extras-min.js";
 
 function log() {
@@ -94,6 +97,8 @@ function download(err) {
 
     [
         [YUI_TEST_URL, "yui-test.js"],
+        [QUNIT_JS_URL, "qunit.js"],
+        [QUNIT_CSS_URL, "qunit.css"],
         [YUI_RUNTIME_URL, "yui-runtime.js"],
         ["http://cdn.sockjs.org/sockjs-0.3.min.js", "sock.js"]
     ].forEach(function downloader(args) {
