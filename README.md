@@ -37,9 +37,9 @@ Point your browsers at that URL, then come back and press Enter.
     [Come back, press Enter]
 
     ✔ Testing started on Safari (6.0) / Mac OS, Chrome (22.0.1221.0) / Mac OS
-    Testing... / 86% complete (19/22) 121.99 tests/sec ✔ Agent completed: Safari (6.0) / Mac OS
-    Testing... | 95% complete (21/22) 115.40 tests/sec ✔ Agent completed: Chrome (22.0.1221.0) / Mac OS
-    Testing... \ 100% complete (22/22) 115.23 tests/sec 504 tests passed! (9164ms)
+    ✔ Agent completed: Safari (6.0) / Mac OS
+    ✔ Agent completed: Chrome (22.0.1221.0) / Mac OS
+    504 tests passed! (9.1 seconds)
     $
 
 Yeti exits automatically when all tests complete. If test failures occur, Yeti will exit with a non-zero status code.
@@ -57,7 +57,7 @@ Yeti will output XML on stdout and status messages on stderr.
 Yeti automatically includes a line coverage summary if your tests were instrumented with [YUI Test Coverage][yuitest].
 
     ✔ Testing started on Safari (6.0) / Mac OS
-    Testing... \ 13% complete (10/60) 11.85 tests/sec 44% line coverage
+    ► Testing... \ 13% complete (10/60) 11.85 tests/sec ETA 4 minutes, 2 seconds 44% line coverage
 
 #### AJAX testing
 
@@ -127,9 +127,9 @@ and will begin testing immediately if browsers are already connected.
       Agent connected: Chrome (22.0.1221.0) / Mac OS
       Agent connected: Safari (6.0) / Mac OS
     ✔ Testing started on Chrome (22.0.1221.0) / Mac OS, Safari (6.0) / Mac OS
-    Testing... / 68% complete (15/22) 98.84 tests/sec ✔ Agent completed: Chrome (22.0.1221.0) / Mac OS
-    Testing... | 95% complete (21/22) 91.65 tests/sec ✔ Agent completed: Safari (6.0) / Mac OS
-    Testing... \ 100% complete (22/22) 91.60 tests/sec 504 tests passed! (11529ms)
+    ✔ Agent completed: Chrome (22.0.1221.0) / Mac OS
+    ✔ Agent completed: Safari (6.0) / Mac OS
+    504 tests passed! (11.5 seconds)
     $
 
 #### Sharing
@@ -155,9 +155,9 @@ Your `pwd` and your test file will be served through the Hub. Like magic.
       Agent connected: Chrome (22.0.1221.0) / Mac OS
       Agent connected: Safari (6.0) / Mac OS
     ✔ Testing started on Chrome (22.0.1221.0) / Mac OS, Safari (6.0) / Mac OS
-    Testing... - 91% complete (20/22) 122.51 tests/sec ✔ Agent completed: Safari (6.0) / Mac OS
-    Testing... | 95% complete (21/22) 120.21 tests/sec ✔ Agent completed: Chrome (22.0.1221.0) / Mac OS
-    Testing... \ 100% complete (22/22) 120.05 tests/sec 504 tests passed! (8763ms)
+    ✔ Agent completed: Safari (6.0) / Mac OS
+    ✔ Agent completed: Chrome (22.0.1221.0) / Mac OS
+    504 tests passed! (8.7 seconds)
 
 This makes it really simple to setup an ad-hoc testing lab shared with your team.
 
