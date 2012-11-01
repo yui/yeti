@@ -1,6 +1,14 @@
 # A Brief History of Yeti
 
-## 0.2.13 / In Development
+## 0.2.13 / 2012-11-01
+
+  * Fix #103, add AJAX testing routes provided by echoecho.
+  * Fix #108, add basic support for QUnit.
+  * Fix #107, new error event for non-essential 404s, omitted by the CLI.
+  * Fix #106, feedback line clears before test results for cleaner output.
+  * Fix #105, improved feedback line reporter time formatting.
+  * Fix #102, socketWrite crash after end().
+  * Fix #91, browser test driver rewrite using YUI.
 
 ## 0.2.12 / 2012-10-12
 
