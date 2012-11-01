@@ -42,7 +42,7 @@
     "node": "~0.6.4 || ~0.7.11 || ~0.8.0"
   },
   "dependencies": {
-    "echoecho": "https://github.com/davglass/echoecho/tarball/issue3",
+    "echoecho": "~0.1.0",
     "eventemitter2": "~0.4.8",
     "eventyoshi": "~0.1.2",
     "nopt": "~1.0.10",
