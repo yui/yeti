@@ -59,6 +59,23 @@ Yeti automatically includes a line coverage summary if your tests were instrumen
     ✔ Testing started on Safari (6.0) / Mac OS
     Testing... \ 13% complete (10/60) 11.85 tests/sec 44% line coverage
 
+#### AJAX testing
+
+Yeti provides server-side AJAX routes with [echoecho][ee]. Your test can
+[make relative HTTP requests][ee-usage] to test your code aganist server-side HTTP
+GET, POST, PUT, DELETE, OPTIONS, GET with delay, JSON or JSONP responses via POST,
+or any HTTP status code.
+
+Example supported routes:
+
+ - `echo/status/500` returns a 500 response.
+ - `echo/delay/3` returns a 200 response after 3 seconds.
+ - `echo/jsonp?callback=foo` returns a JSONP response with the given
+    POST data wrapped in a call to `foo`.
+
+Note these routes are intentionally relative paths.
+See the [echoecho README][ee-readme] for more details.
+
 #### Timeouts
 
 Yeti will disconnect a browser if it does not record any activity from it for 45 seconds.
@@ -304,6 +321,9 @@ See the LICENSE file or the [YUI license page](http://yuilibrary.com/license/)
 for license text and copyright information.
 
   [Jenkins]: http://jenkins-ci.org/
+  [ee]: https://github.com/davglass/echoecho
+  [ee-usage]: https://github.com/davglass/echoecho#using-in-your-tests
+  [ee-readme]: https://github.com/davglass/echoecho#readme
   [canary]: https://tools.google.com/dlpage/chromesxs
   [github]: https://github.com/yui/yeti
   [travis]: http://travis-ci.org/yui/yeti
