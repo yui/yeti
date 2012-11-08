@@ -3,6 +3,7 @@
 var vows = require("vows");
 var assert = require("assert");
 
+var portfinder = require("portfinder");
 var streams = require("./lib/streams");
 var hub = require("./lib/hub");
 
@@ -35,8 +36,9 @@ function cliTopic(fn) {
         });
 
         context = {
-            callback: function (err, expectedString) {
+            callback: function (port, err, expectedString) {
                 vow.callback(err, {
+                    port: port,
                     output: expectedString,
                     config: topic
                 });
@@ -64,14 +66,30 @@ function expectThenCallback(vow, stream, expectedString, mixins) {
 }
 
 vows.describe("Yeti CLI").addBatch({
-    "A Yeti CLI without arguments": {
+    "A Yeti CLI without any test arguments": {
         topic: cliTopic(function (topic) {
-            topic.stderr.expect("usage", this.callback);
+            var vow = this;
 
-            topic.fe.route([
-                "node",
-                "cli.js"
-            ]);
+            // We need to override the default port,
+            // otherwise Yeti will auto-start if a Yeti
+            // server is listening on the same machine.
+            // So, there's one argument.
+            portfinder.getPort(function (err, port) {
+                if (err) {
+                    vow.callback(err);
+                    return;
+                }
+
+                port = String(port);
+
+                topic.stderr.expect("usage", vow.callback.bind(vow, port));
+
+                topic.fe.route([
+                    "node",
+                    "cli.js",
+                    "-p", port
+                ]);
+            });
         }),
         "returns usage on stderr": function (topic) {
             assert.ok(topic.output.indexOf("usage:") === 0);
@@ -82,13 +100,25 @@ vows.describe("Yeti CLI").addBatch({
     },
     "A Yeti CLI with --server": {
         topic: cliTopic(function (topic) {
-            topic.stderr.expect("started", this.callback);
-            topic.fe.route([
-                "node",
-                "cli.js",
-                "-s",
-                "-p", "9010"
-            ]);
+            var vow = this;
+
+            portfinder.getPort(function (err, port) {
+                if (err) {
+                    vow.callback(err);
+                    return;
+                }
+
+                port = String(port);
+
+                topic.stderr.expect("started", vow.callback.bind(vow, port));
+
+                topic.fe.route([
+                    "node",
+                    "cli.js",
+                    "-s",
+                    "-p", port
+                ]);
+            });
         }),
         "returns startup message on stderr": function (topic) {
             assert.ok(topic.output.indexOf("Yeti Hub started") === 0);
@@ -96,15 +126,26 @@ vows.describe("Yeti CLI").addBatch({
     },
     "A Yeti CLI with files": {
         topic: cliTopic(function (topic) {
-            topic.stderr.expect("When ready", this.callback);
+            var vow = this;
 
-            topic.fe.route([
-                "node",
-                "cli.js",
-                "-p", "9011",
-                __dirname + "/fixture/basic.html",
-                __dirname + "/fixture/qunit.html"
-            ]);
+            portfinder.getPort(function (err, port) {
+                if (err) {
+                    vow.callback(err);
+                    return;
+                }
+
+                port = String(port);
+
+                topic.stderr.expect("When ready", vow.callback.bind(vow, port));
+
+                topic.fe.route([
+                    "node",
+                    "cli.js",
+                    "-p", port,
+                    __dirname + "/fixture/basic.html",
+                    __dirname + "/fixture/qunit.html"
+                ]);
+            });
         }),
         "prints hub creation message on stderr": function (topic) {
             assert.ok(topic.output.indexOf("Creating a Hub.") === 0);
@@ -130,7 +171,7 @@ vows.describe("Yeti CLI").addBatch({
                     }
 
                     browser.createPage(function (err, page) {
-                        page.open("http://localhost:9011", onPageOpen);
+                        page.open("http://localhost:" + cli.port, onPageOpen);
                     });
                 },
                 "is ok": function (topic) {
@@ -160,14 +201,25 @@ vows.describe("Yeti CLI").addBatch({
     },
     "A Yeti CLI with a failing file": {
         topic: cliTopic(function (topic) {
-            topic.stderr.expect("When ready", this.callback);
+            var vow = this;
 
-            topic.fe.route([
-                "node",
-                "cli.js",
-                "-p", "9012",
-                __dirname + "/fixture/query-string.html",
-            ]);
+            portfinder.getPort(function (err, port) {
+                if (err) {
+                    vow.callback(err);
+                    return;
+                }
+
+                port = String(port);
+
+                topic.stderr.expect("When ready", vow.callback.bind(vow, port));
+
+                topic.fe.route([
+                    "node",
+                    "cli.js",
+                    "-p", port,
+                    __dirname + "/fixture/query-string.html",
+                ]);
+            });
         }),
         "prints hub creation message on stderr": function (topic) {
             assert.ok(topic.output.indexOf("Creating a Hub.") === 0);
@@ -193,7 +245,7 @@ vows.describe("Yeti CLI").addBatch({
                     }
 
                     browser.createPage(function (err, page) {
-                        page.open("http://localhost:9012", onPageOpen);
+                        page.open("http://localhost:" + cli.port, onPageOpen);
                     });
                 },
                 "is ok": function (topic) {
