@@ -185,7 +185,7 @@ Yeti will look for `.yeti.json` in these places:
  - Recursively starting in the directory you start Yeti
  - In your home folder
 
-Here is an example `.yeti.json` for the YUI project, which is placed in the repositiory root:
+Here is an example `.yeti.json` for the YUI project, which is placed in the repository root:
 
     {
         "hub": "http://test.yeti.cx/",

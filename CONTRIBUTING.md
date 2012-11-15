@@ -64,7 +64,7 @@ posting that you're working on it is just fine. Thank you!
 
  1. Sign the [YUI Contributor License Agreement][CLA].
  1. Push your changes to a topic branch in your fork of the repository.
- 1. Submit a pull request to the repositiory in the yui organization.
+ 1. Submit a pull request to the repository in the yui organization.
  1. Update your YUILibrary.com ticket with the URL of your pull request.
 
 ## Get Help
