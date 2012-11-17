@@ -103,7 +103,9 @@ vows.describe("Yeti CLI").addBatch({
                 "cli.js",
                 "-p", "9011",
                 __dirname + "/fixture/basic.html",
-                __dirname + "/fixture/qunit.html"
+                __dirname + "/fixture/qunit.html",
+                __dirname + "/fixture/jasmine.html",
+                __dirname + "/fixture/mocha.html"
             ]);
         }),
         "prints hub creation message on stderr": function (topic) {
@@ -149,7 +151,7 @@ vows.describe("Yeti CLI").addBatch({
                         assert.isUndefined(topic.stack);
                     },
                     "the stderr output contains the test results": function (topic) {
-                        assert.include(topic.output, "2 tests passed");
+                        assert.include(topic.output, "4 tests passed");
                     },
                     "the stderr output contains Agent complete": function (topic) {
                         assert.include(topic.output, "Agent complete");
@@ -166,7 +168,7 @@ vows.describe("Yeti CLI").addBatch({
                 "node",
                 "cli.js",
                 "-p", "9012",
-                __dirname + "/fixture/query-string.html",
+                __dirname + "/fixture/query-string.html"
             ]);
         }),
         "prints hub creation message on stderr": function (topic) {
