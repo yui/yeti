@@ -29,6 +29,9 @@ h2 {
     margin-top: -1%;
     margin-bottom: 25px;
 }
+h1, h2 {
+    text-rendering: optimizeLegibility;
+}
 h3 {
     margin-top: 3%;
 }
