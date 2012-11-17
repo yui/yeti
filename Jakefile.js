@@ -85,7 +85,11 @@ task("install", function () {
 
 desc("Run all of Yeti's unit tests");
 task("test", function () {
-    bin("vows", getTestFiles(), complete);
+    var args = [];
+    if (process.env.TRAVIS) {
+        args.push("--spec");
+    }
+    bin("vows", args.concat(getTestFiles()), complete);
 }, {
     async: true
 });
