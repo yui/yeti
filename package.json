@@ -3,7 +3,10 @@
   "description": "Test your JavaScript with any browser.",
   "author": "Reid Burke <me@reidburke.com> (http://reidburke.com)",
   "contributors": [
-    "Dav Glass <davglass@gmail.com>"
+    "Dav Glass <davglass@gmail.com>",
+    "Ryuichi Okumura <okuryu@okuryu.com>",
+    "Clarence Leung <clarle@yahoo-inc.com>",
+    "Ryan Seddon <seddon.ryan@gmail.com>"
   ],
   "keywords": [
     "YUI",
