@@ -234,7 +234,7 @@ QUnit, Mocha and Jasmine testing frameworks have full support in Yeti including 
 
 ## Install latest Yeti snapshot
 
-You can install the latest in-development snapshot of Yeti easily, too:
+You can install the latest development snapshot of Yeti easily:
 
     npm install -g http://latest.yeti.cx
 
