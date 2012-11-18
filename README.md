@@ -228,10 +228,6 @@ It's tested on Linux and OS X.
 
 You must start Yeti's client in the directory you'll be serving tests from. For security reasons, Yeti will reject requests that try to access files outside of the directory you start Yeti in.
 
-### Full QUnit, Mocha and Jasmine support
-
-QUnit, Mocha and Jasmine testing frameworks have full support in Yeti including errors and actual / expected output on failing tests.
-
 ## Install latest Yeti snapshot
 
 You can install the latest development snapshot of Yeti easily:
