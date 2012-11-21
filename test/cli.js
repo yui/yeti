@@ -154,7 +154,6 @@ vows.describe("Yeti CLI").addBatch({
         },
         "waits for agents to connect on stderr": function (topic) {
             assert.include(topic.output, "Waiting for agents to connect");
-            assert.include(topic.output, "also available locally at");
         },
         "prompts on the writableStream": function (topic) {
             assert.include(topic.output, "When ready, press Enter");
@@ -228,7 +227,6 @@ vows.describe("Yeti CLI").addBatch({
         },
         "waits for agents to connect on stderr": function (topic) {
             assert.include(topic.output, "Waiting for agents to connect");
-            assert.include(topic.output, "also available locally at");
         },
         "prompts on the writableStream": function (topic) {
             assert.include(topic.output, "When ready, press Enter");
