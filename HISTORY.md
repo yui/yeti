@@ -1,6 +1,18 @@
 # A Brief History of Yeti
 
-## 0.2.14 / In Development
+## 0.2.14 / 2012-11-21
+
+  * Fix #112, support Jasmine, Mocha frameworks. Improve QUnit support.
+  * Fix #109, distribute batch workload in parallel.
+  * Fix #110, include time attribute in JUnit output.
+  * Fix #113, fix `yeti -v` and `yeti --help`.
+  * Fix #115, Yeti CLI tests should use free ports.
+  * Fix #114, `--port` used for making default URL.
+  * Fix #87, remove NFE for IE8 support.
+  * Feature: New instances of a browser already in a Batch can join the Batch.
+  * Bugfix: Prevent zombie browser errors.
+  * Bugfix: Do not allow more than 1 socket with the same Agent ID. (c50d476)
+  * Bugfix: False CLI test failure when ran offline. (a2773f8)
 
 ## 0.2.13 / 2012-11-01
 
