@@ -23,7 +23,7 @@ var MOCHA_JS_URL = "https://raw.github.com/visionmedia/mocha/master/mocha.js";
 var MOCHA_JS_ASSERTION_URL = "https://raw.github.com/LearnBoost/expect.js/master/expect.js";
 var MOCHA_CSS_URL = "https://raw.github.com/visionmedia/mocha/master/mocha.css";
 
-var YUI_RUNTIME_URL = "http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.js&3.7.3/build/oop/oop-min.js&3.7.3/build/event-custom-base/event-custom-base-min.js&3.7.3/build/event-custom-complex/event-custom-complex-min.js&3.7.3/build/attribute-events/attribute-events-min.js&3.7.3/build/attribute-core/attribute-core-min.js&3.7.3/build/base-core/base-core-min.js&3.7.3/build/cookie/cookie-min.js&3.7.3/build/array-extras/array-extras-min.js";
+var YUI_RUNTIME_URL = "http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.js&3.7.3/build/oop/oop-min.js&3.7.3/build/event-custom-base/event-custom-base-min.js&3.7.3/build/event-custom-complex/event-custom-complex-min.js&3.7.3/build/event-base/event-base-min.js&3.7.3/build/event-base-ie/event-base-ie-min.js&3.7.3/build/attribute-events/attribute-events-min.js&3.7.3/build/attribute-core/attribute-core-min.js&3.7.3/build/base-core/base-core-min.js&3.7.3/build/cookie/cookie-min.js&3.7.3/build/array-extras/array-extras-min.js";
 
 function log() {
     if (process.env.npm_config_loglevel !== "silent") {
