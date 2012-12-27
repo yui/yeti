@@ -87,7 +87,7 @@ task("install", function () {
 });
 
 desc("Run all of Yeti's unit tests");
-task("test", function () {
+task("test", ["dep"], function () {
     var args = [];
     if (process.env.TRAVIS) {
         args.push("--spec");
@@ -98,7 +98,7 @@ task("test", function () {
 });
 
 desc("Run all of Yeti's unit tests with the '--spec' flag");
-task("spec", function () {
+task("spec", ["dep"], function () {
     bin("vows", ["--spec"].concat(getTestFiles()), complete);
 }, {
     async: true
