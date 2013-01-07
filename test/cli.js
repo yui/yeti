@@ -179,7 +179,7 @@ vows.describe("Yeti CLI").addBatch({
                     assert.isUndefined(topic.stack);
                 },
                 "the stderr output contains the User-Agent": function (topic) {
-                    assert.include(topic.output, "Mozilla");
+                    assert.include(topic.output, "PhantomJS");
                 },
                 "when Enter is pressed": {
                     topic: function (connectionSnapshot, browser, cli) {
@@ -252,7 +252,7 @@ vows.describe("Yeti CLI").addBatch({
                     assert.isUndefined(topic.stack);
                 },
                 "the stderr output contains the User-Agent": function (topic) {
-                    assert.include(topic.output, "Mozilla");
+                    assert.include(topic.output, "PhantomJS");
                 },
                 "when Enter is pressed": {
                     topic: function (connectionSnapshot, browser, cli) {
