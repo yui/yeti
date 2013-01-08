@@ -161,6 +161,39 @@ Your `pwd` and your test file will be served through the Hub. Like magic.
 
 This makes it really simple to setup an ad-hoc testing lab shared with your team.
 
+#### Browser launching
+
+You can specify `wd-host`, `wd-port`, `wd-user, and `wd-pass` options to connect Yeti to a Selenium 2 Hub
+using the WebDriver protocol. Specifying one or more `browser` options will cause Yeti to launch the
+given browsers over WebDriver.
+
+For example, you can start a Yeti Hub like this:
+
+    yeti --server --wd-hub selenium.example.com --wd-port 4444
+
+Then run tests on two Chrome browsers like this:
+
+    yeti --browser chrome --browser chrome test.html
+
+Valid options for `browser` include:
+
+- Chrome
+- Firefox
+- Safari
+- IE
+- iPad
+- PhantomJS
+
+You can specify a platform for desktop browsers by specifying the
+desired platform after a slash `/`, e.g. `chrome/xp`. Valid platforms,
+defined by the WebDriver protocol, include:
+
+- `Windows`
+- `XP`
+- `Mac`
+- `Linux`
+- `Vista`
+
 ### Options
 
 Here's a breakdown of all available CLI options.
@@ -172,6 +205,12 @@ Here's a breakdown of all available CLI options.
  - *server* Starts a Yeti Hub.
  - *port* (Number) Yeti Hub will listen to this port.
  - *loglevel* (`debug` or `info`) Print debugging information.
+ - *browser* (String) Browser to launch with WebDriver.
+   Requires a Hub with a `wd-host` and `wd-port` configured.
+ - *wd-host* (String) Hostname of a WebDriver server for launching browsers.
+ - *wd-port* (Number) Port to connect on `wd-host`.
+ - *wd-user* (String) Username for WebDriver server.
+ - *wd-pass* (String) Password for WebDriver server.
  - *help* Print usage.
  - *version* Print the Yeti version.
 
