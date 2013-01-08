@@ -163,7 +163,7 @@ This makes it really simple to setup an ad-hoc testing lab shared with your team
 
 #### Browser launching
 
-You can specify `wd-host`, `wd-port`, `wd-user, and `wd-pass` options to connect Yeti to a Selenium 2 Hub
+You can specify `wd-host`, `wd-port`, `wd-user`, and `wd-pass` options to connect Yeti to a Selenium 2 Hub
 using the WebDriver protocol. Specifying one or more `browser` options will cause Yeti to launch the
 given browsers over WebDriver.
 
