@@ -25,6 +25,9 @@ var MOCHA_CSS_URL = "https://raw.github.com/visionmedia/mocha/master/mocha.css";
 
 var YUI_RUNTIME_URL = "http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.js&3.7.3/build/oop/oop-min.js&3.7.3/build/event-custom-base/event-custom-base-min.js&3.7.3/build/event-custom-complex/event-custom-complex-min.js&3.7.3/build/attribute-events/attribute-events-min.js&3.7.3/build/attribute-core/attribute-core-min.js&3.7.3/build/base-core/base-core-min.js&3.7.3/build/cookie/cookie-min.js&3.7.3/build/array-extras/array-extras-min.js";
 
+var DOJO_URL = "http://download.dojotoolkit.org/release-1.8.3/dojo.js";
+var DOJO_DOH_RUNNER_URL = "http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/util/doh/runner.js";
+
 function log() {
     if (process.env.npm_config_loglevel !== "silent") {
         console.log.apply(null, Array.prototype.slice.call(arguments));
@@ -118,6 +121,8 @@ function download(err) {
         [MOCHA_JS_ASSERTION_URL, "expect.js"],
         [MOCHA_CSS_URL, "mocha.css"],
         [YUI_RUNTIME_URL, "yui-runtime.js"],
+        [DOJO_URL, "dojo.js"],
+        [DOJO_DOH_RUNNER_URL, "dojo-doh-runner.js"],
         ["http://cdn.sockjs.org/sockjs-0.3.min.js", "sock.js"]
     ].forEach(function downloader(args) {
         if (options.debug && args[0].indexOf("yui") !== -1) {
