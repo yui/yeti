@@ -1,5 +1,6 @@
 /dep/
 /doc/quick-start/index.mustache
+/doc/contribute/index.mustache
 /api/
 coverage.*
 node_modules
