@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.16 / In Development
+
 ## 0.2.15 / 2013-01-10
 
   * Fix #121, ensure socket is truthy during browser setup.

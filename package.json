@@ -18,7 +18,7 @@
     "yui3",
     "test"
   ],
-  "version": "0.2.15",
+  "version": "0.2.16pre",
   "homepage": "htp://yuilibrary.com/projects/yeti",
   "repository": {
     "type": "git",
