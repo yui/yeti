@@ -1,6 +1,11 @@
 # A Brief History of Yeti
 
-## 0.2.15 / In Development
+## 0.2.15 / 2013-01-10
+
+  * Fix #121, ensure socket is truthy during browser setup.
+  * Fix #122, entity encode failure messages in XML.
+  * WebDriver browser launching support.
+  * Add iPad and PhantomJS as recognized browsers.
 
 ## 0.2.14 / 2012-11-21
 
