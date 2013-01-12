@@ -145,7 +145,8 @@ vows.describe("Yeti CLI").addBatch({
                     __dirname + "/fixture/basic.html",
                     __dirname + "/fixture/qunit.html",
                     __dirname + "/fixture/jasmine.html",
-                    __dirname + "/fixture/mocha.html"
+                    __dirname + "/fixture/mocha.html",
+                    __dirname + "/fixture/doh.html"
                 ]);
             });
         }),
@@ -191,7 +192,7 @@ vows.describe("Yeti CLI").addBatch({
                         assert.isUndefined(topic.stack);
                     },
                     "the stderr output contains the test results": function (topic) {
-                        assert.include(topic.output, "4 tests passed");
+                        assert.include(topic.output, "5 tests passed");
                     },
                     "the stderr output contains Agent complete": function (topic) {
                         assert.include(topic.output, "Agent complete");
