@@ -4,7 +4,7 @@
 
 Yeti is a command-line tool for launching JavaScript unit tests in a browser
 and reporting the results without leaving your terminal.
-Yeti is designed to work with tests built on [YUI Test][yuitest], [QUnit][], [Mocha][] or [Jasmine][] just as they are.
+Yeti is designed to work with tests built on [YUI Test][yuitest], [QUnit][], [Mocha][], [Jasmine][] or [DOH][] just as they are.
 
 ## Install Yeti
 
@@ -383,5 +383,6 @@ for license text and copyright information.
   [QUnit]: http://qunitjs.com/
   [Mocha]: http://visionmedia.github.com/mocha/
   [Jasmine]: http://pivotal.github.com/jasmine/
+  [DOH]: http://dojotoolkit.org/reference-guide/util/doh.html
   [doctype]: http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#the-doctype
   [No-Quirks Mode]: http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#no-quirks-mode
