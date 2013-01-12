@@ -4,7 +4,7 @@
 
 Yeti is a command-line tool for launching JavaScript unit tests in a browser
 and reporting the results without leaving your terminal.
-Yeti is designed to work with tests built on [YUI Test][yuitest], [QUnit][], [Mocha][], [Jasmine][] or [DOH][] just as they are.
+Yeti is designed to work with tests built on [YUI Test][yuitest], [QUnit][], [Mocha][], [Jasmine][], or [DOH][] just as they are.
 
 ## Install Yeti
 
