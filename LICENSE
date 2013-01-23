@@ -1,4 +1,7 @@
-Software Copyright License Agreement (BSD License)
+The following license text applies to all parts of Yeti that are not
+externally maintained libraries.
+
+# License for Yeti (BSD License)
 
 Copyright 2013 Yahoo! Inc.
 All rights reserved.
@@ -31,3 +34,37 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Included externally maintained libraries
+
+The externally maintained libraries included with Yeti are:
+
+- YUI, located at deps/yui-runtime.js.
+  Copyright 2013 Yahoo! Inc.
+  Used under the same BSD license as Yeti.
+  http://yuilibrary.com/license/
+
+- sock.js, located at deps/sock.js.
+  Copyright 2011-2012 VMware, Inc.
+  Used under the MIT license.
+  https://github.com/sockjs/sockjs-client/blob/3f7e5f4ef5673dc15d3d3db890bc82a725f0c91d/LICENSE-MIT-SockJS
+
+- QUnit, located at deps/qunit.*.
+  Copyright 2013 jQuery Foundation and other contributors.
+  Used under the MIT license.
+  https://github.com/jquery/jquery/blob/b326225d9087ee8c5648ace3cf88feab0330353d/MIT-LICENSE.txt
+
+- Jasmine, located at deps/jasmine*.
+  Copyright 2008-2011 Pivotal Labs.
+  Used under the MIT license.
+  https://github.com/pivotal/jasmine/blob/8b02bf731b193e135ccb486e99b3ecd7165bf95c/MIT.LICENSE
+
+- Mocha, located at deps/mocha.*.
+  Copyright 2011-2013 TJ Holowaychuk <tj@vision-media.ca>.
+  Used under the MIT license.
+  https://github.com/visionmedia/mocha/blob/8f66a59657dc37e523749f519753cdade9486b5f/LICENSE
+
+- Dojo, located at deps/dojo*.
+  Copyright 2005-2006 The Dojo Foundation.
+  Used under the BSD license.
+  http://bugs.dojotoolkit.org/browser/dojo/trunk/LICENSE?rev=6646
