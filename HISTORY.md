@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.17 / In Development
+
 ## 0.2.16 / 2013-01-22
 
   * Fix #126, script dependencies are included in npm package.
