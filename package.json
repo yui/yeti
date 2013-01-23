@@ -38,7 +38,7 @@
     "yeti": "./cli.js"
   },
   "scripts": {
-    "pretest": "jshint lib test",
+    "pretest": "jshint lib test && jake dep",
     "test": "jake test",
     "postinstall": "node scripts/postinstall.js"
   },

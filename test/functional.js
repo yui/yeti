@@ -438,7 +438,7 @@ function errorContext(createBatchConfiguration) {
 var DUMMY_PROTOCOL = "YetiDummyProtocol/1.0";
 
 var SERVER_TEST_FIXTURE = fs.readFileSync(path.join(__dirname, "fixture/attach-server.html"), "utf8");
-var YUI_TEST_FIXTURE = fs.readFileSync(path.resolve(__dirname, "../dep/yui-test.js"), "utf8");
+var YUI_TEST_FIXTURE = fs.readFileSync(path.resolve(__dirname, "../dep/dev/yui-test.js"), "utf8");
 
 function attachServerContext(testContext, explicitRoute) {
     var route, testFixture;
