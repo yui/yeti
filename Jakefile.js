@@ -4,7 +4,6 @@
 
 var fs = require("fs");
 var child_process = require("child_process");
-
 var Ronn = require("ronn").Ronn;
 var rimraf = require("rimraf");
 var walk = require("walk");
@@ -78,13 +77,17 @@ task("default", ["install"]);
 
 desc("Install all modules including devDependencies");
 task("install", function () {
-    spawn("npm", ["install"], complete);
+    var dep = jake.Task['dep'];
+    dep.addListener('complete', function () {
+        spawn("npm", ["install"], complete);
+    });
+    dep.invoke();
 }, {
     async: true
 });
 
 desc("Run all of Yeti's unit tests");
-task("test", function () {
+task("test", ["dep"], function () {
     var args = [];
     if (process.env.TRAVIS) {
         args.push("--spec");
@@ -95,7 +98,7 @@ task("test", function () {
 });
 
 desc("Run all of Yeti's unit tests with the '--spec' flag");
-task("spec", function () {
+task("spec", ["dep"], function () {
     bin("vows", ["--spec"].concat(getTestFiles()), complete);
 }, {
     async: true
@@ -149,4 +152,18 @@ desc("Remove development tools");
 task("maintainer-clean", function () {
     spawn("rpm", ["rm", "webkit-devtools-agent"]);
     nuke("tools");
+});
+
+desc("Fetch external dependencies");
+task("dep", function () {
+    spawn(process.argv[0], ["./scripts/fetch_deps.js"], complete);
+}, {
+    async: true
+});
+
+desc("Print history");
+task("history", function () {
+    spawn(process.argv[0], ["./scripts/postinstall.js"], complete);
+}, {
+    async: true
 });
