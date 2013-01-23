@@ -3,6 +3,7 @@ all: install
 
 install:
 	npm install .
+	./jake dep
 .PHONY: install
 
 test:

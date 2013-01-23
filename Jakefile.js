@@ -87,7 +87,7 @@ task("install", function () {
 });
 
 desc("Run all of Yeti's unit tests");
-task("test", ["dep"], function () {
+task("test", function () {
     var args = [];
     if (process.env.TRAVIS) {
         args.push("--spec");
