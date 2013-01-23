@@ -1,6 +1,10 @@
 # A Brief History of Yeti
 
-## 0.2.16 / In Development
+## 0.2.16 / 2013-01-22
+
+  * Fix #126, script dependencies are included in npm package.
+  * Fix #131, add support for Dojo Objective Harness (DOH).
+  * Fix #132, inject test runner only into files in the batch.
 
 ## 0.2.15 / 2013-01-10
 
