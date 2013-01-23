@@ -156,6 +156,7 @@ task("maintainer-clean", function () {
 
 desc("Fetch external dependencies");
 task("dep", function () {
+    jake.mkdirP('dep/dev');
     spawn(process.argv[0], ["./scripts/fetch_deps.js"], complete);
 }, {
     async: true
