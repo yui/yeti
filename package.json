@@ -64,7 +64,6 @@
     "semver": ">=1.0.14",
     "ronn": ">=0.3.8",
     "jshint": ">=0.6.1",
-    "pact": ">=0.1.2",
     "node-phantom": "https://github.com/reid/node-phantom/tarball/socketio-startup",
     "vows": "https://github.com/reid/vows/tarball/extras",
     "selleck": ">=0.1.12",

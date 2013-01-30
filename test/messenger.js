@@ -3,7 +3,6 @@
 var http = require("http");
 var vows = require("vows");
 var assert = require("assert");
-var pact = require("pact");
 
 var Hub = require("../lib/hub");
 
