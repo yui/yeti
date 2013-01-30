@@ -6,7 +6,7 @@ var fs = require("fs");
 var child_process = require("child_process");
 var Ronn = require("ronn").Ronn;
 var rimraf = require("rimraf");
-var walk = require("walk");
+var walkdir = require("walkdir");
 
 var version = require("./lib/package").readPackageSync().version;
 
@@ -56,15 +56,14 @@ function getTestFiles() {
 function getJsFiles(path, cb) {
     var files = [],
         jsFilter = new RegExp(".js$"),
-        walker = walk.walk(path, {
-            followLinks: false
+        walker = walkdir(path, {
+            follow_symlinks: false
         });
 
-    walker.on("file", function (root, stat, next) {
-        if (jsFilter.test(stat.name)) {
-            files.push(root + "/" + stat.name);
+    walker.on("file", function (filename, stat) {
+        if (jsFilter.test(filename)) {
+            files.push(filename);
         }
-        next();
     });
 
     walker.on("end", function () {
