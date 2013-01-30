@@ -5,7 +5,7 @@ var assert = require("assert");
 
 var http = require("http");
 
-var yeti = require("../lib/yeti");
+var yeti = require("../../lib/yeti");
 
 function request(path) {
     return function (hub, server) {

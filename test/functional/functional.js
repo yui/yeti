@@ -12,9 +12,9 @@ var http = require("http");
 var child_process = require("child_process");
 var semver = require("semver");
 
-var Hub = require("../lib/hub");
+var Hub = require("../../lib/hub");
 
-var hub = require("./lib/hub");
+var hub = require("../lib/hub");
 
 if (process.env.TRAVIS) {
     // Debug test errors that only occur on Travis CI.
@@ -438,7 +438,7 @@ function errorContext(createBatchConfiguration) {
 var DUMMY_PROTOCOL = "YetiDummyProtocol/1.0";
 
 var SERVER_TEST_FIXTURE = fs.readFileSync(path.join(__dirname, "fixture/attach-server.html"), "utf8");
-var YUI_TEST_FIXTURE = fs.readFileSync(path.resolve(__dirname, "../dep/dev/yui-test.js"), "utf8");
+var YUI_TEST_FIXTURE = fs.readFileSync(path.resolve(__dirname, "../../dep/dev/yui-test.js"), "utf8");
 
 function attachServerContext(testContext, explicitRoute) {
     var route, testFixture;
@@ -572,7 +572,7 @@ function attachServerBatch(definition) {
     return batch;
 }
 
-var basedir = path.join(__dirname, "..");
+var basedir = path.join(__dirname, "..", "..");
 
 function fixtures(basenames) {
     return basenames.map(function (basename) {

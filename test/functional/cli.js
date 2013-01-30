@@ -4,10 +4,10 @@ var vows = require("vows");
 var assert = require("assert");
 
 var portfinder = require("portfinder");
-var streams = require("./lib/streams");
-var hub = require("./lib/hub");
+var streams = require("../lib/streams");
+var hub = require("../lib/hub");
 
-var cli = require("../lib/cli");
+var cli = require("../../lib/cli");
 var YetiCLI = cli.CLI;
 
 function cliTopic(fn) {
