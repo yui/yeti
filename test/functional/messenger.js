@@ -4,7 +4,7 @@ var http = require("http");
 var vows = require("vows");
 var assert = require("assert");
 
-var Hub = require("../lib/hub");
+var Hub = require("../../lib/hub");
 
 vows.describe("Yeti Hub HTTP errors").addBatch({
     "Hub setup and connection": {

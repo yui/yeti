@@ -3,11 +3,11 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var blizzard = require("./lib/blizzard");
-var blizzardHTTP = require("./lib/blizzard-http");
+var blizzard = require("../lib/blizzard");
+var blizzardHTTP = require("../lib/blizzard-http");
 
-var BlizzardSession = require("../lib/blizzard/session");
-var BlizzardNamespace = require("../lib/blizzard/namespace");
+var BlizzardSession = require("../../lib/blizzard/session");
+var BlizzardNamespace = require("../../lib/blizzard/namespace");
 
 var EventEmitter2 = require("eventemitter2").EventEmitter2;
 

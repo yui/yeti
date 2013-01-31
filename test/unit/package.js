@@ -3,7 +3,7 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var pkg = require("../lib/package");
+var pkg = require("../../lib/package");
 
 vows.describe("Package").addBatch({
     "Reading package data" : {

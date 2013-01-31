@@ -41,13 +41,13 @@ function bin(name, args, completer) {
     spawn("node", ["node_modules/.bin/" + name].concat(args), completer);
 }
 
-function getTestFiles() {
-    var path = "test",
+function getTestFiles(subdirectory) {
+    var path = "test/" + subdirectory,
         jsFilter = new RegExp(".js$"),
         jsTestFiles = fs.readdirSync(path).filter(function (elem, index, arr) {
             return jsFilter.test(elem);
         }).map(function (file) {
-            return "test/" + file;
+            return path + "/" + file;
         });
 
     return jsTestFiles;
@@ -85,23 +85,39 @@ task("install", function () {
     async: true
 });
 
-desc("Run all of Yeti's unit tests");
-task("test", function () {
+desc("Run all of Yeti's functional tests");
+task("test-functional", function () {
     var args = [];
     if (process.env.TRAVIS) {
         args.push("--spec");
     }
-    bin("vows", args.concat(getTestFiles()), complete);
+    bin("vows", args.concat(getTestFiles("functional")), complete);
 }, {
     async: true
 });
 
+desc("Run all of Yeti's unit tests");
+task("test-unit", function () {
+    var args = [];
+    if (process.env.TRAVIS) {
+        args.push("--spec");
+    }
+    bin("vows", args.concat(getTestFiles("unit")), complete);
+}, {
+    async: true
+});
+
+desc("Run all of Yeti's tests");
+task("test", ["test-functional", "test-unit"]);
+
+/*
 desc("Run all of Yeti's unit tests with the '--spec' flag");
 task("spec", ["dep"], function () {
     bin("vows", ["--spec"].concat(getTestFiles()), complete);
 }, {
     async: true
 });
+*/
 
 desc("Build coverage tools and write out test coverage HTML page");
 task("coverage", function () {
