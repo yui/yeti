@@ -65,7 +65,7 @@
     "ronn": ">=0.3.8",
     "jshint": ">=0.6.1",
     "node-phantom": "https://github.com/reid/node-phantom/tarball/socketio-startup",
-    "vows": "https://github.com/reid/vows/tarball/extras",
+    "vows": ">=0.6.4",
     "selleck": ">=0.1.12",
     "yuidocjs": ">=0.2.39",
     "jake": ">=0.2.35",
