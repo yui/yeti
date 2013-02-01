@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "portfinder": ">=0.2.1",
-    "istanbul": ">=0.1.3",
+    "istanbul": "https://github.com/gotwarlost/istanbul/tarball/master",
     "semver": ">=1.0.14",
     "ronn": ">=0.3.8",
     "jshint": ">=0.6.1",
