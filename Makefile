@@ -18,7 +18,7 @@ spec:
 
 coverage:
 	# Problem? Type `make install` first.
-	sh scripts/coverage.sh
+	./jake coverage
 .PHONY: coverage
 
 html:

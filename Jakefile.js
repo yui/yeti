@@ -119,12 +119,22 @@ task("spec", ["dep"], function () {
 });
 */
 
-desc("Build coverage tools and write out test coverage HTML page");
-task("coverage", function () {
-    spawn("bash", ["scripts/coverage.sh"], complete);
+desc("Report functional test coverage as HTML");
+task("coverage-functional", function () {
+    spawn("bash", ["scripts/coverage.sh", "functional"], complete);
 }, {
     async: true
 });
+
+desc("Report unit test coverage as HTML");
+task("coverage-unit", function () {
+    spawn("bash", ["scripts/coverage.sh", "unit"], complete);
+}, {
+    async: true
+});
+
+desc("Report test coverage as HTML");
+task("coverage", ["coverage-functional", "coverage-unit"]);
 
 desc("Build HTML documentation");
 task("html", function () {
