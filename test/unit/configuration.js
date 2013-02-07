@@ -27,11 +27,11 @@ function createFsMock() {
                     '{"bardir":".","newton":1989}'),
                 'project': {
                     'a.js': 1
-            },
-            'current_directory': {
-                '.yeti_config.json': mocks.fs.file(
-                    Date.now(),
-                    '{"bazdir":"../baz"}')
+                },
+                'current_directory': {
+                    '.yeti_config.json': mocks.fs.file(
+                        Date.now(),
+                        '{"bazdir":"../baz"}')
                 }
             },
             'baz': {
@@ -59,7 +59,7 @@ function createProcessMock() {
     var p = {};
     p.cwd = function () {
         return "/home/yeti/current_directory";
-    }
+    };
     p.env = {
         HOME: "/home/yeti",
         BIKE_BAR_: "tikit",
