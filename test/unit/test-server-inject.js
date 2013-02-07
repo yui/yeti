@@ -94,7 +94,7 @@ function createInjectorTests() {
     return context;
 }
 
-vows.describe("Yeti HTML Injector").addBatch({
+vows.describe("HTML Injector").addBatch({
     "A TestServer": {
         topic: function () {
             return new TestServer(PAYLOAD);

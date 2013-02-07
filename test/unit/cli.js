@@ -26,8 +26,8 @@ function createHubMock() {
     return Hub;
 }
 
-vows.describe("Yeti CLI").addBatch({
-    "Given a Yeti CLI": {
+vows.describe("CLI").addBatch({
+    "Given a CLI": {
         topic: function () {
             var topic = {},
                 cliModulePath = "../../lib/cli",
