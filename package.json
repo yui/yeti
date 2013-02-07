@@ -59,6 +59,8 @@
     "graceful-fs": ">=1.1.2 <1.1.11"
   },
   "devDependencies": {
+    "mocks": "https://github.com/vojtajina/node-mocks/tarball/master",
+    "mockery": ">=1.4.0",
     "portfinder": ">=0.2.1",
     "istanbul": "https://github.com/gotwarlost/istanbul/tarball/master",
     "semver": ">=1.0.14",

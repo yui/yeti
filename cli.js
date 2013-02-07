@@ -9,6 +9,7 @@ var frontend = new CLI({
     stdout: process.stdout,
     stderr: process.stderr,
     exitFn: process.exit,
+    process: process
 });
 
 frontend.setupExceptionHandler();
