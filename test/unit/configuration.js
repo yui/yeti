@@ -100,7 +100,6 @@ vows.describe("Configuration").addBatch({
             Configuration = require(configurationModulePath).Configuration;
 
             topic.config = new Configuration();
-            topic.config.printLogEventsForLevel("Configuration", "debug");
 
             topic.config.setFilename('.yeti_config.json');
             topic.config.setProcess(topic.processMock);
