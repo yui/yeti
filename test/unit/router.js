@@ -43,10 +43,13 @@ vows.describe("Router").addBatch({
                 var topic = {};
 
                 topic.req = new MockServerRequest("GET", "/get");
-                topic.matches = routerTopic.router.dispatch(topic.req, "FIXTURE_RES");
+                topic.attemptable = routerTopic.router.dispatch(topic.req, "FIXTURE_RES");
                 topic.routerTopic = routerTopic;
 
                 return topic;
+            },
+            "a match was found": function (topic) {
+                assert.isTrue(topic.attemptable);
             },
             "the correct handler was called": function (topic) {
                 assert.include(topic.routerTopic, "get_next");
@@ -56,6 +59,15 @@ vows.describe("Router").addBatch({
                 assert.strictEqual(topic.routerTopic.get_context.req.method, "GET");
                 assert.strictEqual(topic.routerTopic.get_context.req.url, "/get");
                 assert.strictEqual(topic.routerTopic.get_context.res, "FIXTURE_RES");
+            }
+        },
+        "when calling dispatch for a bogus route": {
+            topic: function (routerTopic) {
+                var req = new MockServerRequest("GET", "/bogus");
+                return routerTopic.router.dispatch(req, "FIXTURE_RES");
+            },
+            "a match was not found": function (topic) {
+                assert.isFalse(topic);
             }
         }
     }
