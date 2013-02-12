@@ -3,7 +3,7 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var Layers = require("../../lib/hub/layers").Layers;
+var Layers = require("../../lib/hub/layers");
 
 vows.describe("Layers").addBatch({
     "Given Layers that will error when calling handle": {
