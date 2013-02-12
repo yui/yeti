@@ -169,6 +169,24 @@ vows.describe("WebDriver Agent Group").addBatch({
             },
             "navigation occurs": function (topic) {
                 assert.lengthOf(topic.events.navigate, topic.wdYoshi.children.length);
+            },
+            "and quit": {
+                topic: function (lastTopic) {
+                    var vow = this,
+                        topic = lastTopic;
+
+                    topic.driver.quit(function (err) {
+                        vow.callback(err, topic);
+                    });
+                },
+                "is ok": function (topic) {
+                    if (topic instanceof Error) { throw topic; }
+                },
+                "browsers are closed": function (topic) {
+                    assert.lengthOf(topic.wdYoshi.children, 0);
+                    assert.lengthOf(topic.driver.browsers, 0);
+                    assert.lengthOf(topic.driver.agentIds, 0);
+                }
             }
         }
     }
