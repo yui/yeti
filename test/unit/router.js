@@ -3,7 +3,7 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var Router = require("../../lib/hub/router").Router;
+var Router = require("../../lib/hub/router");
 
 function MockServerRequest(method, url) {
     this.method = method;
