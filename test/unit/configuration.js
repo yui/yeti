@@ -97,7 +97,7 @@ vows.describe("Configuration").addBatch({
 
             mockery.registerMock("graceful-fs", topic.fsMock);
 
-            Configuration = require(configurationModulePath).Configuration;
+            Configuration = require(configurationModulePath);
 
             topic.config = new Configuration();
 

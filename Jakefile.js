@@ -87,10 +87,7 @@ task("install", function () {
 
 desc("Run all of Yeti's functional tests");
 task("test-functional", function () {
-    var args = [];
-    if (process.env.TRAVIS) {
-        args.push("--spec");
-    }
+    var args = ["--spec"];
     bin("vows", args.concat(getTestFiles("functional")), complete);
 }, {
     async: true

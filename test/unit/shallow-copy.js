@@ -3,9 +3,9 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var util = require("../../lib/util");
+var shallowCopy = require("../../lib/shallow-copy");
 
-vows.describe("Util").addBatch({
+vows.describe("Shallow Copy").addBatch({
     "Given an object": {
         topic: function () {
             return {
@@ -17,7 +17,7 @@ vows.describe("Util").addBatch({
             var copy;
             assert.strictEqual(topic.foo, "quux");
             assert.isFalse(topic.modified);
-            copy = util.shallowCopy(topic);
+            copy = shallowCopy(topic);
             assert.strictEqual(copy.foo, "quux");
             assert.isFalse(copy.modified);
             copy.modified = true;

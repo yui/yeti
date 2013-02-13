@@ -8,7 +8,7 @@ var EventEmitter = require("events").EventEmitter;
 
 var streams = require("../lib/streams");
 
-var Configuration = require("../../lib/configuration").Configuration;
+var Configuration = require("../../lib/configuration");
 
 function createProcessMock() {
     var mock = new EventEmitter();
