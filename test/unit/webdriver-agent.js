@@ -9,11 +9,9 @@ var util = require("util");
 var EventYoshi = require("eventyoshi");
 var EventEmitter2 = require("../../lib/event-emitter");
 
-function createIpMock(ipAddress) {
-    return {
-        getLocalIP: function () {
-            return ipAddress;
-        }
+function createLocalIpMock(ipAddress) {
+    return  function () {
+        return ipAddress;
     };
 }
 
@@ -108,7 +106,7 @@ vows.describe("WebDriver Agent Group").addBatch({
                     topic.wdYoshi.remove(wdInstance);
                 });
             });
-            topic.ipMock = createIpMock(topic.ipAddress);
+            topic.localIpMock = createLocalIpMock(topic.ipAddress);
             topic.hubMock = createHubMock(topic);
 
             mockery.enable({
@@ -123,7 +121,7 @@ vows.describe("WebDriver Agent Group").addBatch({
             ]);
 
             mockery.registerMock("wd", topic.wdMock);
-            mockery.registerMock("../ip", topic.ipMock);
+            mockery.registerMock("../local-ip", topic.localIpMock);
 
             WebDriverAgentGroup = require(modulePath);
 

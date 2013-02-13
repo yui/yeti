@@ -72,7 +72,7 @@ function ipTopic(interfaces, tests) {
 
     ctx.topic = function () {
         var topic = {},
-            ipModulePath = "../../lib/ip",
+            ipModulePath = "../../lib/local-ip",
             Configuration;
 
         topic.mockOs = createMockOs(interfaces);
@@ -106,29 +106,29 @@ function ipTopic(interfaces, tests) {
     return ctx;
 }
 
-vows.describe("IP").addBatch({
-    "Given the ip module and many interfaces": ipTopic(LOTS_OF_INTERFACES, {
-        "the getLocalIP function yields the correct IP": function (topic) {
+vows.describe("Local IP").addBatch({
+    "Given many interfaces": ipTopic(LOTS_OF_INTERFACES, {
+        "the local-ip function yields the correct IP": function (topic) {
             assert.strictEqual(topic.mockOs.__attempts(), 0);
-            assert.strictEqual(topic.ip.getLocalIP(), "10.82.89.10");
+            assert.strictEqual(topic.ip(), "10.82.89.10");
             assert.strictEqual(topic.mockOs.__attempts(), 1);
         },
-        "the getLocalIP function caches its result": function (topic) {
+        "the local-ip function caches its result": function (topic) {
             assert.strictEqual(topic.mockOs.__attempts(), 1);
-            assert.strictEqual(topic.ip.getLocalIP(), "10.82.89.10");
+            assert.strictEqual(topic.ip(), "10.82.89.10");
             assert.strictEqual(topic.mockOs.__attempts(), 1);
         }
     })
 }).addBatch({
-    "Given the ip module and no public interfaces": ipTopic(NO_PUBLIC_INTERFACES, {
-        "the getLocalIP function yields localhost": function (topic) {
+    "Given no public interfaces": ipTopic(NO_PUBLIC_INTERFACES, {
+        "the local-ip function yields localhost": function (topic) {
             assert.strictEqual(topic.mockOs.__attempts(), 0);
-            assert.strictEqual(topic.ip.getLocalIP(), "localhost");
+            assert.strictEqual(topic.ip(), "localhost");
             assert.strictEqual(topic.mockOs.__attempts(), 1);
         },
-        "the getLocalIP function caches its result": function (topic) {
+        "the local-ip function caches its result": function (topic) {
             assert.strictEqual(topic.mockOs.__attempts(), 1);
-            assert.strictEqual(topic.ip.getLocalIP(), "localhost");
+            assert.strictEqual(topic.ip(), "localhost");
             assert.strictEqual(topic.mockOs.__attempts(), 1);
         }
     })
