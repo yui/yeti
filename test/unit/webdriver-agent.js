@@ -7,7 +7,7 @@ var mocks = require("mocks");
 var util = require("util");
 
 var EventYoshi = require("eventyoshi");
-var EventEmitter2 = require("../../lib/events").EventEmitter2;
+var EventEmitter2 = require("../../lib/event-emitter");
 
 function createIpMock(ipAddress) {
     return {

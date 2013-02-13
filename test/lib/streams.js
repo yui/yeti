@@ -5,7 +5,7 @@
  */
 
 var util = require("util");
-var EventEmitter2 = require("../../lib/events").EventEmitter2;
+var EventEmitter2 = require("../../lib/event-emitter");
 
 var DEBUG = process.env.YETI_MOCK_DEBUG;
 
