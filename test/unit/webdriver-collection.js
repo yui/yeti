@@ -169,6 +169,7 @@ vows.describe("WebDriver Collection").addBatch({
                 if (topic instanceof Error) { throw topic; }
             },
             "navigation occurs": function (topic) {
+                assert.ok(topic.wdYoshi.children.length > 0, "No browsers to navigate.");
                 assert.lengthOf(topic.events.navigate, topic.wdYoshi.children.length);
             },
             "and quit": {
