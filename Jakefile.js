@@ -8,7 +8,7 @@ var Ronn = require("ronn").Ronn;
 var rimraf = require("rimraf");
 var walkdir = require("walkdir");
 
-var version = require("./lib/package").readPackageSync().version;
+var version = require("./lib/package-metadata").readPackageSync().version;
 
 function nuke(dir, completer) {
     rimraf(dir, function (err) {
