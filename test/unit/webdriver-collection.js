@@ -84,12 +84,12 @@ function createHubMock(topic) {
     };
 }
 
-vows.describe("WebDriver Agent Group").addBatch({
-    "Given a WebDriverAgentGroup": {
+vows.describe("WebDriver Collection").addBatch({
+    "Given a WebDriverCollection": {
         topic: function () {
             var topic = {},
-                modulePath = "../../lib/hub/webdriver-agent",
-                WebDriverAgentGroup;
+                modulePath = "../../lib/hub/webdriver-collection",
+                WebDriverCollection;
 
             topic.wdYoshi = new EventYoshi();
 
@@ -123,7 +123,7 @@ vows.describe("WebDriver Agent Group").addBatch({
             mockery.registerMock("wd", topic.wdMock);
             mockery.registerMock("../local-ip", topic.localIpMock);
 
-            WebDriverAgentGroup = require(modulePath);
+            WebDriverCollection = require(modulePath);
 
             topic.desiredCapabilities = [
                 {
@@ -131,7 +131,7 @@ vows.describe("WebDriver Agent Group").addBatch({
                 }
             ];
 
-            topic.driver = new WebDriverAgentGroup({
+            topic.managedBrowsers = new WebDriverCollection({
                 hub: topic.hubMock,
                 browsers: topic.desiredCapabilities
             });
@@ -161,7 +161,7 @@ vows.describe("WebDriver Agent Group").addBatch({
                     });
                 });
 
-                topic.driver.launch(function (err) {
+                topic.managedBrowsers.launch(function (err) {
                     vow.callback(err, topic);
                 });
             },
@@ -176,7 +176,7 @@ vows.describe("WebDriver Agent Group").addBatch({
                     var vow = this,
                         topic = lastTopic;
 
-                    topic.driver.quit(function (err) {
+                    topic.managedBrowsers.quit(function (err) {
                         vow.callback(err, topic);
                     });
                 },
@@ -185,8 +185,8 @@ vows.describe("WebDriver Agent Group").addBatch({
                 },
                 "browsers are closed": function (topic) {
                     assert.lengthOf(topic.wdYoshi.children, 0);
-                    assert.lengthOf(topic.driver.browsers, 0);
-                    assert.lengthOf(topic.driver.agentIds, 0);
+                    assert.lengthOf(topic.managedBrowsers.browsers, 0);
+                    assert.lengthOf(topic.managedBrowsers.agentIds, 0);
                 }
             }
         }
