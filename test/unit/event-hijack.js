@@ -5,9 +5,9 @@ var assert = require("assert");
 
 var EventEmitter = require("events").EventEmitter;
 
-var hijack = require("../../lib/hijack");
+var hijack = require("../../lib/event-hijack");
 
-vows.describe("Hijack").addBatch({
+vows.describe("Event Hijack").addBatch({
     "Given an EventEmitter with a few listeners": {
         topic: function () {
             var topic = {
