@@ -125,7 +125,16 @@ vows.describe("WebDriver Agent Group").addBatch({
 
             WebDriverAgentGroup = require(modulePath);
 
-            topic.driver = new WebDriverAgentGroup(topic.hubMock);
+            topic.desiredCapabilities = [
+                {
+                    browserName: "chrome"
+                }
+            ];
+
+            topic.driver = new WebDriverAgentGroup({
+                hub: topic.hubMock,
+                browsers: topic.desiredCapabilities
+            });
 
             return topic;
         },
@@ -136,7 +145,7 @@ vows.describe("WebDriver Agent Group").addBatch({
         "is ok": function (topic) {
             if (topic instanceof Error) { throw topic; }
         },
-        "given browsers to launch": {
+        "when launched": {
             topic: function (lastTopic) {
                 var vow = this,
                     topic = lastTopic;
@@ -145,12 +154,6 @@ vows.describe("WebDriver Agent Group").addBatch({
                     navigate: []
                 };
 
-                topic.desiredCapabilities = [
-                    {
-                        browserName: "chrome"
-                    }
-                ];
-
                 topic.wdYoshi.on("navigate", function (url) {
                     topic.events.navigate.push(url);
                     topic.hubMock.agentManager.addAgent({
@@ -158,7 +161,7 @@ vows.describe("WebDriver Agent Group").addBatch({
                     });
                 });
 
-                topic.driver.launch(topic.desiredCapabilities, function (err) {
+                topic.driver.launch(function (err) {
                     vow.callback(err, topic);
                 });
             },
