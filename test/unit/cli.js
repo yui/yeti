@@ -8,7 +8,7 @@ var EventEmitter = require("events").EventEmitter;
 
 var streams = require("../lib/streams");
 
-var Configuration = require("../../lib/configuration");
+var Configuration = require("../../lib/cli/configuration");
 
 function createProcessMock() {
     var mock = new EventEmitter();
@@ -38,7 +38,7 @@ vows.describe("CLI").addBatch({
 
             mockery.enable();
             mockery.registerAllowable(cliModulePath);
-            mockery.registerMock('./hub', topic.mockHub);
+            mockery.registerMock('../hub', topic.mockHub);
 
             CLI = require(cliModulePath).CLI;
 

@@ -3,7 +3,7 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var color = require("../../lib/color").codes;
+var color = require("../../lib/cli/color").codes;
 
 vows.describe("Color Escapes").addBatch({
     "When using bold color": {

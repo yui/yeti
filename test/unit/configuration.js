@@ -76,7 +76,7 @@ vows.describe("Configuration").addBatch({
     "Given a Configuration": {
         topic: function () {
             var topic = {},
-                configurationModulePath = "../../lib/configuration",
+                configurationModulePath = "../../lib/cli/configuration",
                 Configuration;
 
             topic.fsMock = createFsMock();
