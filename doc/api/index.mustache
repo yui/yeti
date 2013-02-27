@@ -160,6 +160,17 @@ This script should be included before all other scripts on the page, including Y
 This object is created internally by `client.createBatch()`.
 </p>
 
+<h4>Event: 'end'</h4>
+
+```
+function () {}
+```
+
+<p>
+Emitted after the complete event. If browsers were started, they were shut down.
+No more events will be fired.
+</p>
+
 <h4>Event: 'complete'</h4>
 
 ```
@@ -167,7 +178,8 @@ function () {}
 ```
 
 <p>
-Emitted when the batch is complete. No more events will be fired.
+Emitted when the batch is complete. No more results are expected.
+Browsers may be shutting down at this point. The end event will fire when all cleanup is complete.
 </p>
 
 <h4>Event: 'agentComplete'</h4>
