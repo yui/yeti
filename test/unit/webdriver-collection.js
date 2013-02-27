@@ -53,19 +53,19 @@ function createWdMock(topic, cb) {
     };
 }
 
-function MockAgentManager() {
+function MockAllAgents() {
     this.agents = {};
     EventEmitter2.call(this);
 }
 
-util.inherits(MockAgentManager, EventEmitter2);
+util.inherits(MockAllAgents, EventEmitter2);
 
-MockAgentManager.prototype.addAgent = function (agent) {
+MockAllAgents.prototype.addAgent = function (agent) {
     this.agents[agent.id] = agent;
     this.emit("newAgent", agent);
 };
 
-MockAgentManager.prototype.removeAgent = function (agent) {
+MockAllAgents.prototype.removeAgent = function (agent) {
     delete this.agents[agent.id];
 };
 
@@ -80,7 +80,7 @@ function createHubMock(topic) {
             }
         },
         webdriver: topic.wdOptions,
-        agentManager: new MockAgentManager()
+        allAgents: new MockAllAgents()
     };
 }
 
@@ -156,7 +156,7 @@ vows.describe("WebDriver Collection").addBatch({
 
                 topic.wdYoshi.on("navigate", function (url) {
                     topic.events.navigate.push(url);
-                    topic.hubMock.agentManager.addAgent({
+                    topic.hubMock.allAgents.addAgent({
                         id: /[\d]+$/.exec(url)[0]
                     });
                 });
