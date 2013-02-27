@@ -90,7 +90,7 @@ This will run Yeti with a 120 second timeout:
 You can specify query string parameters to add to your test URLs.
 This can be used to pass information to your tests that control its behavior.
 
-This will append `?fliter=coverage` to your tests, which is used by the tests
+This will append `?filter=coverage` to your tests, which is used by the tests
 for the [YUI Library][YUI] to trigger loading instrumented code.
 
     $ yeti --query 'filter=coverage' test/*.html
