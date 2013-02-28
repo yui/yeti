@@ -80,6 +80,10 @@ h1 {
     letter-spacing: -2px;
 }
 
+h1, .status{
+    text-rendering: optimizeLegibility;
+}
+
 .ft, .ft a {
     color: #ccc;
 }
