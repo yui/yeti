@@ -35,15 +35,16 @@ function log() {
 }
 
 var options = {
+        "dev": false,
         "minify": false,
         "debug": false
     },
-    argv = {};
+    argv = [];
 
 function applyArgv() {
     var k, v;
     for (k in options) {
-        v = argv.original.some(function (arg) {
+        v = argv.some(function (arg) {
             return "--" + k === arg;
         });
 
@@ -56,16 +57,19 @@ function applyArgv() {
     }
 }
 
+
 if (process.env.npm_config_argv) {
     try {
-        argv = JSON.parse(process.env.npm_config_argv);
+        argv = JSON.parse(process.env.npm_config_argv).original;
     } catch (ex) {
         // Nothing.
     }
+}
 
-    if (argv.original) {
-        applyArgv();
-    }
+argv = argv.concat(process.argv.splice(1));
+
+if (argv.length) {
+    applyArgv();
 }
 
 function die(message) {
@@ -106,25 +110,36 @@ function saveURLToDep(sourceURL, filename, cb) {
 }
 
 function download(err) {
+    var scripts = [
+        [YUI_RUNTIME_URL, "yui-runtime.js"],
+        ["http://cdn.sockjs.org/sockjs-0.3.min.js", "sock.js"]
+    ];
+
     if (err) {
         die(err);
     }
 
-    [
-        [YUI_TEST_URL, "dev/yui-test.js"],
-        [QUNIT_JS_URL, "dev/qunit.js"],
-        [QUNIT_CSS_URL, "dev/qunit.css"],
-        [JASMINE_JS_URL, "dev/jasmine.js"],
-        [JASMINE_JS_REPORTER_URL, "dev/jasmine-html.js"],
-        [JASMINE_CSS_URL, "dev/jasmine.css"],
-        [MOCHA_JS_URL, "dev/mocha.js"],
-        [MOCHA_JS_ASSERTION_URL, "dev/expect.js"],
-        [MOCHA_CSS_URL, "dev/mocha.css"],
-        [DOJO_URL, "dev/dojo.js"],
-        [DOJO_DOH_RUNNER_URL, "dev/dojo-doh-runner.js"],
-        [YUI_RUNTIME_URL, "yui-runtime.js"],
-        ["http://cdn.sockjs.org/sockjs-0.3.min.js", "sock.js"]
-    ].forEach(function downloader(args) {
+    if (options.dev) {
+        scripts = scripts.concat([
+            [YUI_TEST_URL, "dev/yui-test.js"],
+            [QUNIT_JS_URL, "dev/qunit.js"],
+            [QUNIT_CSS_URL, "dev/qunit.css"],
+            [JASMINE_JS_URL, "dev/jasmine.js"],
+            [JASMINE_JS_REPORTER_URL, "dev/jasmine-html.js"],
+            [JASMINE_CSS_URL, "dev/jasmine.css"],
+            [MOCHA_JS_URL, "dev/mocha.js"],
+            [MOCHA_JS_ASSERTION_URL, "dev/expect.js"],
+            [MOCHA_CSS_URL, "dev/mocha.css"],
+            [DOJO_URL, "dev/dojo.js"],
+            [DOJO_DOH_RUNNER_URL, "dev/dojo-doh-runner.js"]
+        ]);
+    }
+
+    scripts.forEach(function downloader(args) {
+        if (!options.dev && fs.existsSync(path.join(depDir, args[1]))) {
+            return;
+        }
+
         if (options.debug && args[0].indexOf("yui") !== -1) {
             args[0] = args[0].replace(/[\.\-]min\.js/g, "-debug.js");
         }
@@ -132,11 +147,12 @@ function download(err) {
         if (!options.minify) {
             args[0] = args[0].replace(/[\.\-]min\.js/g, ".js");
         }
+
         saveURLToDep.apply(null, args);
     });
 }
 
-log("Downloading script dependencies...");
+log("Checking for script dependencies...");
 
 fs.readdir(depDir, function (err) {
     if (err) {

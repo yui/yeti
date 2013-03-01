@@ -12,6 +12,8 @@ function log() {
     }
 }
 
+require("./fetch_deps");
+
 fs.readFile(path.join(__dirname, "..", "HISTORY.md"), "utf8", function (err, data) {
     history = data.split("\n").slice(2, 20).join("\n");
     process.on("exit", function () {
