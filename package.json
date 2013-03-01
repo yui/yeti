@@ -46,17 +46,17 @@
     "node": "~0.6.4 || ~0.7.11 || ~0.8.0"
   },
   "dependencies": {
-    "async": "~0.1.22",
+    "async": "~0.2.5",
     "wd": "~0.0.27",
     "echoecho": "~0.1.0",
     "eventemitter2": "~0.4.8",
     "eventyoshi": "~0.1.2",
-    "nopt": "~1.0.10",
+    "nopt": "~2.1.1",
     "onyx": "~0.1.2",
     "sockjs": "~0.3.1",
     "proto-list": "~1.2.2",
     "glob": "~3.1.12",
-    "graceful-fs": ">=1.1.2 <1.1.11"
+    "graceful-fs": "~1.2.0"
   },
   "devDependencies": {
     "mocks": "https://github.com/vojtajina/node-mocks/tarball/master",
