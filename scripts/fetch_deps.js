@@ -28,6 +28,8 @@ var YUI_RUNTIME_URL = "http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-b
 var DOJO_URL = "http://download.dojotoolkit.org/release-1.8.3/dojo.js";
 var DOJO_DOH_RUNNER_URL = "http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/util/doh/runner.js";
 
+var existsSync = fs.existsSync || path.existsSync;
+
 function log() {
     if (process.env.npm_config_loglevel !== "silent") {
         console.log.apply(null, Array.prototype.slice.call(arguments));
@@ -136,7 +138,7 @@ function download(err) {
     }
 
     scripts.forEach(function downloader(args) {
-        if (!options.dev && fs.existsSync(path.join(depDir, args[1]))) {
+        if (!options.dev && existsSync(path.join(depDir, args[1]))) {
             return;
         }
 
