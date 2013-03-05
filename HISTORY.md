@@ -1,6 +1,15 @@
 # A Brief History of Yeti
 
-## 0.2.17 / In Development
+## 0.2.17 / 2013-03-04
+
+  * Fix #129, amount of tests being ran are not consistent.
+  * Fix "Operation Aborted" error on capture page for IE.
+  * Fix a bug that could cause WebDriver browsers to never close.
+  * Fix a potential crash related to Blizzard session cleanup.
+  * Introduce end event for the Yeti API.
+  * Improved unit tests.
+  * Lots of internal refactoring in lib/hub.
+  * All internal modules export 1 thing.
 
 ## 0.2.16 / 2013-01-22
 
