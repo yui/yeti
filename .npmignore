@@ -13,4 +13,5 @@ build_docs
 Makefile
 test/vendor
 scripts/darwin
+scripts/ci
 scripts/*.sh
