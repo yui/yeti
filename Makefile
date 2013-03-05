@@ -45,6 +45,9 @@ lint:
 	find lib test -name "*.js" \! -name "*min.js" -print0 | xargs -0 ./go lint
 .PHONY: lint
 
+site: clean html-api html coverage
+.PHONY: site
+
 clean:
 	rm -rf build_docs
 .PHONY: clean
