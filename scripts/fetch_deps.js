@@ -10,7 +10,7 @@ var fs = require("fs"),
 
 var depDir = path.join(__dirname, "..", "dep");
 
-var YUI_TEST_URL = "http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.js&3.7.3/build/oop/oop-min.js&3.7.3/build/event-custom-base/event-custom-base-min.js&3.7.3/build/event-base/event-base-min.js&3.7.3/build/event-simulate/event-simulate-min.js&3.7.3/build/event-custom-complex/event-custom-complex-min.js&3.7.3/build/substitute/substitute-min.js&3.7.3/build/json-stringify/json-stringify-min.js&3.7.3/build/test/test-min.js";
+var YUI_TEST_URL = "http://yui.yahooapis.com/combo?3.8.1/build/yui-base/yui-base-min.js&3.8.1/build/oop/oop-min.js&3.8.1/build/event-custom-base/event-custom-base-min.js&3.8.1/build/event-base/event-base-min.js&3.8.1/build/event-simulate/event-simulate-min.js&3.8.1/build/event-custom-complex/event-custom-complex-min.js&3.8.1/build/substitute/substitute-min.js&3.8.1/build/json-stringify/json-stringify-min.js&3.8.1/build/test/test-min.js";
 
 var QUNIT_JS_URL = "http://code.jquery.com/qunit/qunit-1.10.0.js";
 var QUNIT_CSS_URL = "http://code.jquery.com/qunit/qunit-1.10.0.css";
@@ -23,7 +23,17 @@ var MOCHA_JS_URL = "https://raw.github.com/visionmedia/mocha/1.8.1/mocha.js";
 var MOCHA_JS_ASSERTION_URL = "https://raw.github.com/LearnBoost/expect.js/0.2.0/expect.js";
 var MOCHA_CSS_URL = "https://raw.github.com/visionmedia/mocha/1.8.1/mocha.css";
 
-var YUI_RUNTIME_URL = "http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.js&3.7.3/build/oop/oop-min.js&3.7.3/build/event-custom-base/event-custom-base-min.js&3.7.3/build/event-custom-complex/event-custom-complex-min.js&3.7.3/build/event-base/event-base-min.js&3.7.3/build/attribute-events/attribute-events-min.js&3.7.3/build/attribute-core/attribute-core-min.js&3.7.3/build/base-core/base-core-min.js&3.7.3/build/cookie/cookie-min.js&3.7.3/build/array-extras/array-extras-min.js";
+/* Runtime modules
+ * http://yuilibrary.com/yui/configurator/
+ *
+ * array-extras
+ * attribute-core
+ * attribute-events rollup
+ * base-core
+ * cookie
+ * event-base
+ */
+var YUI_RUNTIME_URL = "http://yui.yahooapis.com/combo?3.8.1/build/yui-base/yui-base-min.js&3.8.1/build/array-extras/array-extras-min.js&3.8.1/build/oop/oop-min.js&3.8.1/build/event-custom-base/event-custom-base-min.js&3.8.1/build/event-custom-complex/event-custom-complex-min.js&3.8.1/build/attribute-observable/attribute-observable-min.js&3.8.1/build/attribute-core/attribute-core-min.js&3.8.1/build/base-core/base-core-min.js&3.8.1/build/event-base/event-base-min.js&3.8.1/build/cookie/cookie-min.js";
 
 var DOJO_URL = "http://download.dojotoolkit.org/release-1.8.3/dojo.js";
 var DOJO_DOH_RUNNER_URL = "http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/util/doh/runner.js";
