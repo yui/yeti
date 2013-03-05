@@ -4,6 +4,8 @@
 /api/
 coverage.*
 node_modules
+.hosts.json
+fabfile.pyc
 npm-*.log
 test/vendor/yui*
 build_tmp*/

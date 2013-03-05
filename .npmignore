@@ -5,6 +5,8 @@ coverage.*
 .git*
 .npm*
 .travis.yml
+.hosts.json
+fabfile.*
 *.swp
 go
 build_docs

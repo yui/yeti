@@ -49,9 +49,6 @@ clean:
 	rm -rf build_docs
 .PHONY: clean
 
-publish: clean html-api html coverage
-	rsync -avz build_docs/ yeti.cx:public/doc/dev/
-
 maintainer-clean:
 	npm rm webkit-devtools-agent
 	rm -rf tools
