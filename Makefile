@@ -48,6 +48,11 @@ lint:
 site: clean html-api html coverage
 .PHONY: site
 
+release-dep:
+	rm -rf dep
+	node scripts/fetch_deps.js
+.PHONY: release-dep
+
 clean:
 	rm -rf build_docs
 .PHONY: clean

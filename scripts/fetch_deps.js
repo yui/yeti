@@ -48,7 +48,6 @@ function log() {
 
 var options = {
         "dev": false,
-        "minify": false,
         "debug": false
     },
     argv = [];
@@ -156,7 +155,7 @@ function download(err) {
             args[0] = args[0].replace(/[\.\-]min\.js/g, "-debug.js");
         }
 
-        if (!options.minify) {
+        if (options.dev) {
             args[0] = args[0].replace(/[\.\-]min\.js/g, ".js");
         }
 
