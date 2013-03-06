@@ -63,7 +63,6 @@ function applyArgv() {
 
         if (v) {
             log("Enabled", k + ".");
-            break;
         }
     }
 }
