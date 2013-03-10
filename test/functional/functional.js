@@ -612,7 +612,6 @@ vows.describe("Yeti Functional")
         "visits Yeti with invalid files": errorContext(withTests("this-file-does-not-exist.html"))
     }))
     .addBatch(attachServerBatch({
-        "A HTTP server with an upgrade listener (for Yeti files)": withTests("basic.html", "local-js.html"),
         "A HTTP server with an upgrade listener (for Yeti paths)": {
             tests: ["/fixture"],
             useProxy: false
