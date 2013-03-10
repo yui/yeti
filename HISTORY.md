@@ -1,6 +1,17 @@
 # A Brief History of Yeti
 
-## 0.2.18 / In Development
+## 0.2.18 / 2013-03-09
+
+  * Fix test timeout feature; rapid disconnects for crashed browsers
+    <https://github.com/yui/yeti/pull/29>
+    * Replace timeout feature with a test-specific timeout and a browser-response timeout.
+    * Browser has to keep responding or else it gets killed within 3-5 seconds.
+    * Each test must complete within the test-specific timeout.
+    * Introduce some robustness enhancements to the client-side script.
+    * If a browser crash happens during a test run, attempt to run that test again.
+  * Upgrade YUI from 3.7.3 to 3.8.1.
+  * Fix agentDisconnect event and unload handler.
+  * Use minified scripts for release.
 
 ## 0.2.17 / 2013-03-04
 
