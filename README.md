@@ -79,12 +79,15 @@ See the [echoecho README][ee-readme] for more details.
 
 #### Timeouts
 
-Yeti will disconnect a browser if it does not record any activity from it for 45 seconds.
+Yeti will move on to the next test if a test takes longer than 5 minutes (300 seconds).
 You can adjust this interval with the `--timeout` option.
 
 This will run Yeti with a 120 second timeout:
 
     $ yeti --timeout 120 test.html
+
+There isn't a general timeout setting. Yeti actively pings browsers about every
+2-5 seconds and disconnects them if they fail to respond to a ping three times.
 
 #### Query string parameters
 
