@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.19 / In Development
+
 ## 0.2.18 / 2013-03-09
 
   * Fix test timeout feature; rapid disconnects for crashed browsers
