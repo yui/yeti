@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.20 / In Development
+
 ## 0.2.19 / 2013-03-14
 
   * Report uncaught errors.
