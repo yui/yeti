@@ -1,6 +1,13 @@
 # A Brief History of Yeti
 
-## 0.2.20 / In Development
+## 0.2.20 / 2013-03-20
+
+  * Report results for the correct test. Never run tests twice. Fix Trac #129.
+  * Run Android tests faster by removing unneeded timeout between tests. (c252285)
+  * Improve error messages that can occur during WebDriver launching. (559d887, 048a722)
+  * Allow client to set `wd-url` for a Hub to launch browsers.
+    <https://github.com/yui/yeti/pull/32>
+  * Prevent calling WebDriver launcher callback twice, which can cause a crash. (ac13083)
 
 ## 0.2.19 / 2013-03-14
 
