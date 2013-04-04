@@ -84,6 +84,18 @@ function createHubMock(topic) {
     };
 }
 
+function MockBatch() {
+    this.agentWhitelist = {};
+}
+
+MockBatch.prototype.allowAgentId = function (agentId) {
+    this.agentWhitelist[agentId] = 1;
+};
+
+MockBatch.prototype.disallowAgentId = function (agentId) {
+    delete this.agentWhitelist[agentId];
+};
+
 vows.describe("WebDriver Collection").addBatch({
     "Given a WebDriverCollection": {
         topic: function () {
@@ -108,6 +120,7 @@ vows.describe("WebDriver Collection").addBatch({
             });
             topic.localIpMock = createLocalIpMock(topic.ipAddress);
             topic.hubMock = createHubMock(topic);
+            topic.batchMock = new MockBatch();
 
             mockery.enable({
                 useCleanCache: true
@@ -133,6 +146,7 @@ vows.describe("WebDriver Collection").addBatch({
 
             topic.managedBrowsers = new WebDriverCollection({
                 hub: topic.hubMock,
+                batch: topic.batchMock,
                 browsers: topic.desiredCapabilities
             });
 
@@ -186,8 +200,7 @@ vows.describe("WebDriver Collection").addBatch({
                 },
                 "browsers are closed": function (topic) {
                     assert.lengthOf(topic.wdYoshi.children, 0);
-                    assert.lengthOf(topic.managedBrowsers.browsers, 0);
-                    assert.lengthOf(topic.managedBrowsers.agentIds, 0);
+                    assert.lengthOf(topic.managedBrowsers.getAllAgentIds(), 0);
                 }
             }
         }
