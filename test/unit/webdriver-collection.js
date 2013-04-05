@@ -96,66 +96,73 @@ MockBatch.prototype.disallowAgentId = function (agentId) {
     delete this.agentWhitelist[agentId];
 };
 
+function webDriverCollectionTopic(context) {
+    context.topic = function () {
+        var topic = {},
+            modulePath = "../../lib/hub/webdriver-collection",
+            WebDriverCollection;
+
+        topic.wdYoshi = new EventYoshi();
+
+        topic.ipAddress = "10.89.89.89";
+        topic.wdOptions = {
+            host: topic.ipAddress,
+            port: 8090,
+            user: "foo",
+            pass: "bar"
+        };
+        topic.wdMock = createWdMock(topic, function yoshize(wdInstance) {
+            topic.wdYoshi.add(wdInstance);
+            wdInstance.once("quit", function () {
+                topic.wdYoshi.remove(wdInstance);
+            });
+        });
+        topic.localIpMock = createLocalIpMock(topic.ipAddress);
+        topic.hubMock = createHubMock(topic);
+        topic.batchMock = new MockBatch();
+
+        mockery.enable({
+            useCleanCache: true
+        });
+
+        mockery.registerAllowables([
+            modulePath,
+            "async",
+            "./lib/async", // async dependency
+            "url"
+        ]);
+
+        mockery.registerMock("wd", topic.wdMock);
+        mockery.registerMock("../local-ip", topic.localIpMock);
+
+        WebDriverCollection = require(modulePath);
+
+        topic.desiredCapabilities = [
+            {
+                browserName: "chrome"
+            }
+        ];
+
+        topic.managedBrowsers = new WebDriverCollection({
+            hub: topic.hubMock,
+            batch: topic.batchMock,
+            browsers: topic.desiredCapabilities
+        });
+
+        return topic;
+    };
+
+    context.teardown = function (topic) {
+        mockery.deregisterAll();
+        mockery.disable();
+    };
+
+    return context;
+}
+
+
 vows.describe("WebDriver Collection").addBatch({
-    "Given a WebDriverCollection": {
-        topic: function () {
-            var topic = {},
-                modulePath = "../../lib/hub/webdriver-collection",
-                WebDriverCollection;
-
-            topic.wdYoshi = new EventYoshi();
-
-            topic.ipAddress = "10.89.89.89";
-            topic.wdOptions = {
-                host: topic.ipAddress,
-                port: 8090,
-                user: "foo",
-                pass: "bar"
-            };
-            topic.wdMock = createWdMock(topic, function yoshize(wdInstance) {
-                topic.wdYoshi.add(wdInstance);
-                wdInstance.once("quit", function () {
-                    topic.wdYoshi.remove(wdInstance);
-                });
-            });
-            topic.localIpMock = createLocalIpMock(topic.ipAddress);
-            topic.hubMock = createHubMock(topic);
-            topic.batchMock = new MockBatch();
-
-            mockery.enable({
-                useCleanCache: true
-            });
-
-            mockery.registerAllowables([
-                modulePath,
-                "async",
-                "./lib/async", // async dependency
-                "url"
-            ]);
-
-            mockery.registerMock("wd", topic.wdMock);
-            mockery.registerMock("../local-ip", topic.localIpMock);
-
-            WebDriverCollection = require(modulePath);
-
-            topic.desiredCapabilities = [
-                {
-                    browserName: "chrome"
-                }
-            ];
-
-            topic.managedBrowsers = new WebDriverCollection({
-                hub: topic.hubMock,
-                batch: topic.batchMock,
-                browsers: topic.desiredCapabilities
-            });
-
-            return topic;
-        },
-        teardown: function (topic) {
-            mockery.deregisterAll();
-            mockery.disable();
-        },
+    "Given a WebDriverCollection": webDriverCollectionTopic({
         "is ok": function (topic) {
             if (topic instanceof Error) { throw topic; }
         },
@@ -214,5 +221,5 @@ vows.describe("WebDriver Collection").addBatch({
                 }
             }
         }
-    }
+    })
 }).export(module);
