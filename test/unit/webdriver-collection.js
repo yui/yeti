@@ -33,14 +33,15 @@ MockWebDriver.prototype.quit = function (cb) {
 };
 
 MockWebDriver.prototype.get = function (url, cb) {
-    this.emit("navigate", url);
-    this.url = url;
-    cb(null);
+    var self = this;
+    self.emit("navigate", url);
+    self.url = url;
+    process.nextTick(cb.bind(self, null));
 };
 
 MockWebDriver.prototype.init = function (desiredCapabilities, cb) {
     this.desiredCapabilities = desiredCapabilities;
-    cb(null);
+    process.nextTick(cb.bind(this, null));
 };
 
 function createWdMock(topic, cb) {
@@ -61,8 +62,11 @@ function MockAllAgents() {
 util.inherits(MockAllAgents, EventEmitter2);
 
 MockAllAgents.prototype.addAgent = function (agent) {
-    this.agents[agent.id] = agent;
-    this.emit("newAgent", agent);
+    var self = this;
+    self.agents[agent.id] = agent;
+    process.nextTick(function () {
+        self.emit("newAgent", agent);
+    });
 };
 
 MockAllAgents.prototype.removeAgent = function (agent) {
@@ -219,6 +223,39 @@ vows.describe("WebDriver Collection").addBatch({
                     assert.lengthOf(topic.wdYoshi.children, 0);
                     assert.lengthOf(topic.managedBrowsers.getAllAgentIds(), 0);
                 }
+            }
+        }
+    })
+}).addBatch({
+    "Given a WebDriverCollection that ends during WebDriver init": webDriverCollectionTopic({
+        "is ok": function (topic) {
+            if (topic instanceof Error) { throw topic; }
+        },
+        "when launched": {
+            topic: function (lastTopic) {
+                var vow = this,
+                    topic = lastTopic;
+
+                topic.managedBrowsers.launch(function (err) {
+                    vow.callback(null, {
+                        err: err,
+                        lastTopic: topic
+                    });
+                });
+
+                topic.managedBrowsers.quit();
+            },
+            "is ok": function (topic) {
+                if (topic instanceof Error) { throw topic; }
+            },
+            "launch callback contains error": function (topic) {
+                assert.ok(topic.err instanceof Error);
+            },
+            "getAllBrowsers is empty": function (topic) {
+                assert.lengthOf(topic.lastTopic.managedBrowsers.getAllBrowsers(), 0);
+            },
+            "getAllAgentIds is empty": function (topic) {
+                assert.lengthOf(topic.lastTopic.managedBrowsers.getAllAgentIds(), 0);
             }
         }
     })
