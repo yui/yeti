@@ -186,6 +186,16 @@ vows.describe("WebDriver Collection").addBatch({
                 assert.ok(topic.wdYoshi.children.length > 0, "No browsers to navigate.");
                 assert.lengthOf(topic.events.navigate, topic.wdYoshi.children.length);
             },
+            "getAllBrowsers returns an array of WebDriver browsers": function (topic) {
+                var allBrowsers = topic.managedBrowsers.getAllBrowsers();
+                assert.lengthOf(allBrowsers, topic.wdYoshi.children.length);
+                allBrowsers.forEach(function (browser) {
+                    assert.ok(browser.quit); // browser is quittable
+                });
+            },
+            "getAllAgentIds returns an array of all Agent ids": function (topic) {
+                assert.lengthOf(topic.managedBrowsers.getAllAgentIds(), topic.wdYoshi.children.length);
+            },
             "and quit": {
                 topic: function (lastTopic) {
                     var vow = this,
