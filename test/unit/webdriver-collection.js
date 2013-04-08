@@ -33,14 +33,15 @@ MockWebDriver.prototype.quit = function (cb) {
 };
 
 MockWebDriver.prototype.get = function (url, cb) {
-    this.emit("navigate", url);
-    this.url = url;
-    cb(null);
+    var self = this;
+    self.emit("navigate", url);
+    self.url = url;
+    process.nextTick(cb.bind(self, null));
 };
 
 MockWebDriver.prototype.init = function (desiredCapabilities, cb) {
     this.desiredCapabilities = desiredCapabilities;
-    cb(null);
+    process.nextTick(cb.bind(this, null));
 };
 
 function createWdMock(topic, cb) {
@@ -61,8 +62,11 @@ function MockAllAgents() {
 util.inherits(MockAllAgents, EventEmitter2);
 
 MockAllAgents.prototype.addAgent = function (agent) {
-    this.agents[agent.id] = agent;
-    this.emit("newAgent", agent);
+    var self = this;
+    self.agents[agent.id] = agent;
+    process.nextTick(function () {
+        self.emit("newAgent", agent);
+    });
 };
 
 MockAllAgents.prototype.removeAgent = function (agent) {
@@ -84,64 +88,85 @@ function createHubMock(topic) {
     };
 }
 
+function MockBatch() {
+    this.agentWhitelist = {};
+}
+
+MockBatch.prototype.allowAgentId = function (agentId) {
+    this.agentWhitelist[agentId] = 1;
+};
+
+MockBatch.prototype.disallowAgentId = function (agentId) {
+    delete this.agentWhitelist[agentId];
+};
+
+function webDriverCollectionTopic(context) {
+    context.topic = function () {
+        var topic = {},
+            modulePath = "../../lib/hub/webdriver-collection",
+            WebDriverCollection;
+
+        topic.wdYoshi = new EventYoshi();
+
+        topic.ipAddress = "10.89.89.89";
+        topic.wdOptions = {
+            host: topic.ipAddress,
+            port: 8090,
+            user: "foo",
+            pass: "bar"
+        };
+        topic.wdMock = createWdMock(topic, function yoshize(wdInstance) {
+            topic.wdYoshi.add(wdInstance);
+            wdInstance.once("quit", function () {
+                topic.wdYoshi.remove(wdInstance);
+            });
+        });
+        topic.localIpMock = createLocalIpMock(topic.ipAddress);
+        topic.hubMock = createHubMock(topic);
+        topic.batchMock = new MockBatch();
+
+        mockery.enable({
+            useCleanCache: true
+        });
+
+        mockery.registerAllowables([
+            modulePath,
+            "async",
+            "./lib/async", // async dependency
+            "url"
+        ]);
+
+        mockery.registerMock("wd", topic.wdMock);
+        mockery.registerMock("../local-ip", topic.localIpMock);
+
+        WebDriverCollection = require(modulePath);
+
+        topic.desiredCapabilities = [
+            {
+                browserName: "chrome"
+            }
+        ];
+
+        topic.managedBrowsers = new WebDriverCollection({
+            hub: topic.hubMock,
+            batch: topic.batchMock,
+            browsers: topic.desiredCapabilities
+        });
+
+        return topic;
+    };
+
+    context.teardown = function (topic) {
+        mockery.deregisterAll();
+        mockery.disable();
+    };
+
+    return context;
+}
+
+
 vows.describe("WebDriver Collection").addBatch({
-    "Given a WebDriverCollection": {
-        topic: function () {
-            var topic = {},
-                modulePath = "../../lib/hub/webdriver-collection",
-                WebDriverCollection;
-
-            topic.wdYoshi = new EventYoshi();
-
-            topic.ipAddress = "10.89.89.89";
-            topic.wdOptions = {
-                host: topic.ipAddress,
-                port: 8090,
-                user: "foo",
-                pass: "bar"
-            };
-            topic.wdMock = createWdMock(topic, function yoshize(wdInstance) {
-                topic.wdYoshi.add(wdInstance);
-                wdInstance.once("quit", function () {
-                    topic.wdYoshi.remove(wdInstance);
-                });
-            });
-            topic.localIpMock = createLocalIpMock(topic.ipAddress);
-            topic.hubMock = createHubMock(topic);
-
-            mockery.enable({
-                useCleanCache: true
-            });
-
-            mockery.registerAllowables([
-                modulePath,
-                "async",
-                "./lib/async", // async dependency
-                "url"
-            ]);
-
-            mockery.registerMock("wd", topic.wdMock);
-            mockery.registerMock("../local-ip", topic.localIpMock);
-
-            WebDriverCollection = require(modulePath);
-
-            topic.desiredCapabilities = [
-                {
-                    browserName: "chrome"
-                }
-            ];
-
-            topic.managedBrowsers = new WebDriverCollection({
-                hub: topic.hubMock,
-                browsers: topic.desiredCapabilities
-            });
-
-            return topic;
-        },
-        teardown: function (topic) {
-            mockery.deregisterAll();
-            mockery.disable();
-        },
+    "Given a WebDriverCollection": webDriverCollectionTopic({
         "is ok": function (topic) {
             if (topic instanceof Error) { throw topic; }
         },
@@ -172,6 +197,16 @@ vows.describe("WebDriver Collection").addBatch({
                 assert.ok(topic.wdYoshi.children.length > 0, "No browsers to navigate.");
                 assert.lengthOf(topic.events.navigate, topic.wdYoshi.children.length);
             },
+            "getAllBrowsers returns an array of WebDriver browsers": function (topic) {
+                var allBrowsers = topic.managedBrowsers.getAllBrowsers();
+                assert.lengthOf(allBrowsers, topic.wdYoshi.children.length);
+                allBrowsers.forEach(function (browser) {
+                    assert.ok(browser.quit); // browser is quittable
+                });
+            },
+            "getAllAgentIds returns an array of all Agent ids": function (topic) {
+                assert.lengthOf(topic.managedBrowsers.getAllAgentIds(), topic.wdYoshi.children.length);
+            },
             "and quit": {
                 topic: function (lastTopic) {
                     var vow = this,
@@ -186,10 +221,42 @@ vows.describe("WebDriver Collection").addBatch({
                 },
                 "browsers are closed": function (topic) {
                     assert.lengthOf(topic.wdYoshi.children, 0);
-                    assert.lengthOf(topic.managedBrowsers.browsers, 0);
-                    assert.lengthOf(topic.managedBrowsers.agentIds, 0);
+                    assert.lengthOf(topic.managedBrowsers.getAllAgentIds(), 0);
                 }
             }
         }
-    }
+    })
+}).addBatch({
+    "Given a WebDriverCollection that ends during WebDriver init": webDriverCollectionTopic({
+        "is ok": function (topic) {
+            if (topic instanceof Error) { throw topic; }
+        },
+        "when launched": {
+            topic: function (lastTopic) {
+                var vow = this,
+                    topic = lastTopic;
+
+                topic.managedBrowsers.launch(function (err) {
+                    vow.callback(null, {
+                        err: err,
+                        lastTopic: topic
+                    });
+                });
+
+                topic.managedBrowsers.quit();
+            },
+            "is ok": function (topic) {
+                if (topic instanceof Error) { throw topic; }
+            },
+            "launch callback contains error": function (topic) {
+                assert.ok(topic.err instanceof Error);
+            },
+            "getAllBrowsers is empty": function (topic) {
+                assert.lengthOf(topic.lastTopic.managedBrowsers.getAllBrowsers(), 0);
+            },
+            "getAllAgentIds is empty": function (topic) {
+                assert.lengthOf(topic.lastTopic.managedBrowsers.getAllAgentIds(), 0);
+            }
+        }
+    })
 }).export(module);
