@@ -2,7 +2,7 @@
 
 ## 0.2.22 / In Development
 
-## 0.2.21 / 2012-04-11
+## 0.2.21 / 2013-04-11
 
   * Batches that use WebDriver only use browsers launched by WebDriver, not existing browsers.
   * Accept `latest` as a WebDriver browser version. (8fbe878)
@@ -10,7 +10,7 @@
   * Fix server-side `wd-url` command-line option. (c9592a3)
   * Fix issue with echoecho JSONP when using a query string like `&callback=foo`. (cd6b2a1)
   * Fix possible hang during WebDriver browser launching. (8bf4efe)
-  * Fix possible quit before JUnit XML was completely writted to stdout. (9ebabc5)
+  * Fix possible quit before JUnit XML was completely written to stdout. (9ebabc5)
 
 ## 0.2.20 / 2013-03-20
 
