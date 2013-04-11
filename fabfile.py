@@ -10,7 +10,7 @@ except IOError:
     print "Specify hosts to deploy to in .hosts.json first."
     exit()
 
-env.user = "rburke"
+env.use_ssh_config = True
 env.hosts = hosts
 
 doc_dir = "public/doc"
