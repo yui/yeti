@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.22 / In Development
+
 ## 0.2.21 / 2012-04-11
 
   * Batches that use WebDriver only use browsers launched by WebDriver, not existing browsers.
