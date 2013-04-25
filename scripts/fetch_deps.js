@@ -106,15 +106,13 @@ function saveURLToDep(sourceURL, filename, cb) {
         proxy: proxy,
         url: sourceURL
     }, function(error, res, body) {
-        var data = "";
-
         if (res.statusCode !== 200) {
             die("Got status " + res.statusCode + " for URL " + sourceURL);
             return;
         }
 
-            fs.writeFile(filename, data, "utf8", done);
-        });
+        fs.writeFile(filename, body, "utf8", done);
+    });
 }
 
 function download(err) {
