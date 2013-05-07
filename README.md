@@ -1,21 +1,29 @@
-# Yeti
+# Yeti [![Build Status](https://secure.travis-ci.org/yui/yeti.png?branch=master)](http://travis-ci.org/yui/yeti) [![Dependency Status](https://david-dm.org/yui/yeti.png)](https://david-dm.org/yui/yeti)
 
-[![Build Status](https://secure.travis-ci.org/yui/yeti.png?branch=master)](http://travis-ci.org/yui/yeti)
-[![Dependency Status](https://david-dm.org/yui/yeti.png)](https://david-dm.org/yui/yeti)
+Yeti automates browser testing.
 
-Yeti is a command-line tool for launching JavaScript unit tests in a browser
-and reporting the results without leaving your terminal.
-Yeti is designed to work with tests built with
-[QUnit][],
-[Jasmine][],
-[Mocha][] with [Expect.js][] assertions,
-[Dojo Objective Harness][DOH], or
-[YUI Test][yuitest],
-just as they are.
+## Features
+
+ - Automates your existing tests. Works with the framework you already have.
+ - Automates tests without any additional software. Selenium not required!
+ - Your tests can still run outside of Yeti by themselves.
+ - Works with IE 8+, Android 4+, Firefox, Safari, Chrome, iOS 4+.
+ - Server-side AJAX testing with [echoecho][ee].
+ - JUnit XML output makes Yeti play nice with Jenkins.
+ - Optional Selenium/WebDriver browser launching. Works great with Sauce Labs.
+
+## Test Frameworks
+
+You can use any of these test frameworks with Yeti.
+
+ - [QUnit][]
+ - [Jasmine][]
+ - [Mocha][] with [Expect.js][] assertions
+ - [Dojo Objective Harness][DOH]
+ - [YUI Test][yuitest]
+ - Your framework here. Submit a pull request!
 
 ## Install Yeti
-
-The latest release can be installed easily:
 
     npm install -g yeti
 
@@ -24,8 +32,6 @@ You can [download Node.js](http://nodejs.org/download/) source or pre-built
 installers from their website.
 
 ## Using Yeti
-
-### Running a test
 
 Just run Yeti with the HTML files containing your tests.
 
