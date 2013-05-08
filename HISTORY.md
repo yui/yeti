@@ -1,6 +1,18 @@
 # A Brief History of Yeti
 
-## 0.2.22 / In Development
+## 0.2.22 / 2013-05-08
+
+  * Automatically restart stalled browsers when using WebDriver.
+  * Avoid Selenium proxy in Sauce Labs to support IE 6-9. (04a04af)
+  * Sauce Labs maximum duration is set by Yeti to 2 hours. (90fa17f)
+  * Support for `HTTP_PROXY` and `HTTPS_PROXY` environment variables when installing Yeti dependencies. Fix #34.
+  * Crash fix: prevent calling _launch twice when starting a browser. (797bb4d)
+  * Crash fix: properly close duplicate connection. Fix #38.
+  * Bugfix: Yeti exits with code 1 when tests fail using the JUnit XML reporter. (002766a)
+  * Bugfix: Fix bug in Batch.disallowAgentId. (3100efd)
+  * Bugfix: Uncaught exceptions are now reported in JUnit XML results. (06ded16)
+  * Bugfix: Improve handling of browser-sent events on load. (b73e787)
+  * Upgrade glob and request dependencies. Fix #37, #40.
 
 ## 0.2.21 / 2013-04-11
 
