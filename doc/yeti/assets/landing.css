@@ -5,7 +5,7 @@ body {
     font-size: 14px;
 }
 .cmd {
-    font-size: 150%;
+    font-size: 250%;
     margin-bottom: 1%;
 }
 .column-left { margin-right: 30px; }
@@ -14,7 +14,9 @@ body {
     text-align: center;
 }
 .content {
+    margin: 0 auto;
     padding: 0 16px;
+    max-width: 1300px;
 }
 h1 {
     font-size: 1000%;
@@ -52,7 +54,7 @@ a.yui3-button:visited {
     font-weight: bold;
 }
 small {
-    font-size: 80%;
+    font-size: 90%;
 }
 ul a {
     font-weight: bold;

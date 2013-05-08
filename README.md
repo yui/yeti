@@ -1,6 +1,9 @@
-# Yeti [![Build Status](https://secure.travis-ci.org/yui/yeti.png?branch=master)](http://travis-ci.org/yui/yeti) [![Dependency Status](https://david-dm.org/yui/yeti.png)](https://david-dm.org/yui/yeti)
+# Tired of testing? Yeti can help. [![Build Status](https://secure.travis-ci.org/yui/yeti.png?branch=master)](http://travis-ci.org/yui/yeti) [![Dependency Status](https://david-dm.org/yui/yeti.png)](https://david-dm.org/yui/yeti)
 
-Yeti automates browser testing.
+Yeti automates tests written for various test frameworks.
+Yeti scales from your dev box (where it works by itself)
+to your CI system (where it launches browsers with Selenium)
+without changing your existing tests.
 
 ## Features
 
