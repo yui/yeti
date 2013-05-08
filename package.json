@@ -66,7 +66,7 @@
     "istanbul": "https://github.com/gotwarlost/istanbul/tarball/master",
     "semver": ">=1.0.14",
     "ronn": ">=0.3.8",
-    "jshint": ">=0.6.1",
+    "jshint": ">=2.0.0",
     "node-phantom": ">=0.2.1",
     "vows": ">=0.6.4",
     "selleck": ">=0.1.12",

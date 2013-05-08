@@ -1,7 +1,6 @@
 {
     "globalstrict": true,
     "node": true,
-    "es5": true,
     "onevar": true,
     "white": true,
     "curly": true,
