@@ -5,7 +5,8 @@
 var fs = require("fs"),
     url = require("url"),
     path = require("path"),
-    request = require("request");
+    http = require("http"),
+    https = require("https");
 
 var depDir = path.join(__dirname, "..", "dep");
 
@@ -88,12 +89,9 @@ function die(message) {
 }
 
 function saveURLToDep(sourceURL, filename, cb) {
-    var protocol = url.parse(sourceURL).protocol,
-        env = process.env,
-        proxy;
+    var protocol = url.parse(sourceURL).protocol;
 
-    protocol = protocol.replace(':', '');
-    proxy = env[protocol + '_proxy'] || env[protocol.toUpperCase() + '_PROXY'] || '';
+    protocol = (protocol === "http:") ? http : https;
     filename = path.join(depDir, filename);
 
     function done() {
@@ -102,17 +100,24 @@ function saveURLToDep(sourceURL, filename, cb) {
 
     log("Saving", sourceURL, "as", filename);
 
-    request({
-        proxy: proxy,
-        url: sourceURL
-    }, function(error, res, body) {
+    protocol.get(url.parse(sourceURL), function onResponse(res) {
         if (res.statusCode !== 200) {
             die("Got status " + res.statusCode + " for URL " + sourceURL);
             return;
         }
 
-        fs.writeFile(filename, body, "utf8", done);
-    });
+        var data = "";
+
+        res.setEncoding("utf8");
+
+        res.on("data", function (chunk) {
+            data += chunk;
+        });
+
+        res.on("end", function () {
+            fs.writeFile(filename, data, "utf8", done);
+        });
+    }).on("error", die);
 }
 
 function download(err) {
