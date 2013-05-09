@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.23 / In Development
+
 ## 0.2.22 / 2013-05-08
 
   * Automatically restart stalled browsers when using WebDriver.
