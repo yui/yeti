@@ -3,7 +3,7 @@
 var vows = require("vows");
 var assert = require("assert");
 
-var TestServer = require("../../lib/hub/test-server");
+var TestServer = require("../../lib/hub/http/test-server");
 
 function MockServerResponse() {
     this.headers = null;
