@@ -40,7 +40,7 @@ MockWebDriver.prototype.get = function (url, cb) {
 };
 
 MockWebDriver.prototype.init = function (desiredCapabilities, cb) {
-    this.desiredCapabilities = desiredCapabilities;
+    this.emit("init", desiredCapabilities);
     process.nextTick(cb.bind(this, null));
 };
 
@@ -186,6 +186,10 @@ vows.describe("WebDriver Collection").addBatch({
                     });
                 });
 
+                topic.wdYoshi.on("init", function (desired) {
+                    topic.requestedCapabilities = desired;
+                });
+
                 topic.managedBrowsers.launch(function (err) {
                     vow.callback(err, topic);
                 });
@@ -196,6 +200,26 @@ vows.describe("WebDriver Collection").addBatch({
             "navigation occurs": function (topic) {
                 assert.ok(topic.wdYoshi.children.length > 0, "No browsers to navigate.");
                 assert.lengthOf(topic.events.navigate, topic.wdYoshi.children.length);
+            },
+            "the requested capabilities contain the desiredCapabilities": function (topic) {
+                var original = topic.desiredCapabilities,
+                    actual = topic.requestedCapabilities;
+
+                original.forEach(function (browser) {
+                    Object.keys(browser).forEach(function (name) {
+                        assert.include(actual, name);
+                        assert.strictEqual(browser[name], actual[name]);
+                    });
+                });
+            },
+            "the requested capabilities contain Sauce Labs properties": function (topic) {
+                var actual = topic.requestedCapabilities;
+
+                assert.include(actual, "avoid-proxy");
+                assert.include(actual, "max-duration");
+
+                assert.strictEqual(actual["avoid-proxy"], true);
+                assert.strictEqual(actual["max-duration"], 7200);
             },
             "getAllBrowsers returns an array of WebDriver browsers": function (topic) {
                 var allBrowsers = topic.managedBrowsers.getAllBrowsers();
