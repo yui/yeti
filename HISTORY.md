@@ -1,6 +1,11 @@
 # A Brief History of Yeti
 
-## 0.2.23 / In Development
+## 0.2.23 / 2013-05-22
+
+  * "Ignoring --server option" no longer appears when glob config is used with `-s`. Fix GH-35.
+  * Fix thrown SyntaxError on IE for every test when Yeti is used on port 80 or 443. Fix GH-46.
+  * Avoid using devDependencies during postinstall. Fix GH-42.
+  * Update onyx dependency.
 
 ## 0.2.22 / 2013-05-08
 
