@@ -77,6 +77,16 @@ Yeti automatically includes a line coverage summary if your tests were instrumen
     ✔ Testing started on Safari (6.0) / Mac OS
     ► Testing... \ 13% complete (10/60) 11.85 tests/sec ETA 4 minutes, 2 seconds 44% line coverage
 
+
+The coverage results can be dumped using the `--coverage-dump` option :
+
+    $ mkdir coverage-results
+    $ yeti myproject/src/*/tests/unit/*.html --coverage-dump coverage-results --query 'filter=coverage'
+
+If your code is instrumented using istanbul, you can then generate the HTML coverage reports :
+
+    $ istanbul report --root coverage-results
+
 #### AJAX testing
 
 Yeti provides server-side AJAX routes with [echoecho][ee]. Your test can
