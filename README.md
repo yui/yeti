@@ -1,4 +1,6 @@
-# Tired of testing? Yeti can help. [![Build Status](https://secure.travis-ci.org/yui/yeti.png?branch=master)](http://travis-ci.org/yui/yeti) [![npm Version](https://badge.fury.io/js/yeti.png)](http://badge.fury.io/js/yeti) [![Dependency Status](https://david-dm.org/yui/yeti.png)](https://david-dm.org/yui/yeti)
+# Tired of testing? Yeti can help.
+
+[![Build Status](https://secure.travis-ci.org/yui/yeti.png?branch=master)](http://travis-ci.org/yui/yeti) [![npm Version](https://badge.fury.io/js/yeti.png)](http://badge.fury.io/js/yeti) [![Dependency Status](https://david-dm.org/yui/yeti.png)](https://david-dm.org/yui/yeti)
 
 Yeti automates tests written for various test frameworks.
 Yeti scales from your dev box (where it works by itself)

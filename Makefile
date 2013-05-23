@@ -23,11 +23,11 @@ coverage:
 
 html:
 	# Problem? Type `make install` first.
-	cat README.md | sed '1,2d' | \
+	cat README.md | sed '1,4d' | \
 		./node_modules/.bin/ronn -5 | \
 		sed -e 's/<[\/]*html>//g' -e 's/<pre>/<pre class="code">/g' \
 		> doc/quick-start/index.mustache
-	cat CONTRIBUTING.md | sed '1,2d' | \
+	cat CONTRIBUTING.md | sed '1,4d' | \
 		./node_modules/.bin/ronn -5 | \
 		sed -e 's/<[\/]*html>//g' -e 's/<pre>/<pre class="code">/g' \
 		> doc/contribute/index.mustache
