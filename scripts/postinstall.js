@@ -4,6 +4,7 @@
 
 var fs = require("fs"),
     path = require("path"),
+    existsSync = fs.existsSync || path.existsSync,
     history;
 
 function log() {
@@ -12,7 +13,10 @@ function log() {
     }
 }
 
-require("./fetch_deps");
+// Avoid fetching deps if possible. See GH-42.
+if (!fs.existsSync(path.join(__dirname, "..", "dep"))) {
+    require("./fetch_deps");
+}
 
 fs.readFile(path.join(__dirname, "..", "HISTORY.md"), "utf8", function (err, data) {
     history = data.split("\n").slice(2, 20).join("\n");
@@ -21,6 +25,3 @@ fs.readFile(path.join(__dirname, "..", "HISTORY.md"), "utf8", function (err, dat
         log("\nRecent changes in HISTORY.md:\n\n" + history);
     });
 });
-
-
-
