@@ -52,6 +52,12 @@ vows.describe("Tests").addBatch({
                 topic.plans.tests,
                 topic.tests.totalSubmitted()
             );
+        },
+        "totalPending is correct": function (topic) {
+            assert.lengthOf(
+                topic.plans.tests,
+                topic.tests.totalPending()
+            );
         }
     }
 }).export(module);
