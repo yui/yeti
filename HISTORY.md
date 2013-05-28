@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.24 / In Development
+
 ## 0.2.23 / 2013-05-22
 
   * "Ignoring --server option" no longer appears when glob config is used with `-s`. Fix GH-35.
