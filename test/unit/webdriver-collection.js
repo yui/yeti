@@ -6,6 +6,8 @@ var mockery = require("mockery");
 var mocks = require("mocks");
 var util = require("util");
 
+var createHubMock = require("../lib/mock-hub");
+
 var EventYoshi = require("eventyoshi");
 var EventEmitter2 = require("../../lib/event-emitter");
 
@@ -51,40 +53,6 @@ function createWdMock(topic, cb) {
             cb(mock);
             return mock;
         }
-    };
-}
-
-function MockAllAgents() {
-    this.agents = {};
-    EventEmitter2.call(this);
-}
-
-util.inherits(MockAllAgents, EventEmitter2);
-
-MockAllAgents.prototype.addAgent = function (agent) {
-    var self = this;
-    self.agents[agent.id] = agent;
-    process.nextTick(function () {
-        self.emit("newAgent", agent);
-    });
-};
-
-MockAllAgents.prototype.removeAgent = function (agent) {
-    delete this.agents[agent.id];
-};
-
-function createHubMock(topic) {
-    return {
-        server: {
-            address: function () {
-                return {
-                    address: topic.ipAddress,
-                    port: topic.port
-                };
-            }
-        },
-        webdriver: topic.wdOptions,
-        allAgents: new MockAllAgents()
     };
 }
 
