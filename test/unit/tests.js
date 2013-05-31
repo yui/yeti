@@ -60,6 +60,12 @@ vows.describe("Tests").addBatch({
                 topic.tests.totalPending()
             );
         },
+        "each Test is a LiteralTest": function (topic) {
+            // Because useProxy was undefined (falsy)
+            topic.tests.getTestsWithoutResults().forEach(function (test) {
+                assert.instanceOf(test, LiteralTest);
+            });
+        },
         "when assigned results": {
             topic: function (topic) {
                 topic.next = topic.tests.next();
