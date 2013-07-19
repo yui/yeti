@@ -56,8 +56,8 @@
     "sockjs": "~0.3.1",
     "proto-list": "~1.2.2",
     "glob": "~3.2.1",
-    "graceful-fs": "~1.2.0",
-    "request": "~2.21.0"
+    "graceful-fs": "~2.0.0",
+    "request": "~2.22.0"
   },
   "devDependencies": {
     "mocks": "https://github.com/vojtajina/node-mocks/tarball/master",
