@@ -287,6 +287,19 @@ For API documentation:
 
 Yeti follows [Semantic Versioning](http://semver.org/) but is currently at a 0.x.y release. **The public API is not stable.** There will be changes.
 
+### Client-Side Yeti Integration
+
+Yeti typically automates test frameworks, but you can integrate any client-side test or performance framework
+into Yeti. Combined with the Yeti API, you can easily build your own automation tools. YUI uses Yeti in this
+way to automate performance benchmarks.
+
+Normally Yeti will scan pages in order to find test frameworks. When serving a page to Yeti, you can set
+`window.stopYetiScan` to true to signal that your page will explicitly submit results to Yeti.
+
+When your framework has results and is ready to move to the next page, you can call `window.sendYetiResults`
+with an object containing data to report. This data will be passed through verbatim to the Node.js Yeti API
+for further processing in your tool.
+
 ## Caveats
 
 ### Platforms
