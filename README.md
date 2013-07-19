@@ -205,22 +205,28 @@ Then run tests on two Chrome browsers like this:
 
 Valid options for `browser` include:
 
-- Chrome
-- Firefox
-- Safari
-- IE
-- iPad
-- PhantomJS
+- `Chrome`
+- `IE` (expands to `Internet Explorer`)
+- `Firefox`
+- `Safari`
+- `PhantomJS`
+- `Android`
+- `iPad` (for Sauce Labs)
+- `iPhone` (for Sauce Labs)
 
 You can specify a platform for desktop browsers by specifying the
-desired platform after a slash `/`, e.g. `chrome/xp`. Valid platforms,
-defined by the WebDriver protocol, include:
+desired platform after a slash `/`, e.g. `chrome/xp`. Valid platforms include:
 
 - `Windows`
 - `XP`
 - `Mac`
 - `Linux`
 - `Vista`
+- `Windows XP` (for Sauce Labs)
+- `Windows 7` (for Sauce Labs)
+- `Windows 8` (for Sauce Labs)
+- `OS X 10.6` (for Sauce Labs)
+- `OS X 10.8` (for Sauce Labs)
 
 ### Options
 
