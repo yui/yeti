@@ -12,7 +12,7 @@ without changing your existing tests.
  - Automates your existing tests. Works with the framework you already have.
  - Automates tests without any additional software. Selenium not required!
  - Your tests can still run outside of Yeti by themselves.
- - Works with IE 8+, Android 4+, Firefox, Safari, Chrome, iOS 4+.
+ - Works with IE 6+, Android 4+, Firefox, Safari, Chrome, iOS 4+.
  - Server-side AJAX testing with [echoecho][ee].
  - JUnit XML output makes Yeti play nice with Jenkins.
  - Optional Selenium/WebDriver browser launching. Works great with Sauce Labs.
