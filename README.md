@@ -70,6 +70,13 @@ Yeti can output machine-readable JUnit XML suitable for use in [Jenkins][] with 
 
 Yeti will output XML on stdout and status messages on stderr.
 
+When using Yeti several times in the same Jenkins job, it's useful to label tests with a prefix
+to distinguish between different Yeti runs after Jenkins merges the reports together. You can
+assign this prefix with the `--name` option.
+
+    $ yeti --name stable --junit test/stable/*.html > stable.xml
+    $ yeti --name flaky --junit test/flaky/*.html > flaky.xml
+
 #### Code coverage
 
 Yeti automatically includes a line coverage summary if your tests were instrumented with [YUI Test Coverage][yuitest].
