@@ -1,6 +1,12 @@
 # A Brief History of Yeti
 
-## 0.2.24 / In Development
+## 0.2.24 / 2013-07-19
+
+  * Report root cause of Selenium/WebDriver errors that occur during browser launching.
+  * Allow `WINDOWS` as a platform name in the `--browser` launch option for Selenium.
+  * Add new Sauce Labs platform names: `Windows XP`, `Windows 7`, `Windows 8`, `OS X 10.6`, and `OS X 10.8`.
+  * Add Client-Side Yeti Integration (Generic Driver) for using Yeti to automate other frameworks.
+  * Update request and graceful-fs dependencies.
 
 ## 0.2.23 / 2013-05-22
 
