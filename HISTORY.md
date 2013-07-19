@@ -6,6 +6,7 @@
   * Allow `WINDOWS` as a platform name in the `--browser` launch option for Selenium.
   * Add new Sauce Labs platform names: `Windows XP`, `Windows 7`, `Windows 8`, `OS X 10.6`, and `OS X 10.8`.
   * Add Client-Side Yeti Integration (Generic Driver) for using Yeti to automate other frameworks.
+  * Add `--name` option to label JUnit XML tests for display in Jenkins merged test reports.
   * Update request and graceful-fs dependencies.
 
 ## 0.2.23 / 2013-05-22
