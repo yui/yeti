@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.25 / In Development
+
 ## 0.2.24 / 2013-07-19
 
   * Report root cause of Selenium/WebDriver errors that occur during browser launching.
