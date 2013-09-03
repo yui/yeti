@@ -31,7 +31,7 @@
     }
   ],
   "bugs": {
-    "url": "http://yuilibrary.com/projects/yeti/report"
+    "url": "https://github.com/yui/yeti/issues"
   },
   "main": "lib/yeti",
   "bin": {
