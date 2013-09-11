@@ -72,39 +72,6 @@ vows.describe("CLI").addBatch({
             assert.lengthOf(topic.mockProcess.listeners("uncaughtException"), 1,
                 "Only one handler should be installed.");
         },
-        "the parseBrowser function given ie/windows 7 is parsed correctly": function (topic) {
-            var cap,
-                caps = topic.cli.parseBrowsers(["ie/windows 7"]);
-            assert.isNull(topic.exitCode);
-            cap = caps.pop();
-            assert.strictEqual(cap.browserName, "internet explorer");
-            assert.strictEqual(cap.platform, "WINDOWS 7");
-            assert.include(cap.name, "Automated Browser");
-        },
-        "the parseBrowser function given ie/windows/8 is parsed correctly": function (topic) {
-            var cap,
-                caps = topic.cli.parseBrowsers(["ie/windows/8"]);
-            assert.isNull(topic.exitCode);
-            cap = caps.pop();
-            assert.strictEqual(cap.browserName, "internet explorer");
-            assert.strictEqual(cap.platform, "WINDOWS");
-            assert.strictEqual(cap.version, "8");
-            assert.include(cap.name, "Automated Browser");
-        },
-        "the parseBrowser function given chrome/mac is parsed correctly": function (topic) {
-            var cap,
-                caps = topic.cli.parseBrowsers(["chrome/mac"]);
-            assert.isNull(topic.exitCode);
-            cap = caps.pop();
-            assert.strictEqual(cap.browserName, "chrome");
-            assert.strictEqual(cap.platform, "MAC");
-            assert.isUndefined(cap.version);
-            assert.include(cap.name, "Automated Browser");
-        },
-        "the parseBrowser function given safari/os x is ambigious": function (topic) {
-            topic.cli.parseBrowsers(["safari/os x"]);
-            assert.strictEqual(topic.exitCode, 1);
-        },
         "calling createHub creates a hub": function (topic) {
             var config,
                 hub,
