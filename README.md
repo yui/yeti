@@ -214,6 +214,10 @@ Then run tests on two Chrome browsers like this:
 
     yeti --browser chrome --browser chrome test.html
 
+Or, use the `caps` option to specify Selenium capabilities:
+
+    yeti --caps "platform=OS X 10.8;version=7;device-orientation=portrait;app=safari;device=iPhone Simulator" test.html
+
 Valid options for `browser` include:
 
 - `Chrome`
