@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "async": "~0.2.5",
-    "wd": "~0.0.27",
+    "wd": "~0.2.5",
     "echoecho": "~0.1.6",
     "eventemitter2": "~0.4.8",
     "eventyoshi": "~0.1.2",
@@ -57,7 +57,7 @@
     "proto-list": "~1.2.2",
     "glob": "~3.2.1",
     "graceful-fs": "~2.0.0",
-    "request": "~2.22.0"
+    "request": "~2.27.0"
   },
   "devDependencies": {
     "mocks": "https://github.com/vojtajina/node-mocks/tarball/master",
