@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "async": "~0.2.5",
-    "wd": "~0.0.27",
+    "wd": "~0.2.5",
     "echoecho": "~0.1.6",
     "eventemitter2": "~0.4.8",
     "eventyoshi": "~0.1.2",
