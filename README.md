@@ -62,17 +62,6 @@ Point your browsers at that URL, then come back and press Enter.
 
 Yeti exits automatically when all tests complete. If test failures occur, Yeti will exit with a non-zero status code.
 
-Please note before using Yeti on Windows, you must issue one of the following commands, depending on which command-line interface you are using:
-
-MS-DOS:
-
-    set HOME = C:\Users\<username>
-
-Windows PowerShell:
-
-    $Env:HOME = "C:\Users\<username>"
-    
-
 #### JUnit XML output
 
 Yeti can output machine-readable JUnit XML suitable for use in [Jenkins][] with the `--junit` option.
