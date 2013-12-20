@@ -1,6 +1,15 @@
 # A Brief History of Yeti
 
-## 0.2.25 / In Development
+## 0.2.25 / 2013-12-20
+
+ * Add `--caps` command-line option to specify Selenium capabilities directly.
+ * Fix Windows support by using USERPROFILE instead of HOME for configuration locator.
+ * Fix potential memory leaks by breaking references to objects when testing completes.
+ * Fix "No browsers connected, exiting" bug.
+ * Fix crash when encoding an undefined value in the JUnit XML reporter.
+ * Fix bug in internal state when test skipped because it did not exist.
+ * Add IE 11 and Windows 8.1 to User-Agent list.
+ * Update wd and request dependencies.
 
 ## 0.2.24 / 2013-07-19
 
