@@ -1,5 +1,7 @@
 # A Brief History of Yeti
 
+## 0.2.26 / In Development
+
 ## 0.2.25 / 2013-12-20
 
  * Add `--caps` command-line option to specify Selenium capabilities directly.
