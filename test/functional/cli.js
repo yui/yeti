@@ -4,7 +4,7 @@ var vows = require("vows");
 var assert = require("assert");
 
 var portfinder = require("portfinder");
-var streams = require("../lib/streams");
+var streams = require("mock-utf8-stream");
 var hub = require("../lib/hub");
 
 var cli = require("../../lib/cli");

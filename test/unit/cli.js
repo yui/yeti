@@ -6,7 +6,7 @@ var mockery = require("mockery");
 
 var EventEmitter = require("events").EventEmitter;
 
-var streams = require("../lib/streams");
+var streams = require("mock-utf8-stream");
 
 var Configuration = require("../../lib/cli/configuration");
 
