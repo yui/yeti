@@ -45,6 +45,20 @@
   "engines": {
     "node": "~0.8.0 || ~0.10.0"
   },
+  "jshintConfig": {
+    "node": true,
+    "onevar": true,
+    "white": true,
+    "curly": true,
+    "eqeqeq": true,
+    "latedef": true,
+    "newcap": true,
+    "noempty": true,
+    "nonew": true,
+    "plusplus": true,
+    "undef": true,
+    "trailing": true
+  },
   "dependencies": {
     "async": "~0.2.5",
     "wd": "~0.2.5",
@@ -66,7 +80,7 @@
     "istanbul": ">=0.2.1",
     "semver": ">=1.0.14",
     "ronn": ">=0.3.8",
-    "jshint": ">=2.0.0",
+    "jshint": ">=2.4.3",
     "node-phantom": ">=0.2.1",
     "vows": ">=0.6.4",
     "selleck": "0.1.16",
