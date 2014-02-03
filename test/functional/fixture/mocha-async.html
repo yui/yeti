@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../../../dep/dev/mocha.css" />
     <script src="../../../dep/dev/mocha.js"></script>
     <script src="../../../dep/dev/expect.js"></script>
+    <script type="text/javascript" src="../../../dep/dev/yui-test.js"></script>
   </head>
   <body>
     <div id="mocha"></div>
@@ -14,18 +15,18 @@
     mocha.asyncYeti = true;
 
     //simulate an async initialization of mocha
-    //using a timeout.
-    setTimeout(function(){
-  		describe('hi mocha', function(){
-  			it('should have a passing test', function(){
-  			  expect(true).to.be(true);
-  			})
-  		});
+    //using a YUI use
+    YUI().use("test", function (Y) {
+  	describe('hi mocha', function(){
+  		it('should have a passing test', function(){
+  			expect(true).to.be(true);
+  		})
+  	});
 
-  		if(!("$yetify" in window)) {
-  	        var runner = mocha.run();
-  	  }
-    }, 50);
+  	if(!("$yetify" in window)) {
+  	     var runner = mocha.run();
+  	}
+    });
 	</script>
   </body>
 </html>
