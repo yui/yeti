@@ -146,6 +146,7 @@ vows.describe("Yeti CLI").addBatch({
                     __dirname + "/fixture/qunit.html",
                     __dirname + "/fixture/jasmine.html",
                     __dirname + "/fixture/mocha.html",
+                    __dirname + "/fixture/mocha-async.html",
                     __dirname + "/fixture/doh.html"
                 ]);
             });

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Yeti Mocha Test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../../../dep/dev/mocha.css" />
+    <script src="../../../dep/dev/mocha.js"></script>
+    <script src="../../../dep/dev/expect.js"></script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script>
+		mocha.setup('bdd');
+    mocha.asyncYeti = true;
+
+    //simulate an async initialization of mocha
+    //using a timeout.
+    setTimeout(function(){
+  		describe('hi mocha', function(){
+  			it('should have a passing test', function(){
+  			  expect(true).to.be(true);
+  			})
+  		});
+
+  		if(!("$yetify" in window)) {
+  	        var runner = mocha.run();
+  	  }
+    }, 50);
+	</script>
+  </body>
+</html>
