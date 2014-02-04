@@ -60,7 +60,17 @@ Point your browsers at that URL, then come back and press Enter.
     504 tests passed! (9.1 seconds)
     $
 
+#### Exit status codes
+
 Yeti exits automatically when all tests complete. If test failures occur, Yeti will exit with a non-zero status code.
+
+- `0` indicates testing was completed and all tests passed.
+- `1` indicates an error occurred that prevented testing from running to completion.
+- `3` indicated testing was completed but some tests failed.
+
+These codes are useful for using Yeti programmatically. The codes `0` and `3` indicate testing completion.
+If Yeti ended in code `1`, you may wish to retry the command to workaround transient errors. This is useful
+when using Yeti to launch browsers in CI, which sometimes may fail due to temporary Selenium issues.
 
 #### JUnit XML output
 

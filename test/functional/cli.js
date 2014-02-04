@@ -7,6 +7,8 @@ var portfinder = require("portfinder");
 var streams = require("mock-utf8-stream");
 var hub = require("../lib/hub");
 
+var EventEmitter2 = require("../../lib/event-emitter");
+
 var cli = require("../../lib/cli");
 var YetiCLI = cli.CLI;
 
@@ -14,18 +16,18 @@ function cliTopic(fn) {
     return function () {
         var vow = this,
             context,
-            topic;
+            topic,
+            emitter = new EventEmitter2();
 
         topic = {
             fe: null,
             stdin:  new streams.MockReadableStream(),
             stdout: new streams.MockWritableStream(),
-            stderr: new streams.MockWritableStream(),
-            exit: 0
+            stderr: new streams.MockWritableStream()
         };
 
         function mockExit(code) {
-            topic.exit = code;
+            emitter.emit("exit", code);
         }
 
         topic.fe = new YetiCLI({
@@ -40,7 +42,8 @@ function cliTopic(fn) {
                 vow.callback(err, {
                     port: port,
                     output: expectedString,
-                    config: topic
+                    config: topic,
+                    emitter: emitter
                 });
             }
         };
@@ -184,7 +187,9 @@ vows.describe("Yeti CLI").addBatch({
                 },
                 "when Enter is pressed": {
                     topic: function (connectionSnapshot, browser, cli) {
-                        expectThenCallback(this, cli.config.stdout, "pass");
+                        expectThenCallback(this, cli.config.stdout, "pass", {
+                            cli: cli
+                        });
 
                         cli.config.stdin.write("\n"); // Enter
                     },
@@ -196,6 +201,17 @@ vows.describe("Yeti CLI").addBatch({
                     },
                     "the stderr output contains Agent complete": function (topic) {
                         assert.include(topic.output, "Agent complete");
+                    },
+                    "should exit": {
+                        topic: function (topic) {
+                            var vow = this;
+                            topic.cli.emitter.once("exit", function (code) {
+                                vow.callback(null, code);
+                            });
+                        },
+                        "with status code 0": function (topic) {
+                            assert.strictEqual(topic, 0);
+                        }
                     }
                 }
             }
@@ -257,7 +273,9 @@ vows.describe("Yeti CLI").addBatch({
                 },
                 "when Enter is pressed": {
                     topic: function (connectionSnapshot, browser, cli) {
-                        expectThenCallback(this, cli.config.stdout, "failed");
+                        expectThenCallback(this, cli.config.stdout, "failed", {
+                            cli: cli
+                        });
 
                         cli.config.stdin.write("\n"); // Enter
                     },
@@ -273,6 +291,17 @@ vows.describe("Yeti CLI").addBatch({
                     },
                     "the stderr output contains Agent complete": function (topic) {
                         assert.include(topic.output, "Agent complete");
+                    },
+                    "should exit": {
+                        topic: function (topic) {
+                            var vow = this;
+                            topic.cli.emitter.once("exit", function (code) {
+                                vow.callback(null, code);
+                            });
+                        },
+                        "with status code 3": function (topic) {
+                            assert.strictEqual(topic, 3);
+                        }
                     }
                 }
             }
