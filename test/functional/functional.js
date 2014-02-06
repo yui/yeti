@@ -65,7 +65,7 @@ function captureContext(batchContext) {
 
                 lastTopic.client.once("agentConnect", function (agent) {
                     lastTopic.client.once("agentSeen", function () {
-                        page.evaluate(getPathname, function (url) {
+                        page.evaluate(getPathname, function (err, url) {
                             clearTimeout(timeout);
                             loaded = true;
                             vow.callback(null, {
@@ -218,7 +218,7 @@ function createBatchTopic(createBatchConfiguration) {
         batch.on("complete", function () {
             lastTopic.client.once("agentSeen", function (agent) {
                 clearTimeout(timeout);
-                pageTopic.page.evaluate(getPathname, function (pathname) {
+                pageTopic.page.evaluate(getPathname, function (err, pathname) {
                     pageTopic.page.close();
                     vow.callback(null, {
                         expectedPathname: pageTopic.url,
