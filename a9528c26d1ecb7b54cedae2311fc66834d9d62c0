@@ -1,2 +1,2 @@
-The bug #79 in the original commit message is incorrect.
 This commit actually fixed #74.
+The reference to #79 in the commit message is incorrect.
