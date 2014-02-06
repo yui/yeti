@@ -273,7 +273,8 @@ Here is an example `.yeti.json` for the YUI project, which is placed in the repo
     {
         "hub": "http://test.yeti.cx/",
         "basedir": ".",
-        "glob": "**/tests/unit/*.html"
+        "glob": "**/tests/unit/*.html",
+        "ignore": "node_modules/**/*.html"
     }
 
 Here is the breakdown of these settings:
@@ -282,6 +283,7 @@ Here is the breakdown of these settings:
  - The *basedir* option indicates that the directory where `.yeti.json` lives is
     permitted to serve files to the Yeti Hub.
  - The *glob* option defines a pattern to search for test files.
+ - The *ignore* option defines a pattern to search for test files to ignore.
 
 These settings let YUI developers simply run `yeti` inside of the project directory
 to run tests. Since all tests in the project match the glob pattern, the `yeti`
