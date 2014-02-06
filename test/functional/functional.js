@@ -328,7 +328,7 @@ function clientFailureContext(createBatchConfiguration) {
                     // Note: we call end() before the
                     // browser actually can listen to events;
                     // loading has only just begun at this point.
-                    // This, we must buffer events for sending later.
+                    // Thus, we must buffer events for sending later.
                 }
             });
 
