@@ -1,6 +1,6 @@
 "use strict";
 
-var PHANTOMJS_MIN_VERSION = "1.5.0";
+var PHANTOMJS_MIN_VERSION = "1.6.0";
 
 var vows = require("vows");
 var assert = require("assert");
@@ -236,36 +236,14 @@ function createBatchTopic(createBatchConfiguration) {
 }
 
 function waitForPathChange(page, cb) {
-    // When PhantomJS loads a new page,
-    // begin checking for the new URL and
-    // call the callback with the new URL
-    // if one is detected within 200ms.
-    //
-    // XXX: When we can use PhantomJS 1.6,
-    // replace with the onUrlChanged event.
-    var originalPathname,
-        attempts = 0;
+    function respond() {
+        page.evaluate(getPathname, function (err, pathname) {
+            cb(pathname);
+        });
+    }
 
-    page.evaluate(getPathname, function (err, pathname) {
-        originalPathname = pathname;
-        cb(pathname); // Record the first URL.
-    });
-
-    page.onLoadStarted = function () {
-        (function pathnameObserver() {
-            page.evaluate(getPathname, function (err, pathname) {
-                if (pathname !== originalPathname) {
-                    originalPathname = pathname;
-                    cb(pathname);
-                } else if (attempts > 20) {
-                    attempts = 0;
-                } else {
-                    attempts += 1;
-                    setTimeout(pathnameObserver, 10);
-                }
-            });
-        }());
-    };
+    respond(); // Record first URL.
+    page.onUrlChanged = respond;
 }
 
 function clientFailureContext(createBatchConfiguration) {
