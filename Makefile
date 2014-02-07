@@ -31,6 +31,7 @@ html:
 		./node_modules/.bin/ronn -5 | \
 		sed -e 's/<[\/]*html>//g' -e 's/<pre>/<pre class="code">/g' \
 		> doc/contribute/index.mustache
+	node scripts/generate_selleck_project.js
 	./node_modules/.bin/selleck
 .PHONY: html
 
@@ -55,6 +56,7 @@ release-dep:
 
 clean:
 	rm -rf build_docs
+	rm doc/yeti/project.json
 .PHONY: clean
 
 maintainer-clean:

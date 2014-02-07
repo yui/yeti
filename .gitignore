@@ -1,6 +1,7 @@
 /dep/
 /doc/quick-start/index.mustache
 /doc/contribute/index.mustache
+/doc/yeti/project.json
 /api/
 coverage.*
 node_modules

@@ -1,5 +1,5 @@
 {
     "projectName": "Yeti",
-    "yetiVersion": "v0.2.26-pre",
+    "yetiVersion": "@VERSION@",
     "yuiGridsUrl": "http://yui.yahooapis.com/combo?3.14.1/build/cssfonts/cssfonts-min.css&amp;3.14.1/build/cssgrids/cssgrids-min.css"
 }
