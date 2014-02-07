@@ -13,7 +13,7 @@ test:
 
 spec:
 	# Problem? Type `make install` first.
-	./node_modules/.bin/vows --spec test/*.js
+	./jake test
 .PHONY: spec
 
 coverage:
@@ -23,43 +23,33 @@ coverage:
 
 html:
 	# Problem? Type `make install` first.
-	cat README.md | sed '1,4d' | \
-		./node_modules/.bin/ronn -5 | \
-		sed -e 's/<[\/]*html>//g' -e 's/<pre>/<pre class="code">/g' \
-		> doc/quick-start/index.mustache
-	cat CONTRIBUTING.md | sed '1,4d' | \
-		./node_modules/.bin/ronn -5 | \
-		sed -e 's/<[\/]*html>//g' -e 's/<pre>/<pre class="code">/g' \
-		> doc/contribute/index.mustache
-	node scripts/generate_selleck_project.js
-	./node_modules/.bin/selleck
+	./jake html
 .PHONY: html
 
 html-api:
 	# Problem? Type `make install` first.
-	mkdir -p build_docs/api/everything
-	./node_modules/.bin/yuidoc --project-version `node cli.js -v`
+	./jake html-api
 .PHONY: html-api
 
 lint:
 	# Problem? Type `make install` first.
-	find lib test -name "*.js" \! -name "*min.js" -print0 | xargs -0 ./go lint
+	./jake lint
 .PHONY: lint
 
 site: clean html-api html coverage
 .PHONY: site
 
 release-dep:
-	rm -rf dep
-	node scripts/fetch_deps.js
+	# Problem? Type `make install` first.
+	./jake release-dep
 .PHONY: release-dep
 
 clean:
-	rm -rf build_docs
-	rm doc/yeti/project.json
+	# Problem? Type `make install` first.
+	./jake clean
 .PHONY: clean
 
 maintainer-clean:
-	npm rm webkit-devtools-agent
-	rm -rf tools
+	# Problem? Type `make install` first.
+	./jake maintainer-clean
 .PHONY: maintainer-clean

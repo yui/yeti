@@ -10,8 +10,8 @@ var walkdir = require("walkdir");
 
 var version = require("./lib/package-metadata").readPackageSync().version;
 
-function nuke(dir, completer) {
-    rimraf(dir, function (err) {
+function nuke(f, completer) {
+    rimraf(f, function (err) {
         if (err) {
             fail(err);
         } else if ("function" === typeof completer) {
@@ -107,15 +107,6 @@ task("test-unit", function () {
 desc("Run all of Yeti's tests");
 task("test", ["test-functional", "test-unit"]);
 
-/*
-desc("Run all of Yeti's unit tests with the '--spec' flag");
-task("spec", ["dep"], function () {
-    bin("vows", ["--spec"].concat(getTestFiles()), complete);
-}, {
-    async: true
-});
-*/
-
 desc("Report functional test coverage as HTML");
 task("coverage-functional", function () {
     spawn("bash", ["scripts/coverage.sh", "functional"], complete);
@@ -133,16 +124,26 @@ task("coverage-unit", function () {
 desc("Report test coverage as HTML");
 task("coverage", ["coverage-functional", "coverage-unit"]);
 
+function mustachify(inFile, outFile) {
+    var md, html, data, opts;
+    opts = {
+        encoding: "utf8"
+    };
+    data = fs.readFileSync(inFile, opts);
+    // Remove header
+    md = data.split("\n").slice(4).join("\n"),
+    html = new Ronn(md).html()
+            .replace(/<[\/]*html>/, "")
+            .replace("<pre>", '<pre class="code"');
+    fs.writeFileSync(outFile, html, opts);
+}
+
 desc("Build HTML documentation");
 task("html", function () {
-    fs.readFile("README.md", "utf8", function (err, data) {
-        var md, html;
-        // Remove Travis info
-        md = data.split("\n").slice(4).join("\n"),
-        html = new Ronn(md).html()
-                .replace(/<[\/]*html>/, "")
-                .replace("<pre>", '<pre class="code"');
-        fs.writeFileSync("doc/quick-start/index.mustache", html);
+    mustachify("README.md", "doc/quick-start/index.mustache");
+    mustachify("CONTRIBUTING.md", "doc/contribute/index.mustache");
+    spawn(process.argv[0], ["scripts/generate_selleck_project.js"], function (err) {
+        if (err) { return complete(err); }
         bin("selleck", [], complete);
     });
 }, {
@@ -151,6 +152,7 @@ task("html", function () {
 
 desc("Build API documentation");
 task("html-api", ["html"], function () {
+    jake.mkdirP('build_docs/api/everything');
     bin("yuidoc", ["--project-version", version], complete);
 }, {
     async: true
@@ -158,9 +160,7 @@ task("html-api", ["html"], function () {
 
 desc("Run JSLint on all files, or a specific given file");
 task("lint", function () {
-    getJsFiles("./lib", function (files) {
-        bin("jshint", files, complete);
-    });
+    bin("jshint", ["lib", "test"], complete);
 }, {
     async: true
 });
@@ -168,7 +168,13 @@ task("lint", function () {
 desc("Remove build documentation");
 task("clean", function () {
     nuke("build_docs");
+    nuke("doc/yeti/project.json");
+    nuke("doc/quick-start/index.mustache");
+    nuke("doc/contribute/index.mustache");
 });
+
+desc("Build website");
+task("site", ["clean", "html-api", "html", "coverage"]);
 
 desc("Remove development tools");
 task("maintainer-clean", function () {
@@ -176,10 +182,21 @@ task("maintainer-clean", function () {
     nuke("tools");
 });
 
-desc("Fetch external dependencies");
+desc("Fetch external dependencies for development");
 task("dep", function () {
     jake.mkdirP('dep/dev');
     spawn(process.argv[0], ["./scripts/fetch_deps.js", "--dev"], complete);
+}, {
+    async: true
+});
+
+desc("Fetch external dependencies for release packaging");
+task("release-dep", function () {
+    nuke("dep", function (err) {
+        if (err) { return complete(err); }
+        jake.mkdirP('dep');
+        spawn(process.argv[0], ["./scripts/fetch_deps.js"], complete);
+    });
 }, {
     async: true
 });
