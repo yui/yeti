@@ -1,6 +1,6 @@
 {
   "name": "yeti",
-  "description": "Test your JavaScript with any browser.",
+  "description": "Yeti automates browser testing.",
   "author": "Reid Burke <me@reidburke.com> (http://reidburke.com)",
   "contributors": [
     "Dav Glass <davglass@gmail.com>",
@@ -11,34 +11,27 @@
   ],
   "keywords": [
     "YUI",
-    "web app",
-    "YUITest",
+    "yuitest",
     "TDD",
     "BDD",
-    "yui3",
-    "test"
+    "test",
+    "mocha",
+    "doh",
+    "jasmine",
+    "qunit"
   ],
-  "version": "0.2.26-pre",
-  "homepage": "htp://yuilibrary.com/projects/yeti",
+  "version": "0.2.25",
+  "homepage": "http://yeti.cx",
   "repository": {
     "type": "git",
-    "url": "git://github.com/yui/yeti.git"
+    "url": "http://github.com/yui/yeti.git"
   },
-  "licenses": [
-    {
-      "type": "BSD",
-      "url": "http://yuilibrary.com/license"
-    }
-  ],
-  "bugs": {
-    "url": "https://github.com/yui/yeti/issues"
-  },
+  "license": "BSD-3-Clause",
+  "bugs": "https://github.com/yui/yeti/issues",
   "main": "lib/yeti",
-  "bin": {
-    "yeti": "./cli.js"
-  },
+  "bin": "./cli.js",
   "scripts": {
-    "pretest": "jshint lib test && jake dep",
+    "pretest": "jake lint && jake dep",
     "test": "jake test",
     "postinstall": "node scripts/postinstall.js"
   },
@@ -89,6 +82,5 @@
     "rimraf": ">=2.0.1",
     "walkdir": ">=0.0.5",
     "mock-utf8-stream": ">=0.1.0"
-  },
-  "optionalDependencies": {}
+  }
 }
