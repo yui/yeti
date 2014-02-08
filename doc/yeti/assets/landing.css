@@ -1,19 +1,17 @@
 body,
-.yui3-g [class *= "yui3-u"],
-.yui3-g-r [class *= "yui3-u"],
+.pure-g [class *= "pure-u"],
+.pure-g-r [class *= "pure-u"],
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Source Sans Pro', 'DejaVu Sans', 'Bitstream Vera Sans', Verdana, sans-serif;
 }
 body {
-    font-size: 14px;
+    font-size: 17px;
 }
 .cmd {
     font-size: 250%;
     margin-bottom: 1%;
 }
-.column-left { margin-right: 30px; }
-.yeti-widget, h1, h2 {
-    font-size: 120%;
+.ft, .center, .header, h1, h2 {
     text-align: center;
 }
 .content {
@@ -43,48 +41,26 @@ h3 {
 p {
     margin: 0 0 15px;
 }
-.yui3-button {
-    color: #444;
-    font-size: 120%;
-    line-height: 101%;
-    padding: 1em 1em .95em;
-}
-a.yui3-button:visited {
-    color: #444;
+
+a.pure-button {
+    color: #fff;
 }
 
-.yui3-button.hi {
-    font-weight: bold;
+a.pure-button:hover {
+    text-decoration: none;
 }
+
+.unit {
+    padding: 10px;
+}
+
 small {
     font-size: 90%;
 }
 ul a {
     font-weight: bold;
 }
-.yui3-button {
-    -moz-text-shadow: 1px 1px 0 #fff;
-    -webkit-text-shadow: 1px 1px 0 #fff;
-    text-shadow: 1px 1px 0 #fff;
-    text-decoration: none;
-}
-a.yui3-button:hover {
-    color: #fff;
-    border-color: #466899;
-    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-    color: #fff;
-    text-decoration: none;
-    -moz-text-shadow: 1px 1px 0 #444;
-    -webkit-text-shadow: 1px 1px 0 #444;
-    text-shadow: 1px 1px 0 #444;
 
-    background: #6396D8; /* old browsers */
-    background: -moz-linear-gradient(top, #6396D8 0%, #5A83BC 50%, #547AB7 51%, #466899 100%); /* firefox */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6396D8), color-stop(50%,#5A83BC), color-stop(51%,#547AB7), color-stop(100%,#466899)); /* webkit */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6396D8', endColorstr='#466899',GradientType=0 ); /* ie */
-}
 ul {
     margin: 1%;
     list-style: none;
@@ -133,15 +109,6 @@ ul {
 }
 
 @media all and (max-width: 899px) {
-    .yui3-u-1-3, .yui3-u-2-3 {
-        width: auto;
-        display: block;
-    }
-    .yui3-u-1-3 div,
-    .yui3-u-2-3 div {
-        margin-left: auto;
-        margin-right: auto;
-    }
     .demo {
         display: none;
     }

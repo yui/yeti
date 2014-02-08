@@ -9,13 +9,16 @@
     <link rel="stylesheet" href="{{projectAssets}}/vendor/prettify/prettify-min.css">
     <style>
     body,
-    .yui3-g [class *= "yui3-u"],
-    .yui3-g-r [class *= "yui3-u"],
+    .pure-g [class *= "pure-u"],
+    .pure-g-r [class *= "pure-u"],
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Source Sans Pro', 'DejaVu Sans', 'Bitstream Vera Sans', Verdana, sans-serif;
     }
     body {
         font-size: 14px;
+    }
+    #doc {
+        min-width: 0;
     }
     .sidebox .bd {
         font-size: 12px;
@@ -25,12 +28,13 @@
     }
     .yeti-hd {
         border-bottom: 1px solid #ddd;
+        margin: 0 20px;
     }
     .yeti-hd h1 {
         font-size: 300%;
         letter-spacing: -1px;
         margin: 5px 0 0;
-        padding: 0 20px;
+        padding-left: 0;
     }
     .yeti-hd h2 {
         font-size: 470%;
@@ -52,23 +56,30 @@
     }
     .yeti-hd .links {
         text-align: right;
-        padding: 4%;
+        line-height: 50px;
     }
     .yeti-hd a {
         color: #242D79;
+    }
+    #doc .ft {
+        border-top: 1px solid #ddd;
+        margin: 0 20px;
+    }
+    #doc .ft p {
+        background-position: 0 0;
     }
     </style>
 </head>
 <body>
 
 <div id="doc">
-    <div class="yeti-hd yui3-g">
-        <div class="yui3-u-3-4">
+    <div class="yeti-hd pure-g">
+        <div class="pure-u-1-2">
         <h1>
             <span class="product"><a href="../index.html">Yeti</a></span> <span class="version">{{yetiVersion}}</span>
         </h1>
         </div>
-        <div class="yui3-u-1-4">
+        <div class="pure-u-1-2">
             <div class="links">
                 <a href="../index.html">Back to Homepage</a>
             </div>
@@ -80,14 +91,14 @@
         <a href="#toc" class="jump">Jump to Table of Contents</a>
     {{/hideTableOfContents}}
 
-    <div class="yui3-g">
-        <div class="yui3-u-3-4">
+    <div class="pure-g-r">
+        <div class="pure-u-3-4">
             <div id="main">
                 <div class="content">{{>layout_content}}</div>
             </div>
         </div>
 
-        <div class="yui3-u-1-4">
+        <div class="pure-u-1-4">
             <div class="sidebar">
                 {{^hideTableOfContents}}
                     <div id="toc" class="sidebox">
