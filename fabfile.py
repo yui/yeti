@@ -23,12 +23,14 @@ def make_site():
 @parallel
 def deploy_site():
     target = doc_dir + "/dev/"
+    run("rm -rf %s" % target)
     rsync_project(remote_dir=target, local_dir="build_docs/")
 
 @parallel
 def release_site():
     deploy_site()
     with cd(doc_dir):
+        run("rm -rf v%s" % version)
         run("cp -R dev v%s" % version)
 
 @parallel
