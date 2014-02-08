@@ -1,6 +1,6 @@
 # Contribute to Yeti
 
-Yeti is built by the YUI Team at Yahoo! and contributors like you. We are excited
+Yeti is built by the YUI team at Yahoo and contributors like you. We are excited
 that you are interested in improving Yeti with us. This guide will help make sure
 your contribution will be ready to ship.
 
@@ -75,11 +75,11 @@ posting that you're working on it is just fine. Thank you!
 
 Thanks for working to make Yeti better. We really, really appreciate it!
 
-  [forums]: http://yuilibrary.com/forum/viewforum.php?f=230
+  [forums]: https://groups.google.com/forum/#!categories/yui-support/tools
   [CLA]: http://yuilibrary.com/contribute/cla/
   [yui]: http://yuilibrary.com/
   [gh]: https://github.com/
-  [issues]: http://yuilibrary.com/projects/yeti/report/1
-  [newticket]: http://yuilibrary.com/projects/yeti/newticket
+  [issues]: https://github.com/yui/yeti/issues?state=open
+  [newticket]: https://github.com/yui/yeti/issues/new
   [repo]: https://github.com/yui/yeti
   [Vows]: http://vowsjs.org/
