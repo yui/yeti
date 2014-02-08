@@ -16,6 +16,10 @@ env.hosts = hosts
 doc_dir = "public/doc"
 version = metadata["version"]
 
+@runs_once
+def make_site():
+    local("./jake html")
+
 @parallel
 def deploy_site():
     target = doc_dir + "/dev/"
@@ -34,7 +38,7 @@ def unrelease_site():
 
 @runs_once
 def release_github():
-    local("git tag v%s" % version)
+    local("git push all master")
     local("git push all v%s" % version)
 
 @runs_once
@@ -45,8 +49,19 @@ def release_npm():
 def clean():
     local("git clean -fd")
 
+@runs_once
+def install_from_scratch():
+    local("rm -rf node_modules dev")
+    local("npm install")
+    local("npm test")
+
+@runs_once
+def increment_version(kind="patch"):
+    local("npm version %s" % kind)
+
 def release():
     clean()
+    install_from_scratch()
+    make_site()
     release_site()
-    release_github()
-    release_npm()
+    local("./jake release-dep")
