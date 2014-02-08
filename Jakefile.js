@@ -124,14 +124,14 @@ task("coverage-unit", function () {
 desc("Report test coverage as HTML");
 task("coverage", ["coverage-functional", "coverage-unit"]);
 
-function mustachify(inFile, outFile) {
+function mustachify(inFile, lines, outFile) {
     var md, html, data, opts;
     opts = {
         encoding: "utf8"
     };
     data = fs.readFileSync(inFile, opts);
     // Remove header
-    md = data.split("\n").slice(4).join("\n"),
+    md = data.split("\n").slice(lines).join("\n"),
     html = new Ronn(md).html()
             .replace(/<[\/]*html>/, "")
             .replace("<pre>", '<pre class="code"');
@@ -140,8 +140,8 @@ function mustachify(inFile, outFile) {
 
 desc("Build HTML documentation");
 task("html", function () {
-    mustachify("README.md", "doc/quick-start/index.mustache");
-    mustachify("CONTRIBUTING.md", "doc/contribute/index.mustache");
+    mustachify("README.md", 4, "doc/quick-start/index.mustache");
+    mustachify("CONTRIBUTING.md", 2, "doc/contribute/index.mustache");
     spawn(process.argv[0], ["scripts/generate_selleck_project.js"], function (err) {
         if (err) { return complete(err); }
         bin("selleck", [], complete);
