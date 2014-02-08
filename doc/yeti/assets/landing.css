@@ -27,10 +27,13 @@ h1 {
     padding: 0;
 }
 h2 {
-    font-weight: 100;
+    font-weight: 400;
     font-size: 250%;
     margin-top: -1%;
     margin-bottom: 25px;
+}
+.header h2 {
+    font-weight: 300;
 }
 h1, h2 {
     text-rendering: optimizeLegibility;
