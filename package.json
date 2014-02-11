@@ -66,6 +66,9 @@
     "graceful-fs": "~2.0.0",
     "request": "~2.30.0"
   },
+  "optionalDependencies": {
+    "istanbul": "~0.2.4"
+  },
   "devDependencies": {
     "mocks": ">=0.0.15",
     "mockery": ">=1.4.0",
