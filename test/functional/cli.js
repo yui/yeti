@@ -234,6 +234,7 @@ vows.describe("Yeti CLI").addBatch({
                 topic.fe.route([
                     "node",
                     "cli.js",
+                    "--coverage",
                     "-p", port,
                     __dirname + "/fixture/query-string.html",
                 ]);
@@ -277,20 +278,30 @@ vows.describe("Yeti CLI").addBatch({
                             cli: cli
                         });
 
+                        cli.config.stderr.captureData();
+
                         cli.config.stdin.write("\n"); // Enter
                     },
                     "is ok": function (topic) {
                         assert.isUndefined(topic.stack);
                     },
-                    "the stderr output contains the failing test details": function (topic) {
+                    "the stdout output contains the failing test details": function (topic) {
                         assert.include(topic.output, "testMoof");
                         assert.include(topic.output, "Values should be equal.");
                         assert.include(topic.output, "Expected: moof (string)");
                         assert.include(topic.output, "Actual: ? (string)");
                         assert.include(topic.output, "1 of 1 tests failed");
                     },
-                    "the stderr output contains Agent complete": function (topic) {
+                    "the stdout output contains Agent complete": function (topic) {
                         assert.include(topic.output, "Agent complete");
+                    },
+                    "the stderr output contains coverage summary": function (topic) {
+                        var capture = topic.cli.config.stderr.capturedData;
+                        assert.include(capture, "Coverage summary");
+                        assert.include(capture, "Statements");
+                        assert.include(capture, "Branches");
+                        assert.include(capture, "Functions");
+                        assert.include(capture, "Lines");
                     },
                     "should exit": {
                         topic: function (topic) {
