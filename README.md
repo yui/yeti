@@ -257,46 +257,19 @@ This makes it really simple to setup an ad-hoc testing lab shared with your team
 
 #### Browser launching
 
-You can specify the `wd-hub` option to connect Yeti to a Selenium 2 Hub
-using the WebDriver protocol. Specifying one or more `browser` options will cause Yeti to launch the
-given browsers over WebDriver.
+You can specify the `wd-url` option to connect Yeti to a Selenium 2 Hub using the
+WebDriver protocol. Specifying one or more `caps` options will cause Yeti to launch
+browsers for the given capabilities over WebDriver.
 
-For example, you can start a Yeti Hub like this:
+For example, launching 2 Firefox browsers to test multiple files:
 
-    yeti --server --wd-url http://selenium.example.com:4444
+    yeti --hub http://example.com --wd-url http://localhost:4444 \
+         --caps "browserName=firefox;version=26;platform=Windows XP" \
+         --caps "browserName=firefox;version=26;platform=Windows XP" test/*.html
 
-Then run tests on two Chrome browsers like this:
-
-    yeti --browser chrome --browser chrome test.html
-
-Or, use the `caps` option to specify Selenium capabilities:
+Or launching an iPhone simulator on Sauce Labs:
 
     yeti --caps "platform=OS X 10.8;version=7;device-orientation=portrait;app=safari;device=iPhone Simulator" test.html
-
-Valid options for `browser` include:
-
-- `Chrome`
-- `IE` (expands to `Internet Explorer`)
-- `Firefox`
-- `Safari`
-- `PhantomJS`
-- `Android`
-- `iPad` (for Sauce Labs)
-- `iPhone` (for Sauce Labs)
-
-You can specify a platform for desktop browsers by specifying the
-desired platform after a slash `/`, e.g. `chrome/xp`. Valid platforms include:
-
-- `Windows`
-- `XP`
-- `Mac`
-- `Linux`
-- `Vista`
-- `Windows XP` (for Sauce Labs)
-- `Windows 7` (for Sauce Labs)
-- `Windows 8` (for Sauce Labs)
-- `OS X 10.6` (for Sauce Labs)
-- `OS X 10.8` (for Sauce Labs)
 
 ### Options
 
@@ -309,8 +282,8 @@ Here's a breakdown of all available CLI options.
  - *server* Starts a Yeti Hub.
  - *port* (Number) Yeti Hub will listen to this port.
  - *loglevel* (`debug` or `info`) Print debugging information.
- - *browser* (String) Browser to launch with WebDriver.
-   Requires a Hub with a `wd-host` and `wd-port` configured.
+ - *caps* (String) Browser capabilities to launch with WebDriver.
+   Should be used with `wd-url`.
  - *wd-url* (URL) WebDriver Hub URL. May contain a username and password.
  - *help* Print usage.
  - *version* Print the Yeti version.
