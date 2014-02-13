@@ -302,6 +302,9 @@ vows.describe("Yeti CLI").addBatch({
                         assert.include(capture, "Branches");
                         assert.include(capture, "Functions");
                         assert.include(capture, "Lines");
+                        assert.throws(function () {
+                            assert.include(capture, "0.00");
+                        }, Error); // Coverage should not be zero
                     },
                     "should exit": {
                         topic: function (topic) {
