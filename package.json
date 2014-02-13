@@ -20,7 +20,7 @@
     "jasmine",
     "qunit"
   ],
-  "version": "0.2.26",
+  "version": "0.2.27",
   "homepage": "http://yeti.cx",
   "repository": {
     "type": "git",
