@@ -133,8 +133,8 @@ function mustachify(inFile, lines, outFile) {
     // Remove header
     md = data.split("\n").slice(lines).join("\n"),
     html = new Ronn(md).html()
-            .replace(/<[\/]*html>/, "")
-            .replace("<pre>", '<pre class="code"');
+            .replace(/<[\/]*html>/g, "")
+            .replace(/<pre>/g, '<pre class="code">');
     fs.writeFileSync(outFile, html, opts);
 }
 
