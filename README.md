@@ -9,12 +9,13 @@ without changing your existing tests.
 
 ## Features
 
- - Automates your existing tests. Works with the framework you already have.
+ - Works with the frameworks you already use.
  - Automates tests without any additional software. Selenium not required!
- - Your tests can still run outside of Yeti by themselves.
+ - Built-in code coverage provided by [Istanbul][].
  - Works with IE 6+, Android 4+, Firefox, Safari, Chrome, iOS 4+.
  - Server-side AJAX testing with [echoecho][ee].
  - JUnit XML output makes Yeti play nice with Jenkins.
+ - Workload can be split across multiple instances of the same browser.
  - Optional Selenium/WebDriver browser launching. Works great with Sauce Labs.
 
 ## Test Frameworks
@@ -89,15 +90,70 @@ assign this prefix with the `--name` option.
 
 #### Code coverage
 
-Yeti automatically includes a line coverage summary if your tests were instrumented with [YUI Test Coverage][yuitest].
+Yeti can generate a code coverage report with the `-c` or `--coverage` option.
 
-    ✔ Testing started on Safari (6.0) / Mac OS
-    ► Testing... \ 13% complete (10/60) 11.85 tests/sec ETA 4 minutes, 2 seconds 44% line coverage
+    $ yeti -c
+    Found 1 file to test.
+      Agent connected: Chrome (34.0.1825.4) / Mac OS from 127.0.0.1
+    ✓ Testing started on Chrome (34.0.1825.4) / Mac OS
+    ✓ Agent completed: Chrome (34.0.1825.4) / Mac OS
+    Coverage summary:
+    Statements   : 96.02% ( 1110/1156 )
+    Branches     : 88.53% ( 772/872 )
+    Functions    : 97.45% ( 229/235 )
+    Lines        : 96.27% ( 1110/1153 )
+    ✓ 397 tests passed! (7 seconds)
+
+Use the `--coverage-report` option to generate reports written to `./coverage`
+or another directory defined by `--coverage-dir`. Values for `--coverage-report` include:
+
+ - `lcov` for LCOV and HTML reports.
+ - `lcovonly` for LCOV without HTML.
+ - `html` for HTML only.
+ - `json` for Istanbul JSON.
+ - `summary` for the default summary shown above.
+ - Any other [report supported by Istanbul][istanbul-report].
+
+Yeti instruments all JavaScript files automatically with [Istanbul][]. If you'd prefer to instrument
+your JavaScript code with Istanbul as a part of a build step, you can pass `--no-instrument`
+to skip all instrumenting. Yeti will still generate code coverage reports if used with
+the `--coverage` option.
+
+If you'd like to exclude some JavaScript files from instrumenting, you can pass multiple
+`--instrument-exclude` options defining [minimatch][] patterns to exclude.
+
+    $ yeti -c --instrument-exclude "vendor/**" --instrument-exclude "**.nocover.js"
+
+To prevent needing to specify these verbose options every time, you can put a
+`coverageOptions` object in your project's `.yeti.json` file containing configuration
+that is only used with `--coverage`.
+
+    $ cd yui3/src/app
+    $ cat ../../.yeti.json
+    {
+        "basedir": ".",
+        "glob": "**/tests/unit/*.html",
+        "coverageOptions": {
+            "instrument": false,
+            "query": "filter=coverage"
+        }
+    }
+    $ yeti -c # will run with --no-instrument --query "filter=coverage"
+    Found 1 file to test.
+      Agent connected: Chrome (34.0.1825.4) / Mac OS from 127.0.0.1
+    ✓ Testing started on Chrome (34.0.1825.4) / Mac OS
+    ✓ Agent completed: Chrome (34.0.1825.4) / Mac OS
+    Coverage summary:
+    Statements   : 96.02% ( 1110/1156 )
+    Branches     : 88.53% ( 772/872 )
+    Functions    : 97.45% ( 229/235 )
+    Lines        : 96.27% ( 1110/1153 )
+    ✓ 397 tests passed! (7 seconds)
 
 #### AJAX testing
 
 Yeti provides server-side AJAX routes with [echoecho][ee]. Your test can
-[make relative HTTP requests][ee-usage] to test your code aganist server-side HTTP
+[make relative HTTP requests][ee-usage] to test your code against server-side HTTP
 GET, POST, PUT, DELETE, OPTIONS, GET with delay, JSON or JSONP responses via POST,
 or any HTTP status code.
 
@@ -445,3 +501,6 @@ for license text and copyright information.
   [DOH]: http://dojotoolkit.org/reference-guide/util/doh.html
   [doctype]: http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#the-doctype
   [No-Quirks Mode]: http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#no-quirks-mode
+  [minimatch]: https://github.com/isaacs/minimatch
+  [Istanbul]: https://github.com/gotwarlost/istanbul
+  [istanbul-report]: https://github.com/gotwarlost/istanbul/tree/master/lib/report
