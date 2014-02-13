@@ -1,7 +1,6 @@
 api
 dep/dev
 doc
-coverage.*
 .git*
 .npm*
 .travis.yml

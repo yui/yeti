@@ -3,7 +3,6 @@
 /doc/contribute/index.mustache
 /doc/yeti/project.json
 /api/
-coverage.*
 node_modules
 .hosts.json
 fabfile.pyc
