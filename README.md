@@ -122,7 +122,7 @@ the `--coverage` option.
 If you'd like to exclude some JavaScript files from instrumenting, you can pass multiple
 `--instrument-exclude` options defining [minimatch][] patterns to exclude.
 
-    $ yeti -c --instrument-exclude "vendor/**" --instrument-exclude "**.nocover.js"
+    $ yeti -c --instrument-exclude "**/vendor/**" --instrument-exclude "**.nocover.js"
 
 To prevent needing to specify these verbose options every time, you can put a
 `coverageOptions` object in your project's `.yeti.json` file containing configuration
