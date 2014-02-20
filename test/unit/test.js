@@ -46,14 +46,11 @@ vows.describe("Test").addBatch({
             topic: function (lastTopic) {
                 var topic = {};
                 topic.last = lastTopic;
-                topic.results = {
-                    summary: "passed"
-                };
-                lastTopic.test.setResults(topic.results);
+                lastTopic.test.setResults(true);
                 return topic;
             },
-            "the results are correct": function (topic) {
-                assert.strictEqual(topic.last.test.results.summary, topic.results.summary);
+            "the results were set": function (topic) {
+                assert.isTrue(topic.last.test.results);
             }
         },
         "when marked executing": {
