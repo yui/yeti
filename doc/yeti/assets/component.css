@@ -1,0 +1,60 @@
+body,
+.pure-g [class *= "pure-u"],
+.pure-g-r [class *= "pure-u"],
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Source Sans Pro', 'DejaVu Sans', 'Bitstream Vera Sans', Verdana, sans-serif;
+}
+body {
+    font-size: 14px;
+}
+#doc {
+    min-width: 0;
+}
+.sidebox .bd {
+    font-size: 12px;
+}
+.toc li {
+    font-weight: normal;
+}
+.yeti-hd {
+    border-bottom: 1px solid #ddd;
+    margin: 0 20px;
+}
+.yeti-hd h1 {
+    font-size: 300%;
+    letter-spacing: -1px;
+    margin: 5px 0 0;
+    padding-left: 0;
+}
+.yeti-hd h2 {
+    font-size: 470%;
+    font-weight: 100;
+    margin: 2%;
+}
+.yeti-hd img {
+    height: 52px;
+    width: 117px;
+}
+.yeti-hd .version {
+    font-size: 40%;
+    font-weight: normal;
+    padding: 5px;
+    background: #30418C;
+    color: #fff;
+    vertical-align: 60%;
+    border-radius: 10px;
+}
+.yeti-hd .links {
+    text-align: right;
+    line-height: 50px;
+}
+.yeti-hd a {
+    color: #242D79;
+}
+#doc .ft {
+    border-top: 1px solid #ddd;
+    margin: 0 20px;
+}
+#doc .ft p {
+    background-position: 0 0;
+}

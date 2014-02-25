@@ -1,0 +1,14 @@
+.ft {
+    margin: 100px 10px;
+    font-size: 13px;
+}
+.ft p {
+    background: transparent url(https://s1.yimg.com/rz/d/yahoo_ydn_en-US_s_f_p_bestfit_developer-network.png) no-repeat center 0;
+    background-size: 132px 38px;
+    padding-top: 40px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
+    .ft p {
+        background-image: url(https://s1.yimg.com/rz/d/yahoo_ydn_en-US_s_f_p_bestfit_developer-network_2x.png);
+    }
+}
