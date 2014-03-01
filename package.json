@@ -85,6 +85,6 @@
     "jake": ">=0.2.35",
     "rimraf": ">=2.0.1",
     "walkdir": ">=0.0.5",
-    "mock-utf8-stream": ">=0.1.0"
+    "mock-utf8-stream": ">=0.1.1"
   }
 }
