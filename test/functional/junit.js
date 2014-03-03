@@ -117,7 +117,8 @@ vows.describe("Yeti JUnit Functional").addBatch({
                             assert.strictEqual(topic.exitCode, 0);
                         },
                         "the stdout output contains JUnit XML": function (topic) {
-                            assert.ok(topic.stdout.capturedData.indexOf("<?xml") === 0);
+                            assert.ok(topic.stdout.capturedData.indexOf("<?xml") === 0,
+                                "Expected XML prolog in: " + topic.stdout.capturedData);
                             assert.include(topic.stdout.capturedData, "</testsuites>");
                         },
                         "the stdout output contains a JUnit testcase": function (topic) {
