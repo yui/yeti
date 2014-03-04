@@ -32,6 +32,8 @@ vows.describe("Yeti JUnit Functional").addBatch({
                     vow.callback(null, topic);
                 });
 
+                topic.stdout.startCapture();
+
                 topic.fe.route([
                     "node",
                     "cli.js",
@@ -89,8 +91,6 @@ vows.describe("Yeti JUnit Functional").addBatch({
                             topic.output = capturedData;
                             vow.callback(null, topic);
                         });
-
-                        topic.stdout.startCapture();
 
                         topic.stdin.write("\n"); // Enter
                     },
