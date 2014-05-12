@@ -68,7 +68,7 @@
     "minimatch": "~0.2.14"
   },
   "optionalDependencies": {
-    "istanbul": "~0.2.4"
+    "istanbul": "~0.2.9"
   },
   "devDependencies": {
     "mocks": ">=0.0.15",
