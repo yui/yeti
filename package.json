@@ -55,7 +55,7 @@
   "dependencies": {
     "async": "~0.2.5",
     "wd": "~0.2.5",
-    "echoecho": "~0.1.6",
+    "echoecho": "~0.1.9",
     "eventemitter2": "~0.4.8",
     "eventyoshi": "~0.1.2",
     "nopt": "~2.1.1",
@@ -68,7 +68,7 @@
     "minimatch": "~0.2.14"
   },
   "optionalDependencies": {
-    "istanbul": "~0.2.4"
+    "istanbul": "~0.2.9"
   },
   "devDependencies": {
     "mocks": ">=0.0.15",
