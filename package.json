@@ -65,7 +65,7 @@
     "glob": "~3.2.1",
     "graceful-fs": "~2.0.0",
     "request": "~2.30.0",
-    "minimatch": "~0.2.14"
+    "minimatch": "~0.3.0"
   },
   "optionalDependencies": {
     "istanbul": "~0.2.9"
