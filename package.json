@@ -64,7 +64,7 @@
     "proto-list": "~1.2.2",
     "glob": "~3.2.1",
     "graceful-fs": "~2.0.0",
-    "request": "~2.30.0",
+    "request": "~2.35.0",
     "minimatch": "~0.3.0"
   },
   "optionalDependencies": {
