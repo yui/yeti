@@ -36,7 +36,7 @@
     "postinstall": "node scripts/postinstall.js"
   },
   "engines": {
-    "node": "~0.8.0 || ~0.10.0"
+    "node": "~0.10.0"
   },
   "jshintConfig": {
     "node": true,
