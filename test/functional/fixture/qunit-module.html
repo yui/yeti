@@ -1,12 +1,13 @@
 <!doctype html>
 <head>
-    <title>Yeti QUnit Test</title>
+    <title>Yeti QUnit Module Test</title>
     <link rel="stylesheet" href="../../../dep/dev/qunit.css">
 </head>
 <div id="qunit"></div>
 <script src="../../../dep/dev/qunit.js"></script>
 <script>
 QUnit.config.autostart = false;
+module("Yeti Example Module");
 test("hello qunit", function () {
     ok(1 == 1, "Yay!");
 });
