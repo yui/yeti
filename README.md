@@ -468,7 +468,7 @@ for license text and copyright information.
   [YUI]: http://yuilibrary.com/
   [yuitest]: http://yuilibrary.com/yuitest/
   [QUnit]: http://qunitjs.com/
-  [Mocha]: http://visionmedia.github.com/mocha/
+  [Mocha]: http://mochajs.org/
   [Expect.js]: https://github.com/LearnBoost/expect.js
   [Jasmine]: http://pivotal.github.com/jasmine/
   [DOH]: http://dojotoolkit.org/reference-guide/util/doh.html
