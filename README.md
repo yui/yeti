@@ -470,7 +470,7 @@ for license text and copyright information.
   [QUnit]: http://qunitjs.com/
   [Mocha]: http://visionmedia.github.com/mocha/
   [Expect.js]: https://github.com/LearnBoost/expect.js
-  [Jasmine]: http://pivotal.github.com/jasmine/
+  [Jasmine]: https://jasmine.github.io/
   [DOH]: http://dojotoolkit.org/reference-guide/util/doh.html
   [doctype]: http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#the-doctype
   [No-Quirks Mode]: http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#no-quirks-mode
